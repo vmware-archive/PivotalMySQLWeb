@@ -47,6 +47,8 @@ papicella@papicella:~/pivotal/DemoProjects/spring-starter/pivotal/PivotalMySQLWe
 http://localhost:8080/
 ```
 
+![alt tag](https://dl.dropboxusercontent.com/u/15829935/platform-demos/images/piv-mysqlweb2.png)
+
 <h3>Screen Shots</h3>
 
 <hr />
