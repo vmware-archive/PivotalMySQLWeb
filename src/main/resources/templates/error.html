@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pivotal MySQL*Web - Error Page</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <!-- Latest compiled and minified CSS -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" />
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+<h1>Pivotal MySQL*Web Error Page</h1>
+
+<p th:if="${timestamp}" id='created'>
+    <b>Occurred:</b> <span th:text="${timestamp}">Timestamp</span>
+</p>
+
+<p th:if="${status}">
+    <b>Response Status:</b> <span th:text="${status}">status-code</span> <span
+        th:if="${error}" th:text="'('+${error}+')'">error ...</span>
+</p>
+
+<!--/* ${ex} is set by ourSimpleMappingExceptionResolver,
+       ${exception} or ${message} are set internally by Spring Boot. */-->
+<div class="bs-example">
+    <div class="alert alert-danger fade in">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <b>Cause:</b> <span th:if="${ex}" th:text="${ex}">exception ...</span>
+        <span th:if="${exception}" th:text="${exception}">exception ...</span>
+		<span th:if="${message} and ${message.length() != 0}"
+              th:text="${message}">message ...</span>
+    </div>
+</div>
+
+<p th:unless="${ex} or ${exception} or (${message} and ${message.length() != 0})">
+    Cause unknown (no exception details available)
+</p>
+
+<div th:include="footer :: copy"></div>
+
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Pivotal MySQL*Web - Views</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <!-- Latest compiled and minified CSS -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" />
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <script th:src="@{js/functions.js}" type="text/javascript"></script>
+</head>
+<body>
+<div class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://run.pivotal.io/">
+                <img src="images/mysql-tiny-1.jpg"
+                     th:src="@{images/mysql-tiny-1.jpg}"
+                     alt="Pivotal" height="32" width="32"
+                     border="0"/>
+            </a>
+            <a class="navbar-brand" href="http://run.pivotal.io/">
+                <img src="images/PoweredByPivotal1.png"
+                     th:src="@{images/PoweredByPivotal1.png}"
+                     alt="PGWebFooter"
+                     border="0"/>
+            </a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right nav-pills">
+                <li>
+                    <a th:href="@{/home}">
+                        <img src="images/b_home.png"
+                             th:src="@{images/b_home.png}"
+                             alt="Home"
+                             border="0"/>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/logout}">
+                        <img src="images/s_loggoff.png"
+                             th:src="@{images/s_loggoff.png}"
+                             alt="Logout"
+                             border="0"/>
+                        Logout
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/refresh}">
+                        Refresh
+                    </a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle">Schema Objects <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a th:href="@{/tables}">
+                                <img src="images/s_tbl.png"
+                                     th:src="@{images/s_tbl.png}"
+                                     alt="Tables"
+                                     border="0"/>
+                                Tables[<span th:text="${session.schemaMap.Table}" />]
+                            </a>
+                        </li>
+                        <li>
+                            <a th:href="@{/views}">
+                                <img src="images/b_views.png"
+                                     th:src="@{images/b_views.png}"
+                                     alt="Views"
+                                     border="0"/>
+                                Views[<span th:text="${session.schemaMap.View}" />]
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a th:href="@{/query}">
+                                <img src="images/b_sql.png"
+                                     th:src="@{images/b_sql.png}"
+                                     alt="SQL Worksheet"
+                                     border="0"/>
+                                SQL Worksheet
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="#">[User: <span th:text="${session.user} ? ${session.user} : 'Not Logged In'">Not Logged In</span>]</a></li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+<!-- NAVBAR CODE END -->
+
+<div class="bs-example">
+    <div class="page-header">
+        <h1>Pivotal MySQL*Web - <small>Views</small></h1>
+    </div>
+</div>
+
+<ul class="nav nav-tabs">
+    <li>
+        <a th:href="@{/home}">
+            <img src="images/b_home.png"
+                 th:src="@{images/b_home.png}"
+                 alt="Home"
+                 border="0"/>
+            Home
+        </a>
+    </li>
+    <li>
+        <a th:href="@{/tables}">
+            <img src="images/s_tbl.png"
+                 th:src="@{images/s_tbl.png}"
+                 alt="Tables"
+                 border="0"/>
+            Tables[<span th:text="${session.schemaMap.Table}" />]
+        </a>
+    </li>
+    <li class="active">
+        <a th:href="@{/views}">
+            <img src="images/b_views.png"
+                 th:src="@{images/b_views.png}"
+                 alt="Views"
+                 border="0"/>
+            Views[<span th:text="${session.schemaMap.View}" />]
+        </a>
+    </li>
+    <li>
+        <a th:href="@{/query}">
+            <img src="images/b_sql.png"
+                 th:src="@{images/b_sql.png}"
+                 alt="SQL Worksheet"
+                 border="0"/>
+            SQL Worksheet
+        </a>
+    </li>
+    <li>
+        <a th:href="@{/viewconmap}">
+            <img src="images/Connection.gif"
+                 th:src="@{images/Connection.gif}"
+                 alt="View Connections"
+                 border="0"/>
+            View Connections
+        </a>
+    </li>
+</ul>
+
+<div class="bs-example" th:if="${result != null}">
+    <br />
+    <div class="col-xs-8">
+        <div th:if="${#strings.contains(result.message, 'ERROR:')}">
+            <div class="alert alert-danger fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <div>
+                    <b>Pivotal MySQL*Web&gt;</b> <span th:text="${result.command}" />
+                </div>
+            </div>
+            <table class="table table-hover table-bordered table-striped table-condensed">
+                <tr class="info">
+                    <td th:text="${result.message}" style="text-align:left} " ></td>
+                </tr>
+            </table>
+        </div>
+        <div th:if="!${#strings.contains(result.message, 'ERROR:')}">
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <div>
+                    <b>Pivotal MySQL*Web&gt;</b> <span th:text="${result.command}" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bs-example" th:if="${arrayresult != null}">
+    <br />
+    <div class="col-xs-8">
+        <div th:each="result : ${arrayresult}">
+            <div th:if="${#strings.contains(result.message, 'ERROR:')}">
+                <div class="alert alert-danger fade in">
+                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                    <div>
+                        <b>Pivotal MySQL*Web&gt;</b> <span th:text="${result.command}" />
+                    </div>
+                </div>
+                <table class="table table-hover table-bordered table-striped table-condensed">
+                    <tr class="info">
+                        <td style="text-align: right">Message:</td>
+                        <td th:text="${result.message}" style="text-align:left} " ></td>
+                    </tr>
+                </table>
+            </div>
+            <div th:if="!${#strings.contains(result.message, 'ERROR:')}">
+                <div class="alert alert-success fade in">
+                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                    <div>
+                        <b>Pivotal MySQL*Web&gt;</b> <span th:text="${result.command}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-xs-12" th:if="${viewdef != null}">
+    <h3><span th:text="${viewName}" /> Definition </h3>
+    <table class="table table-hover table-bordered table-striped table-condensed">
+        <tbody>
+            <tr>
+                <td><span th:text="${viewdef}" /></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="clearfix">
+</div>
+
+<div class="bs-example">
+    <br />
+    <form th:action="@{/views}" method="post" class="form-horizontal">
+        <div class="form-group ">
+            <div class="col-xs-4">
+                <input type="text" id="search" name="search" placeholder="View Name [case sensitive]" class="form-control" />
+            </div>
+            <div class="col-xs-2">
+                <select id="selectedSchema" name="selectedSchema">
+                    <table>
+                        <tr th:each="schema : ${schemas}">
+                            <div th:if="${schema == chosenSchema}">
+                                <option th:value="${schema}" selected="selected">
+                                    <span th:text="${schema}" />
+                                </option>
+                            </div>
+                            <div th:if="${schema != chosenSchema}">
+                                <option th:value="${schema}">
+                                    <span th:text="${schema}" />
+                                </option>
+                            </div>
+                        </tr>
+                    </table>
+                </select>
+            </div>
+            <div class="col-xs-2">
+                <button type="submit" class="btn btn-primary" name="searchpressed" value="searchpressed">Search</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Add table with Results only if results exist -->
+<div class="bs-example" th:if="${estimatedrecords > 0}">
+    <div class="alert alert-success fade in">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Success!</strong> Found <b th:text="${estimatedrecords}"></b> Views
+    </div>
+    <div class="col-xs-8">
+        <form th:action="@{/views}" method="post" name="tablesForm" id="tablesForm">
+            <input type="hidden" name="selectedSchema" th:value="${chosenSchema}" />
+            <table class="table table-hover table-bordered table-striped table-condensed" id="table_results">
+                <thead>
+                <tr>
+                    <th colspan="5" style="text-align:center"><b>Views</b></th>
+                </tr>
+                <tr>
+                    <th style="text-align:center"></th>
+                    <th style="text-align:center">Catalog</th>
+                    <th style="text-align:center">Schema</th>
+                    <th style="text-align:center">Name</th>
+                    <th style="text-align:center">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="view,iterStat : ${views}">
+                    <td style="text-align:center">
+                        <input type="checkbox"
+                               name="selected_view[]"
+                               th:value="${view.viewName}"
+                               th:id="'checkbox_view_' + ${iterStat.count} + ''" />
+                    </td>
+                    <td th:text="${view.catalog}" style="text-align:center"></td>
+                    <td th:text="${view.schemaName}" style="text-align:center"></td>
+                    <td th:text="${view.viewName}" style="text-align:center"></td>
+                    <td style="text-align:center ">
+                        <a th:href="@{/executequery(query='select * from ' + ${chosenSchema} + '.' + ${view.viewName})}">
+                            <img src="images/b_views.png"
+                                 th:src="@{images/b_views.png}"
+                                 alt="View Data"
+                                 width="16" height="16"
+                                 border="0"/>
+                        </a>&nbsp;
+                        <a th:href="@{/views(viewName=${view.viewName},viewAction='DROP',selectedSchema=${chosenSchema})}">
+                            <img src="images/b_drop.png"
+                                 th:src="@{images/b_drop.png}"
+                                 alt="Drop View"
+                                 width="16" height="16"
+                                 border="0"/>
+                        </a>&nbsp;
+                        <a th:href="@{/views(viewName=${view.viewName},viewAction='DEF',selectedSchema=${chosenSchema})}">
+                            <img src="images/b_tbloptimize.png"
+                                 th:src="@{images/b_tbloptimize.png}"
+                                 alt="View Definition"
+                                 width="16" height="16"
+                                 border="0"/>
+                        </a>&nbsp;
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="clearfloat">
+                <img class="selectallarrow"
+                     src="images/arrow_ltr.png"
+                     th:src="@{images/arrow_ltr.png}"
+                     width="38" height="22" alt="With selected:" />
+                <a th:href="@{/views(selectedSchema=${chosenSchema})}"
+                   onclick="if (setCheckboxes('table_results', 'true')) return false;">
+                    Check All</a>
+
+                /
+                <a th:href="@{/views(selectedSchema=${chosenSchema})}"
+                   onclick="if (unMarkAllRows('tablesForm')) return false;">
+                    Uncheck All</a>
+
+                <select name="submit_mult" onchange="this.form.submit();" style="margin: 0 3em 0 3em;">
+                    <option value="With selected:" selected="selected">With selected:</option>
+                    <option value="Drop" >Drop</option>
+                </select>
+
+
+                <script type="text/javascript">
+                    <!--
+                    // Fake js to allow the use of the <noscript> tag
+                    //-->
+                </script>
+                <noscript>
+                    <button type="submit" class="btn btn-primary">Go</button>
+                </noscript>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div class="clearfix">
+</div>
+
+<div th:include="footer :: copy"></div>
+
+</body>
+</html>

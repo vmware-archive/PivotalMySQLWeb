@@ -1,0 +1,183 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pivotal MySQL*Web - Welcome</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <!-- Latest compiled and minified CSS -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" />
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://run.pivotal.io/">
+                <img src="images/mysql-tiny-1.jpg"
+                     th:src="@{images/mysql-tiny-1.jpg}"
+                     alt="Pivotal" height="32" width="32"
+                     border="0"/>
+            </a>
+            <a class="navbar-brand" href="http://run.pivotal.io/">
+                <img src="images/PoweredByPivotal1.png"
+                     th:src="@{images/PoweredByPivotal1.png}"
+                     alt="PGWebFooter"
+                     border="0"/>
+            </a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right nav-pills">
+                <li>
+                    <a th:href="@{/home}">
+                        <img src="images/b_home.png"
+                             th:src="@{images/b_home.png}"
+                             alt="Home"
+                             border="0"/>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/logout}">
+                        <img src="images/s_loggoff.png"
+                             th:src="@{images/s_loggoff.png}"
+                             alt="Logout"
+                             border="0"/>
+                        Logout
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/refresh}">
+                        Refresh
+                    </a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle">Schema Objects <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a th:href="@{/tables}">
+                                <img src="images/s_tbl.png"
+                                     th:src="@{images/s_tbl.png}"
+                                     alt="Tables"
+                                     border="0"/>
+                                Tables[<span th:text="${session.schemaMap.Table}" />]
+                            </a>
+                        </li>
+                        <li>
+                            <a th:href="@{/views}">
+                                <img src="images/b_views.png"
+                                     th:src="@{images/b_views.png}"
+                                     alt="Views"
+                                     border="0"/>
+                                Views[<span th:text="${session.schemaMap.View}" />]
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a th:href="@{/query}">
+                                <img src="images/b_sql.png"
+                                     th:src="@{images/b_sql.png}"
+                                     alt="SQL Worksheet"
+                                     border="0"/>
+                                SQL Worksheet
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="#">[User: <span th:text="${session.user} ? ${session.user} : 'Not Logged In'">Not Logged In</span>]</a></li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+<!-- NAVBAR CODE END -->
+
+<div class="bs-example">
+    <div class="page-header">
+        <h1>Pivotal MySQL*Web - <small>Welcome</small></h1>
+    </div>
+</div>
+
+<div class="bs-example">
+    <div class="alert alert-success fade in">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Success!</strong> Connected to MySQL using JDBC URL <strong th:text="${session.url}"></strong>
+    </div>
+</div>
+
+<ul class="nav nav-tabs">
+    <li class="active">
+        <a th:href="@{/home}">
+            <img src="images/b_home.png"
+                 th:src="@{images/b_home.png}"
+                 alt="Home"
+                 border="0"/>
+            Home
+        </a>
+    </li>
+    <li>
+        <a th:href="@{/tables}">
+            <img src="images/s_tbl.png"
+                 th:src="@{images/s_tbl.png}"
+                 alt="Tables"
+                 border="0"/>
+            Tables[<span th:text="${session.schemaMap.Table}" />]
+        </a>
+    </li>
+    <li>
+        <a th:href="@{/views}">
+            <img src="images/b_views.png"
+                 th:src="@{images/b_views.png}"
+                 alt="Views"
+                 border="0"/>
+            Views[<span th:text="${session.schemaMap.View}" />]
+        </a>
+    </li>
+    <li>
+        <a th:href="@{/query}">
+            <img src="images/b_sql.png"
+                 th:src="@{images/b_sql.png}"
+                 alt="SQL Worksheet"
+                 border="0"/>
+            SQL Worksheet
+        </a>
+    </li>
+    <li>
+        <a th:href="@{/viewconmap}">
+            <img src="images/Connection.gif"
+                 th:src="@{images/Connection.gif}"
+                 alt="View Connections"
+                 border="0"/>
+            View Connections
+        </a>
+    </li>
+</ul>
+
+<div class="bs-example">
+    <br />
+    <p style="color: darkblue">
+        The p-mysql product delivers a fully managed, “Database as a Service” to Cloud Foundry users. When installed,
+        the tile deploys and maintains a single or three-node cluster running a recent release of MariaDB, SQL Proxies
+        for super-fast failover, and Service Brokers for Cloud Foundry integration
+    </p>
+</div>
+
+<div th:include="footer :: copy"></div>
+
+</body>
+</html>

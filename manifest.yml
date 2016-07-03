@@ -1,0 +1,9 @@
+---
+applications:
+- name: pivotal-mysqlweb
+  memory: 512M
+  instances: 1
+  host: pivotal-mysqlweb-${random-word}
+  path: ./target/PivotalMySQLWeb-0.0.1-SNAPSHOT.jar
+  services:
+    - pas-mysql
