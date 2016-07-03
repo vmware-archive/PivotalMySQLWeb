@@ -1,8 +1,7 @@
-<h1>Pivotal MySQL Web </h1>
+<h1>Pivotal MySQL*Web </h1>
 
 PivotalMySQL*Web is a browser based SQL tool rendered using Bootstrap UI for MySQL PCF service instances which allows you to 
 run SQL commands and view schema objects from a browser based interface. It includes the following capabilities
-
 
 <ul>
     <li>Multiple Command SQL worksheet for DDL and DML</li>
@@ -13,6 +12,8 @@ run SQL commands and view schema objects from a browser based interface. It incl
     <li>Manage JDBC Connections</li>
     <li>Load SQL File into SQL Worksheet from Local File Syste</li>
 </ul>
+
+![alt tag](https://dl.dropboxusercontent.com/u/15829935/platform-demos/images/piv-mysqlweb1.png)
 
 <h3>Run stand alone outside of PCF</h3>
 
