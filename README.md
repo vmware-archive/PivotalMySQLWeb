@@ -41,6 +41,12 @@ papicella@papicella:~/pivotal/DemoProjects/spring-starter/pivotal/PivotalMySQLWe
 2016-07-03 17:13:44.294  INFO 19664 --- [           main] c.p.p.m.PivotalMySqlWebApplication       : Started PivotalMySqlWebApplication in 3.4 seconds (JVM running for 3.761)
 ```
 
+- Access as follows and connect to your MySQL instance
+
+```
+http://localhost:8080/
+```
+
 <h3>Screen Shots</h3>
 
 <hr />
