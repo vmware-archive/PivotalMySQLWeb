@@ -173,15 +173,22 @@ public class LoginController
 
         Map<String, Object> jsonMap = parser.parseMap(jsonString);
 
-        List clearDBList = (List) jsonMap.get("cleardb");
+        List mysqlService = (List) jsonMap.get("cleardb");
 
-        if (clearDBList != null)
+        if (mysqlService == null)
+        {
+            // just check if it's "p-mysql" before we try that
+            mysqlService = (List) jsonMap.get("p-mysql");
+        }
+
+        
+        if (mysqlService != null)
         {
             System.out.println("Found clearDB");
-            Map clearDBMap = (Map) clearDBList.get(0);
+            Map clearDBMap = (Map) mysqlService.get(0);
             Map credentailsMap = (Map) clearDBMap.get("credentials");
 
-            login.setUrl((String) credentailsMap.get("jdbcUrl"));
+            login.setUrl((String) credentailsMap.get("jdbcUrl") + "&connectTimeout=1800000&socketTimeout=1800000&autoReconnect=true");
             login.setUsername((String) credentailsMap.get("username"));
             login.setPassword((String) credentailsMap.get("password"));
             login.setSchema((String) credentailsMap.get("name"));
