@@ -51,5 +51,9 @@ http://localhost:8080/
 
 <h3>Screen Shots</h3>
 
+![alt tag](https://dl.dropboxusercontent.com/u/15829935/platform-demos/images/piv-mysqlweb3.png)
+
+![alt tag](https://dl.dropboxusercontent.com/u/15829935/platform-demos/images/piv-mysqlweb4.png)
+
 <hr />
 Pas Apicella [papicella at pivotal.io] is a Senior Platform Architect at Pivotal Australia 
