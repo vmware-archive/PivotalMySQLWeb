@@ -19,12 +19,23 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
+    <script type="text/javascript" src="https://cdn.datatables.net/r/bs-3.3.5/jqc-1.11.3,dt-1.10.8/datatables.min.js"></script>
+
+    <link href="https://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet" />
+    <script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+
     <script th:src="@{js/functions.js}" type="text/javascript"></script>
     <style type="text/css">
         input:focus, textarea:focus {
             background-color: #C4D4E2;
         }
     </style>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function() {
+            $('#datatable-mysql').DataTable();
+        } );
+    </script>
 </head>
 <body>
 
@@ -351,7 +362,7 @@
             </div>
         </div>
     </div>
-    <table class="table table-hover table-bordered table-striped table-condensed">
+    <table id="datatable-mysql" class="table table-hover table-bordered table-striped table-condensed">
         <thead>
         <div th:each="columnName : ${queryResults.columnNames}">
             <th style="text-align:center"><span th:text="${columnName}"/></th>
