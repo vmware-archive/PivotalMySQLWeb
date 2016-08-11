@@ -49,6 +49,24 @@ http://localhost:8080/
 
 ![alt tag](https://dl.dropboxusercontent.com/u/15829935/platform-demos/images/piv-mysqlweb2.png)
 
+<h3>Deploy to Pivotal Cloud Foundry</h3>
+
+To deploy to Pivotal Cloud Foundry it's best to bind the application to a Pivotal MySQL service instance so it automatically connects
+to the MySQL instance as shown in the sample manifest below. If you don't bind to a MySQL instance it will simply ask you to login 
+to a MySQL instance itself.
+
+```
+---
+applications:
+- name: pivotal-mysqlweb
+  memory: 512M
+  instances: 1
+  host: pivotal-mysqlweb-${random-word}
+  path: ./target/PivotalMySQLWeb-0.0.1-SNAPSHOT.jar
+  services:
+    - pas-mysql
+```
+
 <h3>Screen Shots</h3>
 
 ![alt tag](https://dl.dropboxusercontent.com/u/15829935/platform-demos/images/piv-mysqlweb3.png)
