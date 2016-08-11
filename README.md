@@ -10,7 +10,7 @@ run SQL commands and view schema objects from a browser based interface. It incl
     <li>Command History</li>
     <li>Auto Bind to ClearDB and Pivotal MySQL Services bound to the Application within Pivotal Cloud Foundry (PCF)</li>
     <li>Manage JDBC Connections</li>
-    <li>Load SQL File into SQL Worksheet from Local File Syste</li>
+    <li>Load SQL File into SQL Worksheet from Local File System</li>
 </ul>
 
 ![alt tag](https://dl.dropboxusercontent.com/u/15829935/platform-demos/images/piv-mysqlweb1.png)
@@ -65,6 +65,12 @@ applications:
   path: ./target/PivotalMySQLWeb-0.0.1-SNAPSHOT.jar
   services:
     - pas-mysql
+```
+
+Push to PCF using
+
+```
+$ cf push -f manifest.yml
 ```
 
 <h3>Screen Shots</h3>
