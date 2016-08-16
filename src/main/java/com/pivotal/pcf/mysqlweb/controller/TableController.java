@@ -1,8 +1,8 @@
 package com.pivotal.pcf.mysqlweb.controller;
 
 import com.pivotal.pcf.mysqlweb.beans.Result;
-import com.pivotal.pcf.mysqlweb.dao.PGWebDAOFactory;
-import com.pivotal.pcf.mysqlweb.dao.PGWebDAOUtil;
+import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
+import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOUtil;
 import com.pivotal.pcf.mysqlweb.dao.tables.Table;
 import com.pivotal.pcf.mysqlweb.dao.tables.TableDAO;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
@@ -59,7 +59,7 @@ public class TableController
 
         logger.info("Received request to show tables");
 
-        TableDAO tableDAO = PGWebDAOFactory.getTableDAO();
+        TableDAO tableDAO = PivotalMySQLWebDAOFactory.getTableDAO();
 
         String selectedSchema = request.getParameter("selectedSchema");
         logger.info("selectedSchema = " + selectedSchema);
@@ -116,7 +116,7 @@ public class TableController
         model.addAttribute("tables", tbls);
 
         model.addAttribute("schemas",
-                PGWebDAOUtil.getAllSchemas
+                PivotalMySQLWebDAOUtil.getAllSchemas
                         ((String) session.getAttribute("user_key")));
 
         model.addAttribute("chosenSchema", schema);
@@ -159,7 +159,7 @@ public class TableController
 
         logger.info("Received request to perform an action on the tables");
 
-        TableDAO tableDAO = PGWebDAOFactory.getTableDAO();
+        TableDAO tableDAO = PivotalMySQLWebDAOFactory.getTableDAO();
 
         String selectedSchema = request.getParameter("selectedSchema");
         logger.info("selectedSchema = " + selectedSchema);
@@ -221,7 +221,7 @@ public class TableController
         model.addAttribute("tables", tbls);
 
         model.addAttribute("schemas",
-                PGWebDAOUtil.getAllSchemas
+                PivotalMySQLWebDAOUtil.getAllSchemas
                         ((String) session.getAttribute("user_key")));
 
         model.addAttribute("chosenSchema", schema);

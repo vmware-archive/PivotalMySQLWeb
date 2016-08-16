@@ -177,14 +177,14 @@ public class LoginController
 
         if (mysqlService == null)
         {
-            // just check if it's "p-mysql" before we try that
+            // just check if it's "p-mysql"
             mysqlService = (List) jsonMap.get("p-mysql");
         }
 
         
         if (mysqlService != null)
         {
-            System.out.println("Found clearDB");
+            logger.info("Obtaining VCAP_SERVICES crednetials");
             Map clearDBMap = (Map) mysqlService.get(0);
             Map credentailsMap = (Map) clearDBMap.get("credentials");
 

@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PGWebDAOUtil
+public class PivotalMySQLWebDAOUtil
 {
     static public Result runCommand (String command, String userKey) throws PivotalMySQLWebException
     {

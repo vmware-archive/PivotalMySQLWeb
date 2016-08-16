@@ -1,7 +1,7 @@
 package com.pivotal.pcf.mysqlweb.dao.tables;
 
 import com.pivotal.pcf.mysqlweb.beans.Result;
-import com.pivotal.pcf.mysqlweb.dao.PGWebDAOUtil;
+import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOUtil;
 import com.pivotal.pcf.mysqlweb.main.PivotalMySQLWebException;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
 import com.pivotal.pcf.mysqlweb.utils.JDBCUtil;
@@ -96,7 +96,7 @@ public class TableDAOImpl implements TableDAO
 
         }
 
-        res = PGWebDAOUtil.runCommand(command, userKey);
+        res = PivotalMySQLWebDAOUtil.runCommand(command, userKey);
 
         return res;
     }

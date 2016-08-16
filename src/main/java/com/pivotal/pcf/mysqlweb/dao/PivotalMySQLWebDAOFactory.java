@@ -5,7 +5,7 @@ import com.pivotal.pcf.mysqlweb.dao.tables.TableDAOImpl;
 import com.pivotal.pcf.mysqlweb.dao.views.ViewDAO;
 import com.pivotal.pcf.mysqlweb.dao.views.ViewDAOImpl;
 
-public class PGWebDAOFactory
+public class PivotalMySQLWebDAOFactory
 {
     public static TableDAO getTableDAO()
     {

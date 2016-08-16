@@ -1,8 +1,8 @@
 package com.pivotal.pcf.mysqlweb.controller;
 
 import com.pivotal.pcf.mysqlweb.beans.Result;
-import com.pivotal.pcf.mysqlweb.dao.PGWebDAOFactory;
-import com.pivotal.pcf.mysqlweb.dao.PGWebDAOUtil;
+import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
+import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOUtil;
 import com.pivotal.pcf.mysqlweb.dao.views.View;
 import com.pivotal.pcf.mysqlweb.dao.views.ViewDAO;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
@@ -59,7 +59,7 @@ public class ViewController
 
         logger.info("Received request to show views");
 
-        ViewDAO viewDAO = PGWebDAOFactory.getViewDAO();
+        ViewDAO viewDAO = PivotalMySQLWebDAOFactory.getViewDAO();
         Result result = new Result();
 
         String viewAction = request.getParameter("viewAction");
@@ -116,7 +116,7 @@ public class ViewController
         model.addAttribute("views", views);
 
         model.addAttribute("schemas",
-                PGWebDAOUtil.getAllSchemas
+                PivotalMySQLWebDAOUtil.getAllSchemas
                         ((String) session.getAttribute("user_key")));
 
         model.addAttribute("chosenSchema", schema);
@@ -175,7 +175,7 @@ public class ViewController
 
         logger.info("schema = " + schema);
 
-        ViewDAO viewDAO = PGWebDAOFactory.getViewDAO();
+        ViewDAO viewDAO = PivotalMySQLWebDAOFactory.getViewDAO();
         if (request.getParameter("searchpressed") != null)
         {
             views = viewDAO.retrieveViewList
@@ -224,7 +224,7 @@ public class ViewController
         model.addAttribute("estimatedrecords", views.size());
         model.addAttribute("views", views);
         model.addAttribute("schemas",
-                PGWebDAOUtil.getAllSchemas
+                PivotalMySQLWebDAOUtil.getAllSchemas
                         ((String) session.getAttribute("user_key")));
 
         model.addAttribute("chosenSchema", schema);

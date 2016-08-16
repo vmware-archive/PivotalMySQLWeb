@@ -24,14 +24,6 @@ public class UserPref
     {
     }
 
-    /*
-    public UserPref(int recordsToDisplay, int maxRecordsinSQLQueryWindow, String autoCommit, int historySize) {
-        this.recordsToDisplay = recordsToDisplay;
-        this.maxRecordsinSQLQueryWindow = maxRecordsinSQLQueryWindow;
-        this.autoCommit = autoCommit;
-        this.historySize = historySize;
-    }
-*/
     public int getRecordsToDisplay() {
         return recordsToDisplay;
     }

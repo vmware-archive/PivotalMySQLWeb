@@ -1,7 +1,7 @@
 package com.pivotal.pcf.mysqlweb.dao.views;
 
 import com.pivotal.pcf.mysqlweb.beans.Result;
-import com.pivotal.pcf.mysqlweb.dao.PGWebDAOUtil;
+import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOUtil;
 import com.pivotal.pcf.mysqlweb.main.PivotalMySQLWebException;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
 import com.pivotal.pcf.mysqlweb.utils.JDBCUtil;
@@ -81,7 +81,7 @@ public class ViewDAOImpl implements ViewDAO
             }
         }
 
-        res = PGWebDAOUtil.runCommand(command, userKey);
+        res = PivotalMySQLWebDAOUtil.runCommand(command, userKey);
 
         return res;
     }

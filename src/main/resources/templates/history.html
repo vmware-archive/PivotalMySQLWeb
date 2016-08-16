@@ -54,6 +54,15 @@
                     </a>
                 </li>
                 <li>
+                    <a th:href="@{/prefs}">
+                        <img src="images/b_props.png"
+                             th:src="@{images/b_props.png}"
+                             alt="Preferences"
+                             border="0"/>
+                        Preferences
+                    </a>
+                </li>
+                <li>
                     <a th:href="@{/logout}">
                         <img src="images/s_loggoff.png"
                              th:src="@{images/s_loggoff.png}"
@@ -165,7 +174,7 @@
 <div class="col-xs-8">
     <div class="alert alert-success fade in">
         <a href="#" class="close" data-dismiss="alert">&times;</a>
-        <strong>Success!</strong> Found <b th:text="${historysize}"></b> Commands
+        <strong>Success!</strong> Found <b th:text="${historysize}"></b> Command(s)
     </div>
     <table class="table table-hover table-bordered table-striped table-condensed" id="table_results">
         <thead>
@@ -174,7 +183,7 @@
         </tr>
         <tr>
             <th style="text-align:center">Command</th>
-            <th style="text-align:center">Name</th>
+            <th style="text-align:center">Execute</th>
         </tr>
         </thead>
         <tbody>
