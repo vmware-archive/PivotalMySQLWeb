@@ -171,38 +171,49 @@
     </li>
 </ul>
 
-<div class="col-xs-8">
-    <div class="alert alert-success fade in">
+<div th:if="${historysize == 0}">
+    <br />
+    <div class="alert alert-info fade in">
         <a href="#" class="close" data-dismiss="alert">&times;</a>
-        <strong>Success!</strong> Found <b th:text="${historysize}"></b> Command(s)
+        No commands currently exist
     </div>
-    <table class="table table-hover table-bordered table-striped table-condensed" id="table_results">
-        <thead>
-        <tr>
-            <th colspan="2" style="text-align:center"><b>Command History</b></th>
-        </tr>
-        <tr>
-            <th style="text-align:center">Command</th>
-            <th style="text-align:center">Execute</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="command : ${historyList}">
-            <td style="text-align:center ">
-                <span th:text="${command}" />
-            </td>
-            <td style="text-align:center  ">
-                <a th:href="@{/executequery(query=${command})}">
-                    <img src="images/b_views.png"
-                         th:src="@{images/b_views.png}"
-                         alt="View Data"
-                         width="16" height="16"
-                         border="0"/>
-                </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+</div>
+
+<div th:if="${historysize != 0}">
+    <div class="col-xs-8">
+        <br />
+        <div class="alert alert-success fade in">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Success!</strong> Found <b th:text="${historysize}"></b> Command(s)
+        </div>
+        <table class="table table-hover table-bordered table-striped table-condensed" id="table_results">
+            <thead>
+            <tr>
+                <th colspan="2" style="text-align:center"><b>Command History</b></th>
+            </tr>
+            <tr>
+                <th style="text-align:center">Command</th>
+                <th style="text-align:center">Execute</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="command : ${historyList}">
+                <td style="text-align:center ">
+                    <span th:text="${command}" />
+                </td>
+                <td style="text-align:center  ">
+                    <a th:href="@{/executequery(query=${command})}">
+                        <img src="images/b_views.png"
+                             th:src="@{images/b_views.png}"
+                             alt="View Data"
+                             width="16" height="16"
+                             border="0"/>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <div class="clearfix">
