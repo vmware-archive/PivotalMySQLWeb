@@ -83,6 +83,10 @@ public class LoginController
                     logger.info("schemaMap=" + schemaMap);
                     logger.info(userPref.toString());
 
+                    String autobound = mysqlInstanceType(jsonString);
+
+                    session.setAttribute("autobound", autobound);
+
                     return "main";
 
                 }
@@ -195,6 +199,31 @@ public class LoginController
         }
 
         return login;
+
+    }
+
+    private String mysqlInstanceType (String jsonString)
+    {
+
+        String mysqlType = null;
+
+        JsonParser parser = JsonParserFactory.getJsonParser();
+
+        Map<String, Object> jsonMap = parser.parseMap(jsonString);
+
+        List mysqlService = (List) jsonMap.get("cleardb");
+
+        if (mysqlService == null)
+        {
+            mysqlType = "P-MYSQL";
+        }
+        else
+        {
+            mysqlType = "CLEARDB";
+        }
+
+
+        return mysqlType;
 
     }
 

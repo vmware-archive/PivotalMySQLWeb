@@ -225,13 +225,13 @@ public class QueryUtil
 
             if (commit)
             {
-                conn.commit();
                 res.setCommand("commit");
+                conn.commit();
             }
             else
             {
-                conn.rollback();
                 res.setCommand("rollback");
+                conn.rollback();
             }
 
             long end = System.currentTimeMillis();
@@ -250,7 +250,7 @@ public class QueryUtil
         catch (SQLException se)
         {
             // we don't want to stop it running we just need the error
-            res.setMessage(se.getMessage());
+            res.setMessage("ERROR: " + se.getMessage());
             res.setRows(-1);
         }
 

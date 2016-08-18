@@ -122,10 +122,17 @@
     </div>
 </div>
 
-<div class="bs-example">
+<div th:if="${session.autobound == null}">
     <div class="alert alert-success fade in">
         <a href="#" class="close" data-dismiss="alert">&times;</a>
         <strong>Success!</strong> Connected to MySQL using JDBC URL <strong th:text="${session.url}"></strong>
+    </div>
+</div>
+
+<div th:if="${session.autobound != null}">
+    <div class="alert alert-success fade in">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Success!</strong> Connected to MySQL using <strong th:text="${session.autobound}"></strong> bound instance
     </div>
 </div>
 

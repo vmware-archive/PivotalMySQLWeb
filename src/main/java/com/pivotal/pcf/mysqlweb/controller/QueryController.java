@@ -77,6 +77,7 @@ public class QueryController
                 logger.info("commit action requested");
                 result = QueryUtil.runCommitOrRollback(conn, true, "N");
                 addCommandToHistory(session, userPrefs, "commit");
+                logger.info("COMMIT RESULT " + result);
 
                 model.addAttribute("result", result);
             }
@@ -327,6 +328,7 @@ public class QueryController
             logger.info("Query run");
             model.addAttribute("queryResults", res);
             model.addAttribute("querysql", query);
+            addCommandToHistory(session, userPrefs, query);
 
         }
         catch (Exception ex)

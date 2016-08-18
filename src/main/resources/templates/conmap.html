@@ -204,7 +204,7 @@
                 <span th:text="${item.key}" />
             </td>
             <td style="text-align:center ">
-                <span th:text="${item.value.url}" />
+                <span th:text="${session.autobound} ? ${session.autobound} : ${item.value.url}"/>
             </td>
             <td style="text-align:center">
                 <span th:text="${item.value.schema}" />
