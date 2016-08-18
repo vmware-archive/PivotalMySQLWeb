@@ -33,6 +33,14 @@
         } );
     </script>
 
+    <script type="text/javascript">
+        // <![CDATA[
+
+        // js form validation stuff
+        var confirmMsg  = 'Do you really want to ';
+        // ]]>
+    </script>
+
 </head>
 <body>
 
@@ -301,7 +309,7 @@
 <div class="bs-example" th:if="${estimatedrecords > 0}">
     <div class="alert alert-success fade in">
         <a href="#" class="close" data-dismiss="alert">&times;</a>
-        <strong>Success!</strong> Found <b th:text="${estimatedrecords}"></b> Tables
+        <strong>Success!</strong> Found <b th:text="${estimatedrecords}"></b> Table(s)
     </div>
     <div class="col-xs-8">
         <form th:action="@{/tables}" method="post" name="tablesForm" id="tablesForm">
@@ -338,7 +346,8 @@
                                  width="16" height="16"
                                  border="0"/>
                         </a>&nbsp;
-                        <a th:href="@{/tables(tabName=${table.tableName},tabAction='DROP',selectedSchema=${chosenSchema})}">
+                        <a th:href="@{/tables(tabName=${table.tableName},tabAction='DROP',selectedSchema=${chosenSchema})}"
+                           th:onclick="'return confirmLink(this, \'Drop TABLE ' + ${table.tableName} + '?\')'">
                             <img src="images/b_drop.png"
                                  th:src="@{images/b_drop.png}"
                                  alt="Drop Table"
