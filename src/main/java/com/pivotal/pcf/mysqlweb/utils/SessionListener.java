@@ -21,10 +21,6 @@ public class SessionListener implements HttpSessionListener
     public void sessionDestroyed(HttpSessionEvent event)
     {
         session  = event.getSession();
-	    /*
-	     * Need to ensure Connection is closed from ConnectionManager
-	     */
-
         ConnectionManager cm = null;
 
         try

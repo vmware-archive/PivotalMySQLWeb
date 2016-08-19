@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Pivotal MySQL*Web - Tables</title>
+    <title>Pivotal MySQL*Web - Indexes</title>
 
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -151,7 +151,7 @@
 
 <div class="bs-example">
     <div class="page-header">
-        <h1>Pivotal MySQL*Web - <small>Tables</small></h1>
+        <h1>Pivotal MySQL*Web - <small>Indexes</small></h1>
     </div>
 </div>
 
@@ -165,7 +165,7 @@
             Home
         </a>
     </li>
-    <li class="active">
+    <li>
         <a th:href="@{/tables}">
             <img src="images/s_tbl.png"
                  th:src="@{images/s_tbl.png}"
@@ -183,7 +183,7 @@
             Views[<span th:text="${session.schemaMap.View}" />]
         </a>
     </li>
-    <li>
+    <li class="active">
         <a th:href="@{/indexes}">
             <img src="images/b_index.png"
                  th:src="@{images/b_index.png}"
@@ -269,36 +269,15 @@
     </div>
 </div>
 
-<div class="col-xs-6" th:if="${tableStructure != null}">
-    <h3><span th:text="${tablename}" /> Structure </h3>
-    <table class="table table-hover table-bordered table-condensed">
-        <thead>
-        <div th:each="columnName : ${tableStructure.columnNames}">
-            <th style="text-align:center"><span th:text="${columnName}"/></th>
-        </div>
-        </thead>
-        <tbody>
-        <div th:each="rows : ${tableStructure.rows}">
-            <tr>
-                <div th:each="columnName : ${tableStructure.columnNames}">
-                    <td style="text-align:center"><span th:text="${rows.get(columnName)}"/></td>
-                </div>
-            </tr>
-        </div>
-        </tbody>
-    </table>
-    <br />
-</div>
-
 <div class="clearfix">
 </div>
 
 <div class="bs-example">
     <br />
-    <form th:action="@{/tables}" method="post" class="form-horizontal">
+    <form th:action="@{/indexes}" method="post" class="form-horizontal">
         <div class="form-group ">
             <div class="col-xs-2">
-                <input type="text" id="search" name="search" placeholder="Table Name [case sensitive]" class="form-control" />
+                <input type="text" id="search" name="search" placeholder="Index Name [case sensitive]" class="form-control" />
             </div>
             <div class="col-xs-4">
                 <select id="selectedSchema" name="selectedSchema">
@@ -327,62 +306,43 @@
 <div class="bs-example" th:if="${estimatedrecords > 0}">
     <div class="alert alert-success fade in">
         <a href="#" class="close" data-dismiss="alert">&times;</a>
-        <strong>Success!</strong> Found <b th:text="${estimatedrecords}"></b> Table(s)
+        <strong>Success!</strong> Found <b th:text="${estimatedrecords}"></b> Indexes
     </div>
     <div class="col-xs-8">
-        <form th:action="@{/tables}" method="post" name="tablesForm" id="tablesForm">
+        <form th:action="@{/indexes}" method="post" name="tablesForm" id="tablesForm">
             <input type="hidden" name="selectedSchema" th:value="${chosenSchema}" />
             <table id="datatable-mysql" class="table table-hover table-bordered table-striped table-condensed">
                 <thead>
                 <tr>
-                    <th colspan="5" style="text-align:center"><b>Tables</b></th>
+                    <th colspan="6" style="text-align:center"><b>Tables</b></th>
                 </tr>
                 <tr>
                     <th style="text-align:center"></th>
                     <th style="text-align:center">Catalog</th>
                     <th style="text-align:center">Schema</th>
-                    <th style="text-align:center">Name</th>
+                    <th style="text-align:center">Table Name</th>
+                    <th style="text-align:center">Index Name</th>
                     <th style="text-align:center">Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="table,iterStat : ${tables}">
+                <tr th:each="index,iterStat : ${indexes}">
                     <td style="text-align:center;width:5%">
                         <input type="checkbox"
-                               name="selected_tbl[]"
-                               th:value="${table.tableName}"
+                               name="selected_idx[]"
+                               th:value="${index.indexName}"
                                th:id="'checkbox_tbl_' + ${iterStat.count} + ''" />
                     </td>
-                    <td th:text="${table.catalog}" style="text-align:center"></td>
-                    <td th:text="${table.schemaName}" style="text-align:center"></td>
-                    <td th:text="${table.tableName}" style="text-align:center"></td>
+                    <td th:text="${index.catalog}" style="text-align:center"></td>
+                    <td th:text="${index.schemaName}" style="text-align:center"></td>
+                    <td th:text="${index.tableName}" style="text-align:center"></td>
+                    <td th:text="${index.indexName}" style="text-align:center"></td>
                     <td style="text-align:center ">
-                        <a th:href="@{/executequery(query='select * from ' + ${chosenSchema} + '.' + ${table.tableName})}">
-                            <img src="images/b_views.png"
-                                 th:src="@{images/b_views.png}"
-                                 alt="View Data"
-                                 width="16" height="16"
-                                 border="0"/>
-                        </a>&nbsp;
-                        <a th:href="@{/tables(tabName=${table.tableName},tabAction='DROP',selectedSchema=${chosenSchema})}"
-                           th:onclick="'return confirmLink(this, \'Drop TABLE ' + ${table.tableName} + '?\')'">
+                        <a th:href="@{/indexes(idxName=${index.indexName},idxAction='DROP',selectedSchema=${chosenSchema})}"
+                           th:onclick="'return confirmLink(this, \'Drop INDEX ' + ${index.indexName} + '?\')'">
                             <img src="images/b_drop.png"
                                  th:src="@{images/b_drop.png}"
-                                 alt="Drop Table"
-                                 width="16" height="16"
-                                 border="0"/>
-                        </a>&nbsp;
-                        <a th:href="@{/tables(tabName=${table.tableName},tabAction='EMPTY',selectedSchema=${chosenSchema})}">
-                            <img src="images/b_empty.png"
-                                 th:src="@{images/b_empty.png}"
-                                 alt="Truncate Table"
-                                 width="16" height="16"
-                                 border="0"/>
-                        </a>&nbsp;
-                        <a th:href="@{/tables(tabName=${table.tableName},tabAction='STRUCTURE',selectedSchema=${chosenSchema})}">
-                            <img src="images/b_tbloptimize.png"
-                                 th:src="@{images/b_tbloptimize.png}"
-                                 alt="Table Structure"
+                                 alt="Drop Index"
                                  width="16" height="16"
                                  border="0"/>
                         </a>&nbsp;
@@ -396,18 +356,17 @@
                      src="images/arrow_ltr.png"
                      th:src="@{images/arrow_ltr.png}"
                      width="38" height="22" alt="With selected:" />
-                <a th:href="@{/tables(selectedSchema=${chosenSchema})}"
+                <a th:href="@{/indexes(selectedSchema=${chosenSchema})}"
                    onclick="if (setCheckboxes('datatable-mysql', 'true')) return false;">
                     Check All</a>
                 /
-                <a th:href="@{/tables(selectedSchema=${chosenSchema})}"
+                <a th:href="@{/indexes(selectedSchema=${chosenSchema})}"
                    onclick="if (unMarkAllRows('tablesForm')) return false;">
                     Uncheck All</a>
 
                 <select name="submit_mult" onchange="this.form.submit();" style="margin: 0 3em 0 3em;">
                     <option value="With selected:" selected="selected">With selected:</option>
                     <option value="Drop" >Drop</option>
-                    <option value="Empty" >Truncate</option>
                 </select>
 
 
@@ -424,6 +383,7 @@
         </form>
     </div>
 </div>
+
 
 <div class="clearfix">
 </div>

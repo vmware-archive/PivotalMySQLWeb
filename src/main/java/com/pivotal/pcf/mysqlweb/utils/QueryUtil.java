@@ -17,6 +17,7 @@ import javax.servlet.jsp.jstl.sql.ResultSupport;
 
 import au.com.bytecode.opencsv.CSVWriter;
 import com.pivotal.pcf.mysqlweb.beans.CommandResult;
+import com.pivotal.pcf.mysqlweb.dao.indexes.Constants;
 import org.apache.log4j.Logger;
 import org.jooq.impl.DSL;
 
@@ -307,7 +308,9 @@ public class QueryUtil
 
         String sql = com.pivotal.pcf.mysqlweb.dao.tables.Constants.USER_TABLES_COUNT +
                 "union " +
-                com.pivotal.pcf.mysqlweb.dao.views.Constants.USER_VIEWS_COUNT;
+                com.pivotal.pcf.mysqlweb.dao.views.Constants.USER_VIEWS_COUNT +
+                "union " +
+                com.pivotal.pcf.mysqlweb.dao.indexes.Constants.USER_INDEXES_COUNT;
 
         PreparedStatement pstmt = null;
         ResultSet rset = null;
@@ -318,6 +321,7 @@ public class QueryUtil
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, schema);
             pstmt.setString(2, schema);
+            pstmt.setString(3, schema);
 
             rset = pstmt.executeQuery();
             while (rset.next())

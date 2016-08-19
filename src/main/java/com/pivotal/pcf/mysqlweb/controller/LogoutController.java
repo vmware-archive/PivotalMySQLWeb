@@ -21,7 +21,7 @@ public class LogoutController
     public String logout
             (Model model, HttpSession session, HttpServletResponse response, HttpServletRequest request) throws Exception
     {
-        logger.info("Received request to logout of PostgreSQL*Web");
+        logger.info("Received request to logout of PivotalMySQL*Web");
 
         // remove connection from list
         ConnectionManager cm = ConnectionManager.getInstance();
@@ -29,7 +29,7 @@ public class LogoutController
 
         session.invalidate();
 
-        model.addAttribute("loginObj", new Login("", "", "jdbc:postgresql://localhost:5432/apples", "apples"));
+        model.addAttribute("loginObj", new Login("", "", "", ""));
         return "login";
 
     }

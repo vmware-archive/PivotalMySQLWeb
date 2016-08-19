@@ -88,6 +88,15 @@
                                 Views[<span th:text="${session.schemaMap.View}" />]
                             </a>
                         </li>
+                        <li>
+                            <a th:href="@{/indexes}">
+                                <img src="images/b_index.png"
+                                     th:src="@{images/b_index.png}"
+                                     alt="Indexes"
+                                     border="0"/>
+                                Indexes[<span th:text="${session.schemaMap.Index}" />]
+                            </a>
+                        </li>
                         <li class="divider"></li>
                         <li>
                             <a href="#">
@@ -140,6 +149,15 @@
                  alt="Views"
                  border="0"/>
             Views[<span th:text="${session.schemaMap.View}" />]
+        </a>
+    </li>
+    <li>
+        <a th:href="@{/indexes}">
+            <img src="images/b_index.png"
+                 th:src="@{images/b_index.png}"
+                 alt="Views"
+                 border="0"/>
+            Indexes[<span th:text="${session.schemaMap.Index}" />]
         </a>
     </li>
     <li>
