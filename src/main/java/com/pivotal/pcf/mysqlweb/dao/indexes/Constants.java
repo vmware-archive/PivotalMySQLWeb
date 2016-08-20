@@ -24,6 +24,13 @@ public interface Constants
                     "  ORDER BY 1,2) a " +
                     "group by object_type ";
 
+    public static final String INDEX_DETAILS =
+                    " select *\n " +
+                    "        from INFORMATION_SCHEMA.STATISTICS\n " +
+                    "        where table_schema = ? " +
+                    "        and table_name = ? " +
+                    "        and index_name = ? ";
+
     public static String DROP_INDEX = "DROP INDEX %s.%s";
 
 }

@@ -269,6 +269,27 @@
     </div>
 </div>
 
+<div class="col-xs-6" th:if="${indexStructure != null}">
+    <h3><span th:text="${indexname}" /> Index Details </h3>
+    <table class="table table-hover table-bordered table-condensed">
+        <thead>
+          <th style="text-align:center">Column</th>
+          <th style="text-align:center">Data</th>
+        </thead>
+        <tbody>
+        <div th:each="rows : ${indexStructure.rows}">
+                <div th:each="columnName : ${indexStructure.columnNames}">
+                    <tr>
+                        <td style="text-align:right"><span th:text="${columnName}"/></td>
+                        <td style="text-align:left"><span th:text="${rows.get(columnName)}"/></td>
+                    </tr>
+                </div>
+        </div>
+        </tbody>
+    </table>
+    <br />
+</div>
+
 <div class="clearfix">
 </div>
 
@@ -343,6 +364,13 @@
                             <img src="images/b_drop.png"
                                  th:src="@{images/b_drop.png}"
                                  alt="Drop Index"
+                                 width="16" height="16"
+                                 border="0"/>
+                        </a>&nbsp;
+                        <a th:href="@{/indexes(idxName=${index.indexName},tabName=${index.tableName},idxAction='STRUCTURE',selectedSchema=${chosenSchema})}">
+                            <img src="images/b_tbloptimize.png"
+                                 th:src="@{images/b_tbloptimize.png}"
+                                 alt="Index Details"
                                  width="16" height="16"
                                  border="0"/>
                         </a>&nbsp;

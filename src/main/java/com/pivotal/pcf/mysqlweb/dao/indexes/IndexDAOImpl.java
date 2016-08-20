@@ -7,6 +7,7 @@ import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
 import com.pivotal.pcf.mysqlweb.utils.JDBCUtil;
 import org.apache.log4j.Logger;
 
+import javax.servlet.jsp.jstl.sql.ResultSupport;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -81,6 +82,45 @@ public class IndexDAOImpl implements IndexDAO
         }
 
         res = PivotalMySQLWebDAOUtil.runCommand(command, userKey);
+
+        return res;
+    }
+
+    @Override
+    public javax.servlet.jsp.jstl.sql.Result getIndexDetails(String schema, String tableName, String indexName, String userKey) throws PivotalMySQLWebException
+    {
+        Connection        conn = null;
+        PreparedStatement stmt = null;
+        ResultSet         rset = null;
+        javax.servlet.jsp.jstl.sql.Result res = null;
+
+        try
+        {
+            conn = AdminUtil.getConnection(userKey);
+            stmt = conn.prepareStatement(Constants.INDEX_DETAILS);
+            stmt.setString(1, schema);
+            stmt.setString(2, tableName);
+            stmt.setString(3, indexName);
+            rset = stmt.executeQuery();
+
+            res = ResultSupport.toResult(rset);
+
+        }
+        catch (SQLException se)
+        {
+            logger.info("Error retrieving index details for index " + indexName);
+            throw new PivotalMySQLWebException(se);
+        }
+        catch (Exception ex) {
+            logger.info("Error retrieving index details for index " + indexName);
+            throw new PivotalMySQLWebException(ex);
+        }
+        finally
+        {
+            // close all resources
+            JDBCUtil.close(rset);
+            JDBCUtil.close(stmt);
+        }
 
         return res;
     }

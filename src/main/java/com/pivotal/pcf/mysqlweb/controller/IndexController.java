@@ -76,13 +76,28 @@ public class IndexController
             logger.debug("idxAction = " + idxAction);
             result = null;
 
-            result =
-                    indexDAO.simpleindexCommand
-                            (schema,
-                                    (String)request.getParameter("idxName"),
-                                    idxAction,
-                                    (String)session.getAttribute("user_key"));
+            if (idxAction.equals("STRUCTURE"))
+            {
+                indexStructure =
+                        indexDAO.getIndexDetails
+                                (schema,
+                                 (String)request.getParameter("tabName"),
+                                 (String)request.getParameter("idxName"),
+                                 (String)session.getAttribute("user_key"));
+
+                model.addAttribute("indexStructure", indexStructure);
+                model.addAttribute("indexname", (String)request.getParameter("idxName"));
+            }
+            else
+            {
+                result =
+                        indexDAO.simpleindexCommand
+                                (schema,
+                                        (String) request.getParameter("idxName"),
+                                        idxAction,
+                                        (String) session.getAttribute("user_key"));
                 model.addAttribute("result", result);
+            }
         }
 
         List<Index> indexes = indexDAO.retrieveIndexList
