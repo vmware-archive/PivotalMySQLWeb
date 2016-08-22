@@ -211,6 +211,21 @@
             for super-fast failover, and Service Brokers for Cloud Foundry integration
         </p>
         <small>by <cite>Pivotal</cite></small>
+        <br />
+        <p>
+            <b>Current Preferences</b> &nbsp;
+            <a th:href="@{/prefs}">
+                <img src="images/b_props.png"
+                     th:src="@{images/b_props.png}"
+                     alt="Preferences"
+                     border="0"/>
+                Preferences
+            </a>
+            <br />
+            Size of SQL History List : <span class="label label-info" th:text="${session.prefs.historySize}"/> <br />
+            Records to Display in Worksheet: <span class="label label-info" th:text="${session.prefs.maxRecordsinSQLQueryWindow}"/>
+        </p>
+
     </blockquote>
 </div>
 
