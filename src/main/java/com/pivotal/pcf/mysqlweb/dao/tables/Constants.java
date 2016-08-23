@@ -8,11 +8,17 @@ public interface Constants
                         "        table_catalog as \"Catalog\",\n " +
                         "        table_schema as \"Schema\",\n " +
                         "        table_name as \"Name\",\n " +
-                        "        table_rows as \"Rows\"\n " +
+                        "        table_type as \"Type\" " +
                         "        from information_schema.tables\n " +
                         "        where table_schema = ? " +
                         "        and table_name like ? " +
                         "  ORDER BY 2,3 ";
+
+        public static final String TABLE_DETAILS =
+                        " select * \n" +
+                        "        from information_schema.tables\n " +
+                        "        where table_schema = ? " +
+                        "        and table_name = ? ";
 
         public static final String USER_TABLES_COUNT =
             "select object_type, count(*) " +

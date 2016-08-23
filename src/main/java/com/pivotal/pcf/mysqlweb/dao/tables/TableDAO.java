@@ -12,4 +12,7 @@ public interface TableDAO
     public Result simpletableCommand (String schemaName, String tableName, String type, String userKey) throws PivotalMySQLWebException;
 
     public javax.servlet.jsp.jstl.sql.Result getTableStructure (String schema, String tableName, String userKey) throws PivotalMySQLWebException;
+
+    public javax.servlet.jsp.jstl.sql.Result getTableDetails (String schema, String tableName, String userKey) throws PivotalMySQLWebException;
+
 }

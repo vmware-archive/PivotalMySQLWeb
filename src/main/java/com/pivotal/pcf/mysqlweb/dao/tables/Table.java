@@ -5,17 +5,17 @@ public class Table
     public String catalog;
     public String schemaName;
     public String tableName;
-    public String owner;
+    public String tableType;
 
     public Table()
     {
     }
 
-    public Table(String catalog, String schemaName, String tableName, String owner) {
+    public Table(String catalog, String schemaName, String tableName, String tableType) {
         this.catalog = catalog;
         this.schemaName = schemaName;
         this.tableName = tableName;
-        this.owner = owner;
+        this.tableType = tableType;
     }
 
     public String getCatalog() {
@@ -42,12 +42,12 @@ public class Table
         this.tableName = tableName;
     }
 
-    public String getOwner() {
-        return owner;
+    public String getTableType() {
+        return tableType;
     }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
+    public void setTableType(String tableType) {
+        this.tableType = tableType;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class Table
                 "catalog='" + catalog + '\'' +
                 ", schemaName='" + schemaName + '\'' +
                 ", tableName='" + tableName + '\'' +
-                ", owner='" + owner + '\'' +
+                ", tableType='" + tableType + '\'' +
                 '}';
     }
 }

@@ -55,7 +55,7 @@ public class TableController
         }
 
         String schema = null;
-        javax.servlet.jsp.jstl.sql.Result tableStructure;
+        javax.servlet.jsp.jstl.sql.Result tableStructure, tableDetails;
 
         logger.info("Received request to show tables");
 
@@ -94,6 +94,18 @@ public class TableController
 
 
                 model.addAttribute("tableStructure", tableStructure);
+                model.addAttribute("tablename", (String)request.getParameter("tabName"));
+            }
+            else if (tabAction.equalsIgnoreCase("DETAILS"))
+            {
+                tableDetails =
+                        tableDAO.getTableDetails
+                                (schema,
+                                        (String)request.getParameter("tabName"),
+                                        (String)session.getAttribute("user_key"));
+
+
+                model.addAttribute("tableDetails", tableDetails);
                 model.addAttribute("tablename", (String)request.getParameter("tabName"));
             }
             else

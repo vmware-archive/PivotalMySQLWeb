@@ -290,6 +290,29 @@
     <br />
 </div>
 
+<div class="col-xs-6" th:if="${tableDetails != null}">
+    <div class="alert alert-info fade in">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <h3><span th:text="${tablename}" /> Table Details </h3>
+        <table class="table table-hover table-bordered table-condensed">
+            <thead>
+            <th style="text-align:center">Column</th>
+            <th style="text-align:center">Data</th>
+            </thead>
+            <tbody>
+            <div th:each="rows : ${tableDetails.rows}">
+                <div th:each="columnName : ${tableDetails.columnNames}">
+                    <tr>
+                        <td style="text-align:right"><span th:text="${columnName}"/></td>
+                        <td style="text-align:left"><span th:text="${rows.get(columnName)}"/></td>
+                    </tr>
+                </div>
+            </div>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <div class="clearfix">
 </div>
 
@@ -329,19 +352,20 @@
         <a href="#" class="close" data-dismiss="alert">&times;</a>
         <strong>Success!</strong> Found <b th:text="${estimatedrecords}"></b> Table(s)
     </div>
-    <div class="col-xs-8">
+    <div class="col-xs-10">
         <form th:action="@{/tables}" method="post" name="tablesForm" id="tablesForm">
             <input type="hidden" name="selectedSchema" th:value="${chosenSchema}" />
             <table id="datatable-mysql" class="table table-hover table-bordered table-striped table-condensed">
                 <thead>
                 <tr>
-                    <th colspan="5" style="text-align:center"><b>Tables</b></th>
+                    <th colspan="6" style="text-align:center"><b>Tables</b></th>
                 </tr>
                 <tr>
                     <th style="text-align:center"></th>
                     <th style="text-align:center">Catalog</th>
                     <th style="text-align:center">Schema</th>
                     <th style="text-align:center">Name</th>
+                    <th style="text-align:center">Type</th>
                     <th style="text-align:center">Action</th>
                 </tr>
                 </thead>
@@ -356,6 +380,7 @@
                     <td th:text="${table.catalog}" style="text-align:center"></td>
                     <td th:text="${table.schemaName}" style="text-align:center"></td>
                     <td th:text="${table.tableName}" style="text-align:center"></td>
+                    <td th:text="${table.tableType}" style="text-align:center"></td>
                     <td style="text-align:center ">
                         <a th:href="@{/executequery(query='select * from ' + ${chosenSchema} + '.' + ${table.tableName})}">
                             <img src="images/b_views.png"
@@ -372,7 +397,8 @@
                                  width="16" height="16"
                                  border="0"/>
                         </a>&nbsp;
-                        <a th:href="@{/tables(tabName=${table.tableName},tabAction='EMPTY',selectedSchema=${chosenSchema})}">
+                        <a th:href="@{/tables(tabName=${table.tableName},tabAction='EMPTY',selectedSchema=${chosenSchema})}"
+                           th:onclick="'return confirmLink(this, \'Truncate TABLE ' + ${table.tableName} + '?\')'">
                             <img src="images/b_empty.png"
                                  th:src="@{images/b_empty.png}"
                                  alt="Truncate Table"
@@ -383,6 +409,13 @@
                             <img src="images/b_tbloptimize.png"
                                  th:src="@{images/b_tbloptimize.png}"
                                  alt="Table Structure"
+                                 width="16" height="16"
+                                 border="0"/>
+                        </a>&nbsp;
+                        <a th:href="@{/tables(tabName=${table.tableName},tabAction='DETAILS',selectedSchema=${chosenSchema})}">
+                            <img src="images/b_tblanalyse.png"
+                                 th:src="@{images/b_tblanalyse.png}"
+                                 alt="Table Details"
                                  width="16" height="16"
                                  border="0"/>
                         </a>&nbsp;

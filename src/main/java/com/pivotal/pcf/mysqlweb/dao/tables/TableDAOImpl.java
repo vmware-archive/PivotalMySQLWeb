@@ -139,6 +139,44 @@ public class TableDAOImpl implements TableDAO
         return res;
     }
 
+    @Override
+    public javax.servlet.jsp.jstl.sql.Result getTableDetails (String schema, String tableName, String userKey) throws PivotalMySQLWebException
+    {
+        Connection        conn = null;
+        PreparedStatement stmt = null;
+        ResultSet         rset = null;
+        javax.servlet.jsp.jstl.sql.Result res = null;
+
+        try
+        {
+            conn = AdminUtil.getConnection(userKey);
+            stmt = conn.prepareStatement(Constants.TABLE_DETAILS);
+            stmt.setString(1, schema);
+            stmt.setString(2, tableName);
+            rset = stmt.executeQuery();
+
+            res = ResultSupport.toResult(rset);
+
+        }
+        catch (SQLException se)
+        {
+            logger.info("Error retrieving table details for table " + tableName);
+            throw new PivotalMySQLWebException(se);
+        }
+        catch (Exception ex) {
+            logger.info("Error retrieving table details for table  " + tableName);
+            throw new PivotalMySQLWebException(ex);
+        }
+        finally
+        {
+            // close all resources
+            JDBCUtil.close(rset);
+            JDBCUtil.close(stmt);
+        }
+
+        return res;
+    }
+
     private List<Table> makeTableListFromResultSet (ResultSet rset) throws SQLException
     {
         List<Table> tbls = new ArrayList<Table>();
