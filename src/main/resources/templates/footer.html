@@ -5,14 +5,16 @@
 
 <body>
 
-<div th:fragment="copy" class="pull-right">
+<div th:fragment="copy">
     <hr size="2" />
-    <img src="images/PoweredByPivotal1.png"
-         th:src="@{images/PoweredByPivotal1.png}"
-         alt="MySQLWebFooter"
-         border="0"/>
-    <br />
-    &copy; 2016. <a href="mailto:papicella@pivotal.io">Pas Apicella</a>
+    <div style="text-align:right">
+        <img src="images/PoweredByPivotal1.png"
+             th:src="@{images/PoweredByPivotal1.png}"
+             alt="MySQLWebFooter"
+             border="0"/>
+        <br />
+        &copy; 2016. <a href="mailto:papicella@pivotal.io">Pas Apicella</a>
+    </div>
 </div>
 
 </body>
