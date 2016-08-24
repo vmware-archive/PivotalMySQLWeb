@@ -77,15 +77,6 @@
                     </a>
                 </li>
                 <li>
-                    <a th:href="@{/prefs}">
-                        <img src="images/b_props.png"
-                             th:src="@{images/b_props.png}"
-                             alt="Preferences"
-                             border="0"/>
-                        Preferences
-                    </a>
-                </li>
-                <li>
                     <a th:href="@{/logout}">
                         <img src="images/s_loggoff.png"
                              th:src="@{images/s_loggoff.png}"
@@ -94,10 +85,34 @@
                         Logout
                     </a>
                 </li>
-                <li>
-                    <a th:href="@{/refresh}">
-                        Refresh
-                    </a>
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle">Menu <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a th:href="@{/prefs}">
+                                <img src="images/b_props.png"
+                                     th:src="@{images/b_props.png}"
+                                     alt="Preferences"
+                                     border="0"/>
+                                Preferences
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://docs.pivotal.io/p-mysql/1-7/" target="_new">
+                                <img src="images/b_docs.png"
+                                     th:src="@{images/b_docs.png}"
+                                     alt="p-mysql docs"
+                                     border="0"/>
+                                p-mysql Doc
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a th:href="@{/refresh}">
+                                Refresh
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="dropdown">
                     <a href="#" data-toggle="dropdown" class="dropdown-toggle">Schema Objects <b class="caret"></b></a>
@@ -141,7 +156,15 @@
                         </li>
                     </ul>
                 </li>
-                <li><a href="#">[User: <span th:text="${session.user} ? ${session.user} : 'Not Logged In'">Not Logged In</span>]</a></li>
+                <li>
+                    <a href="#">
+                        <img src="images/b_usrlist.png"
+                             th:src="@{images/b_usrlist.png}"
+                             alt="Users"
+                             border="0"/>
+                        [User: <span th:text="${session.user} ? ${session.user} : 'Not Logged In'">Not Logged In</span>]
+                    </a>
+                </li>
             </ul>
         </div>
 

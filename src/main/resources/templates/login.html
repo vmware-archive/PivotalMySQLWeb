@@ -61,7 +61,15 @@
                         Logout
                     </a>
                 </li>
-                <li><a href="#">[User: <span th:text="${session.userid} ? ${session.userid} : 'Not Logged In'">Not Logged In</span>]</a></li>
+                <li>
+                    <a href="#">
+                        <img src="images/b_usrlist.png"
+                             th:src="@{images/b_usrlist.png}"
+                             alt="Users"
+                             border="0"/>
+                        [User: <span th:text="${session.user} ? ${session.user} : 'Not Logged In'">Not Logged In</span>]
+                    </a>
+                </li>
             </ul>
         </div>
 
