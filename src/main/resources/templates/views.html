@@ -312,6 +312,13 @@
     </form>
 </div>
 
+<div class="bs-example" th:if="${estimatedrecords == 0}">
+    <div class="alert alert-info fade in">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Info!</strong> Found 0 Views
+    </div>
+</div>
+
 <!-- Add table with Results only if results exist -->
 <div class="bs-example" th:if="${estimatedrecords > 0}">
     <div class="alert alert-success fade in">
