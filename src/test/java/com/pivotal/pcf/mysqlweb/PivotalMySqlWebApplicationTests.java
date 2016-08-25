@@ -19,7 +19,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -42,7 +41,17 @@ public class PivotalMySqlWebApplicationTests {
 
 	@Test public void testLoginPage() throws Exception {
 		mockMvc.perform(get("/").accept(MediaType.TEXT_HTML))
-				.andDo(print())
+				//.andDo(print())
+				.andExpect(status().isOk());
+	}
+
+	@Test public void testLoginMySQL() throws Exception {
+		mockMvc.perform(post("/login")
+				.param("username", "pas")
+				.param("password", "pas")
+				.param("url", "jdbc:mysql://localhost:3306/employees")
+				.accept(MediaType.TEXT_HTML))
+				//.andDo(print())
 				.andExpect(status().isOk());
 	}
 

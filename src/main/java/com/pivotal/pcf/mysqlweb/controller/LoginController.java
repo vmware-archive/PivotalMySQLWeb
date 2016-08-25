@@ -188,7 +188,7 @@ public class LoginController
         
         if (mysqlService != null)
         {
-            logger.info("Obtaining VCAP_SERVICES crednetials");
+            logger.info("Obtaining VCAP_SERVICES credentials");
             Map clearDBMap = (Map) mysqlService.get(0);
             Map credentailsMap = (Map) clearDBMap.get("credentials");
 
