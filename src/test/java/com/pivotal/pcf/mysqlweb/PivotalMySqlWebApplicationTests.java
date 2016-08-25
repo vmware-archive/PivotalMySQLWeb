@@ -26,9 +26,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @WebAppConfiguration
 public class PivotalMySqlWebApplicationTests {
 
-	@Test
-	public void contextLoads() {
-	}
 
 	@Autowired private WebApplicationContext ctx;
 
@@ -39,10 +36,15 @@ public class PivotalMySqlWebApplicationTests {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx).build();
 	}
 
+	@Test
+	public void contextLoads() {
+	}
+
 	@Test public void testLoginPage() throws Exception {
 		mockMvc.perform(get("/").accept(MediaType.TEXT_HTML))
 				//.andDo(print())
-				.andExpect(status().isOk());
+				.andExpect(status().isOk())
+				.andExpect(view().name("login"));
 	}
 
 	@Test public void testLoginMySQL() throws Exception {
@@ -58,11 +60,10 @@ public class PivotalMySqlWebApplicationTests {
 	@Configuration
 	public static class TestConfiguration
 	{
-
 		@Bean
-		public LoginController loginController() {
+		public LoginController loginController()
+		{
 			return new LoginController();
 		}
-
 	}
 }
