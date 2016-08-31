@@ -9,6 +9,6 @@ public interface ConstraintDAO
 {
     public List<Constraint> retrieveConstraintList(String schema, String search, String userKey) throws PivotalMySQLWebException;
 
-    public Result simpleconstraintCommand (String schemaName, String constraintName, String type, String userKey) throws PivotalMySQLWebException;
+    public Result simpleconstraintCommand (String schemaName, String constraintName, String tableName, String contraintType, String type, String userKey) throws PivotalMySQLWebException;
 
 }

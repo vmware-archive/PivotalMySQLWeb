@@ -81,6 +81,8 @@ public class ConstraintController
                         constraintDAO.simpleconstraintCommand
                                 (schema,
                                 (String) request.getParameter("constraintName"),
+                                (String) request.getParameter("tableName"),
+                                (String) request.getParameter("constraintType"),
                                 constraintAction,
                                 (String) session.getAttribute("user_key"));
                 model.addAttribute("result", result);
@@ -185,6 +187,8 @@ public class ConstraintController
                             (schema,
                              constraint,
                              commandStr,
+                             "",
+                             "",
                              (String)session.getAttribute("user_key"));
 
                     al.add(result);

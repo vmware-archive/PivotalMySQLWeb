@@ -372,6 +372,7 @@
                     <th style="text-align:center">Constraint Name</th>
                     <th style="text-align:center">Table Name</th>
                     <th style="text-align:center">Constraint Type</th>
+                    <th style="text-align:center">Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -387,10 +388,19 @@
                     <td th:text="${constraint.constraintName}" style="text-align:center"></td>
                     <td th:text="${constraint.tableName}" style="text-align:center"></td>
                     <td th:text="${constraint.constraintType}" style="text-align:center"></td>
+                    <td style="text-align:center ">
+                        <a th:href="@{/constraints(constraintName=${constraint.constraintName},constraintAction='DROP',constraintType=${constraint.constraintType},tableName=${constraint.tableName},selectedSchema=${chosenSchema})}"
+                           th:onclick="'return confirmLink(this, \'Drop CONSTRAINT ' + ${constraint.constraintName} + '?\')'">
+                            <img src="images/b_drop.png"
+                                 th:src="@{images/b_drop.png}"
+                                 alt="Drop Constraint"
+                                 width="16" height="16"
+                                 border="0"/>
+                        </a>&nbsp;
+                    </td>
                 </tr>
                 </tbody>
             </table>
-
         </form>
     </div>
 </div>

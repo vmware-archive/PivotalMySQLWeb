@@ -66,18 +66,24 @@ public class ConstraintDAOImpl implements ConstraintDAO
     }
 
     @Override
-    public Result simpleconstraintCommand(String schemaName, String constraintName, String type, String userKey) throws PivotalMySQLWebException
+    public Result simpleconstraintCommand(String schemaName, String constraintName, String tableName, String contraintType, String type, String userKey) throws PivotalMySQLWebException
     {
         String            command = null;
         Result            res     = null;
 
         if (type != null)
         {
-            if (type.equalsIgnoreCase("DROP"))
-            {
-                command = String.format(Constants.DROP_CONSTRAINT_FK, schemaName, constraintName);
+            if (type.equalsIgnoreCase("DROP")) {
+                if (contraintType.equalsIgnoreCase("UNIQUE")) {
+                    command = String.format(Constants.DROP_CONSTRAINT_UNIQUE, schemaName, tableName, constraintName);
+                } else if (contraintType.equalsIgnoreCase("FOREIGN KEY")) {
+                    command = String.format(Constants.DROP_CONSTRAINT_FK, schemaName, tableName, constraintName);
+                } else if (contraintType.equalsIgnoreCase("PRIMARY KEY")) {
+                    command = String.format(Constants.DROP_CONSTRAINT_PRIMARY_KEY, schemaName, tableName);
+                } else {
+                    // not really expecting anything here
+                }
             }
-
         }
 
         res = PivotalMySQLWebDAOUtil.runCommand(command, userKey);
