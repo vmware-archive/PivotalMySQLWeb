@@ -124,6 +124,15 @@
                                 Indexes[<span th:text="${session.schemaMap.Index}" />]
                             </a>
                         </li>
+                        <li>
+                            <a th:href="@{/constraints}">
+                                <img src="images/constraints.png"
+                                     th:src="@{images/constraints.png}"
+                                     alt="Constraints"
+                                     border="0"/>
+                                Constraints[<span th:text="${session.schemaMap.Constraint}" />]
+                            </a>
+                        </li>
                         <li class="divider"></li>
                         <li>
                             <a href="#">
@@ -193,6 +202,15 @@
                  alt="Views"
                  border="0"/>
             Indexes[<span th:text="${session.schemaMap.Index}" />]
+        </a>
+    </li>
+    <li>
+        <a th:href="@{/constraints}">
+            <img src="images/constraints.png"
+                 th:src="@{images/constraints.png}"
+                 alt="Constraints"
+                 border="0"/>
+            Constraints[<span th:text="${session.schemaMap.Constraint}" />]
         </a>
     </li>
     <li>

@@ -310,7 +310,9 @@ public class QueryUtil
                 "union " +
                 com.pivotal.pcf.mysqlweb.dao.views.Constants.USER_VIEWS_COUNT +
                 "union " +
-                com.pivotal.pcf.mysqlweb.dao.indexes.Constants.USER_INDEXES_COUNT;
+                com.pivotal.pcf.mysqlweb.dao.indexes.Constants.USER_INDEXES_COUNT +
+                "union " +
+                com.pivotal.pcf.mysqlweb.dao.constraints.Constants.USER_CONSTRAINTS_COUNT;
 
         PreparedStatement pstmt = null;
         ResultSet rset = null;
@@ -322,6 +324,7 @@ public class QueryUtil
             pstmt.setString(1, schema);
             pstmt.setString(2, schema);
             pstmt.setString(3, schema);
+            pstmt.setString(4, schema);
 
             rset = pstmt.executeQuery();
             while (rset.next())

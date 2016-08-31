@@ -3,9 +3,8 @@ package com.pivotal.pcf.mysqlweb.controller;
 import com.pivotal.pcf.mysqlweb.beans.Result;
 import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
 import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOUtil;
-import com.pivotal.pcf.mysqlweb.dao.indexes.Index;
-import com.pivotal.pcf.mysqlweb.dao.indexes.IndexDAO;
-import com.pivotal.pcf.mysqlweb.dao.tables.Table;
+import com.pivotal.pcf.mysqlweb.dao.constraints.Constraint;
+import com.pivotal.pcf.mysqlweb.dao.constraints.ConstraintDAO;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -22,13 +21,14 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-public class IndexController
+public class ConstraintController
 {
     protected static Logger logger = Logger.getLogger("controller");
 
-    @RequestMapping(value = "/indexes", method = RequestMethod.GET)
-    public String showIndexes
-            (Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception {
+    @RequestMapping(value = "/constraints", method = RequestMethod.GET)
+    public String showConstraints
+            (Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
+    {
         if (session.getAttribute("user_key") == null) {
             logger.info("user_key is null new Login required");
             response.sendRedirect("/");
@@ -48,11 +48,10 @@ public class IndexController
         }
 
         String schema = null;
-        javax.servlet.jsp.jstl.sql.Result indexStructure;
 
-        logger.info("Received request to show indexes");
+        logger.info("Received request to show constraints");
 
-        IndexDAO indexDAO = PivotalMySQLWebDAOFactory.getIndexDAO();
+        ConstraintDAO constraintDAO = PivotalMySQLWebDAOFactory.getConstraintDAO();
 
         String selectedSchema = request.getParameter("selectedSchema");
         logger.info("selectedSchema = " + selectedSchema);
@@ -68,45 +67,32 @@ public class IndexController
 
         logger.info("schema = " + schema);
 
-        String idxAction = request.getParameter("idxAction");
+        String constraintAction = request.getParameter("constraintAction");
         Result result = new Result();
 
-        if (idxAction != null)
+        if (constraintAction != null)
         {
-            logger.debug("idxAction = " + idxAction);
+            logger.debug("constraintAction = " + constraintAction);
             result = null;
 
-            if (idxAction.equals("STRUCTURE"))
-            {
-                indexStructure =
-                        indexDAO.getIndexDetails
-                                (schema,
-                                 (String)request.getParameter("tabName"),
-                                 (String)request.getParameter("idxName"),
-                                 (String)session.getAttribute("user_key"));
-
-                model.addAttribute("indexStructure", indexStructure);
-                model.addAttribute("indexname", (String)request.getParameter("idxName"));
-            }
-            else
+            if (constraintAction.equals("DROP"))
             {
                 result =
-                        indexDAO.simpleindexCommand
+                        constraintDAO.simpleconstraintCommand
                                 (schema,
-                                        (String) request.getParameter("idxName"),
-                                        idxAction,
-                                        (String) request.getParameter("tableName"),
-                                        (String) session.getAttribute("user_key"));
+                                (String) request.getParameter("constraintName"),
+                                constraintAction,
+                                (String) session.getAttribute("user_key"));
                 model.addAttribute("result", result);
             }
         }
 
-        List<Index> indexes = indexDAO.retrieveIndexList
+        List<Constraint> constraints = constraintDAO.retrieveConstraintList
                 (schema, null, (String)session.getAttribute("user_key"));
 
-        model.addAttribute("records", indexes.size());
-        model.addAttribute("estimatedrecords", indexes.size());
-        model.addAttribute("indexes", indexes);
+        model.addAttribute("records", constraints.size());
+        model.addAttribute("estimatedrecords", constraints.size());
+        model.addAttribute("constraints", constraints);
 
         model.addAttribute("schemas",
                 PivotalMySQLWebDAOUtil.getAllSchemas
@@ -114,13 +100,15 @@ public class IndexController
 
         model.addAttribute("chosenSchema", schema);
 
-        return "indexes";
+        return "constraints";
+
     }
 
-    @RequestMapping(value = "/indexes", method = RequestMethod.POST)
-    public String performIndexAction
+    @RequestMapping(value = "/constraints", method = RequestMethod.POST)
+    public String performConstraintAction
             (Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
     {
+
         if (session.getAttribute("user_key") == null)
         {
             logger.info("user_key is null new Login required");
@@ -148,11 +136,11 @@ public class IndexController
 
         String schema = null;
         Result result = new Result();
-        List<Index> indexes = null;
+        List<Constraint> constraints = null;
 
-        logger.info("Received request to perform an action on the indexes");
+        logger.info("Received request to perform an action on the constraints");
 
-        IndexDAO indexDAO = PivotalMySQLWebDAOFactory.getIndexDAO();
+        ConstraintDAO constraintDAO = PivotalMySQLWebDAOFactory.getConstraintDAO();
 
         String selectedSchema = request.getParameter("selectedSchema");
         logger.info("selectedSchema = " + selectedSchema);
@@ -170,16 +158,16 @@ public class IndexController
 
         if (request.getParameter("searchpressed") != null)
         {
-            indexes = indexDAO.retrieveIndexList
+            constraints = constraintDAO.retrieveConstraintList
                     (schema,
-                            (String)request.getParameter("search"),
-                            (String)session.getAttribute("user_key"));
+                    (String)request.getParameter("search"),
+                    (String)session.getAttribute("user_key"));
 
             model.addAttribute("search", (String)request.getParameter("search"));
         }
         else
         {
-            String[] tableList  = request.getParameterValues("selected_idx[]");
+            String[] tableList  = request.getParameterValues("selected_constraint[]");
             String   commandStr = request.getParameter("submit_mult");
 
             logger.info("tableList = " + Arrays.toString(tableList));
@@ -190,14 +178,13 @@ public class IndexController
             if (tableList != null)
             {
                 List al = new ArrayList<Result>();
-                for (String index: tableList)
+                for (String constraint: tableList)
                 {
                     result = null;
-                    result = indexDAO.simpleindexCommand
+                    result = constraintDAO.simpleconstraintCommand
                             (schema,
-                             index,
+                             constraint,
                              commandStr,
-                             "",
                              (String)session.getAttribute("user_key"));
 
                     al.add(result);
@@ -206,14 +193,14 @@ public class IndexController
                 model.addAttribute("arrayresult", al);
             }
 
-            indexes = indexDAO.retrieveIndexList
+            constraints = constraintDAO.retrieveConstraintList
                     (schema, null, (String)session.getAttribute("user_key"));
 
         }
 
-        model.addAttribute("records", indexes.size());
-        model.addAttribute("estimatedrecords", indexes.size());
-        model.addAttribute("indexes", indexes);
+        model.addAttribute("records", constraints.size());
+        model.addAttribute("estimatedrecords", constraints.size());
+        model.addAttribute("constraints", constraints);
 
         model.addAttribute("schemas",
                 PivotalMySQLWebDAOUtil.getAllSchemas
@@ -221,8 +208,6 @@ public class IndexController
 
         model.addAttribute("chosenSchema", schema);
 
-        return "indexes";
-
+        return "constraints";
     }
-
 }

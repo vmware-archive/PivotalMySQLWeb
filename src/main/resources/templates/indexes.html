@@ -216,6 +216,15 @@
         </a>
     </li>
     <li>
+        <a th:href="@{/constraints}">
+            <img src="images/constraints.png"
+                 th:src="@{images/constraints.png}"
+                 alt="Constraints"
+                 border="0"/>
+            Constraints[<span th:text="${session.schemaMap.Constraint}" />]
+        </a>
+    </li>
+    <li>
         <a th:href="@{/query}">
             <img src="images/b_sql.png"
                  th:src="@{images/b_sql.png}"
@@ -367,7 +376,7 @@
             <table id="datatable-mysql" class="table table-hover table-bordered table-striped table-condensed">
                 <thead>
                 <tr>
-                    <th colspan="6" style="text-align:center"><b>Tables</b></th>
+                    <th colspan="6" style="text-align:center"><b>Indexes</b></th>
                 </tr>
                 <tr>
                     <th style="text-align:center"></th>
@@ -391,7 +400,7 @@
                     <td th:text="${index.tableName}" style="text-align:center"></td>
                     <td th:text="${index.indexName}" style="text-align:center"></td>
                     <td style="text-align:center ">
-                        <a th:href="@{/indexes(idxName=${index.indexName},idxAction='DROP',selectedSchema=${chosenSchema})}"
+                        <a th:href="@{/indexes(idxName=${index.indexName},idxAction='DROP',selectedSchema=${chosenSchema},tableName=${index.tableName})}"
                            th:onclick="'return confirmLink(this, \'Drop INDEX ' + ${index.indexName} + '?\')'">
                             <img src="images/b_drop.png"
                                  th:src="@{images/b_drop.png}"
@@ -410,36 +419,6 @@
                 </tr>
                 </tbody>
             </table>
-
-            <div class="clearfloat">
-                <img class="selectallarrow"
-                     src="images/arrow_ltr.png"
-                     th:src="@{images/arrow_ltr.png}"
-                     width="38" height="22" alt="With selected:" />
-                <a th:href="@{/indexes(selectedSchema=${chosenSchema})}"
-                   onclick="if (setCheckboxes('datatable-mysql', 'true')) return false;">
-                    Check All</a>
-                /
-                <a th:href="@{/indexes(selectedSchema=${chosenSchema})}"
-                   onclick="if (unMarkAllRows('tablesForm')) return false;">
-                    Uncheck All</a>
-
-                <select name="submit_mult" onchange="this.form.submit();" style="margin: 0 3em 0 3em;">
-                    <option value="With selected:" selected="selected">With selected:</option>
-                    <option value="Drop" >Drop</option>
-                </select>
-
-
-                <script type="text/javascript">
-                    <!--
-                    // Fake js to allow the use of the <noscript> tag
-                    //-->
-                </script>
-                <noscript>
-                    <button type="submit" class="btn btn-primary">Go</button>
-                </noscript>
-            </div>
-
         </form>
     </div>
 </div>

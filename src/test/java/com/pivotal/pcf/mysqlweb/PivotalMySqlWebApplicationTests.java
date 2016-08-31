@@ -1,6 +1,7 @@
 package com.pivotal.pcf.mysqlweb;
 
 import com.pivotal.pcf.mysqlweb.controller.LoginController;
+import com.pivotal.pcf.mysqlweb.controller.TableController;
 import com.pivotal.pcf.mysqlweb.rest.VersionRest;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -30,10 +32,13 @@ public class PivotalMySqlWebApplicationTests {
 	@Autowired private WebApplicationContext ctx;
 
 	private MockMvc mockMvc;
+	private MockHttpSession session;
 
 	@Before
-	public void setUp() {
+	public void setUp()
+	{
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx).build();
+		session = new MockHttpSession();
 	}
 
 	@Test
@@ -54,7 +59,8 @@ public class PivotalMySqlWebApplicationTests {
 				.param("url", "jdbc:mysql://localhost:3306/employees")
 				.accept(MediaType.TEXT_HTML))
 				//.andDo(print())
-				.andExpect(status().isOk());
+				.andExpect(status().isOk())
+				.andExpect(view().name("main"));
 	}
 
 	@Configuration
@@ -64,6 +70,12 @@ public class PivotalMySqlWebApplicationTests {
 		public LoginController loginController()
 		{
 			return new LoginController();
+		}
+
+		@Bean
+		public TableController tableController()
+		{
+			return new TableController();
 		}
 	}
 }

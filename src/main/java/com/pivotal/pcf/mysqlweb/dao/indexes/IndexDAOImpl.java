@@ -67,7 +67,7 @@ public class IndexDAOImpl implements IndexDAO
     }
 
     @Override
-    public Result simpleindexCommand(String schemaName, String indexName, String type, String userKey) throws PivotalMySQLWebException
+    public Result simpleindexCommand(String schemaName, String indexName, String type, String tableName, String userKey) throws PivotalMySQLWebException
     {
         String            command = null;
         Result            res     = null;
@@ -76,7 +76,14 @@ public class IndexDAOImpl implements IndexDAO
         {
             if (type.equalsIgnoreCase("DROP"))
             {
-                command = String.format(Constants.DROP_INDEX, schemaName, indexName);
+                if (indexName.equalsIgnoreCase("PRIMARY"))
+                {
+                    command = String.format(Constants.DROP_INDEX_PRIMARY, schemaName, tableName);
+                }
+                else
+                {
+                    command = String.format(Constants.DROP_INDEX, schemaName, tableName, indexName);
+                }
             }
 
         }

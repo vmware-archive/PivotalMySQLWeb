@@ -47,6 +47,7 @@ public class AdminUtil
         schemaMap.put("Table", "0");
         schemaMap.put("View", "0");
         schemaMap.put("Index", "0");
+        schemaMap.put("Constraint", "0");
 
         return schemaMap;
     }

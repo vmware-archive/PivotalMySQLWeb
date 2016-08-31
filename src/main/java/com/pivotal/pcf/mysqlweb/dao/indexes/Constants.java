@@ -31,6 +31,10 @@ public interface Constants
                     "        and table_name = ? " +
                     "        and index_name = ? ";
 
-    public static String DROP_INDEX = "DROP INDEX %s.%s";
+    public static String DROP_INDEX_PRIMARY = "alter table %s.%s drop primary key";
+
+    public static String DROP_INDEX = "alter table %s.%s drop index %s";
+
 
 }
+
