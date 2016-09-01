@@ -6,11 +6,12 @@ run SQL commands and view schema objects from a browser based interface. It incl
 <ul>
     <li>Multiple Command SQL worksheet for DDL and DML</li>
     <li>Run Explain Plan across SQL Statements</li>
-    <li>View/Run DDL command against Tables/Views/Indexes/Constraints [More Schema Objects support Coming]</li>
+    <li>View/Run DDL command against Tables/Views/Indexes/Constraints</li>
     <li>Command History</li>
-    <li>Auto Bind to ClearDB and Pivotal MySQL Services bound to the Application within Pivotal Cloud Foundry (PCF)</li>
+    <li>Auto Bind to Pivotal MySQL Services bound to the Application within Pivotal Cloud Foundry (PCF)</li>
     <li>Manage JDBC Connections</li>
     <li>Load SQL File into SQL Worksheet from Local File System</li>
+    <li>SQL Worksheet with syntax highlighting support</li>
 </ul>
 
 ![alt tag](https://dl.dropboxusercontent.com/u/15829935/platform-demos/images/piv-mysqlweb1.png)
