@@ -26,11 +26,24 @@
     <script src="https://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 
     <script th:src="@{js/functions.js}" type="text/javascript"></script>
-    <style type="text/css">
-        input:focus, textarea:focus {
-            background-color: #C4D4E2;
-        }
-    </style>
+    <script th:src="@{edit_area/edit_area_full.js}" type="text/javascript"></script>
+
+    <script language="Javascript" type="text/javascript">
+        // initialisation
+        editAreaLoader.init({
+            id: "query"	// id of the textarea to transform
+            ,start_highlight: true
+            ,allow_toggle: false
+            ,allow_resize: "y"
+            ,language: "en"
+            ,syntax: "sql"
+            ,toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, highlight"
+            ,syntax_selection_allow: "sql"
+            ,is_multi_files: false
+            ,show_line_colors: true
+        });
+    </script>
+
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
             $('#datatable-mysql').DataTable();
@@ -372,7 +385,7 @@
         </div>
         <div class="form-group">
             <div class="col-xs-12">
-                <textarea class="form-control" id="query" name="query" cols="40" rows="8" th:inline="text">[[${query}]]</textarea>
+                <textarea class="form-control" id="query" style="height: 250px; width: 100%;" name="query" cols="40" rows="8" th:inline="text">[[${query}]]</textarea>
             </div>
         </div>
         <div class="form-group">
