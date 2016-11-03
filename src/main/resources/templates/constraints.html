@@ -7,12 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <!-- Latest compiled and minified CSS -->
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" th:href="@{themes/bootstrap-darly.css}" media="screen" />
+    <link rel="stylesheet" th:href="@{themes/custom-darkly.min.css}" />
+
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
@@ -325,8 +322,8 @@
             <div class="col-xs-2">
                 <input type="text" id="search" name="search" placeholder="Constraint Name [case sensitive]" class="form-control" />
             </div>
-            <div class="col-xs-4">
-                <select id="selectedSchema" name="selectedSchema">
+            <div class="col-xs-2">
+                <select id="selectedSchema" name="selectedSchema" class="form-control">
                     <table>
                         <tr th:each="schema : ${schemas}">
                             <div th:if="${schema == chosenSchema}">
@@ -342,6 +339,8 @@
                         </tr>
                     </table>
                 </select>
+            </div>
+            <div class="col-xs-2">
                 <button type="submit" class="btn btn-primary" name="searchpressed" value="searchpressed"><span class="glyphicon glyphicon-search"></span> Search</button>
             </div>
         </div>
@@ -357,7 +356,7 @@
 
 <!-- Add table with Results only if results exist -->
 <div class="bs-example" th:if="${estimatedrecords > 0}">
-    <div class="alert alert-success fade in">
+    <div class="alert alert-success fade in col-xs-8">
         <a href="#" class="close" data-dismiss="alert">&times;</a>
         <strong>Success!</strong> Found <b th:text="${estimatedrecords}"></b> Constraints
     </div>

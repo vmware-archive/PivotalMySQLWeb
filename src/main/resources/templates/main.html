@@ -10,12 +10,9 @@
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <!-- Latest compiled and minified CSS -->
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" th:href="@{themes/bootstrap-darly.css}" media="screen" />
+    <link rel="stylesheet" th:href="@{themes/custom-darkly.min.css}" />
+
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript">
@@ -39,12 +36,6 @@
                 <img src="images/mysql-tiny-1.jpg"
                      th:src="@{images/mysql-tiny-1.jpg}"
                      alt="Pivotal" height="32" width="32"
-                     border="0"/>
-            </a>
-            <a class="navbar-brand" href="http://run.pivotal.io/">
-                <img src="images/PoweredByPivotal1.png"
-                     th:src="@{images/PoweredByPivotal1.png}"
-                     alt="PGWebFooter"
                      border="0"/>
             </a>
         </div>
@@ -257,7 +248,7 @@
 <div class="bs-example">
     <br />
     <blockquote>
-        <p style="color: darkblue">
+        <p>
             The p-mysql product delivers a fully managed, “Database as a Service” to Cloud Foundry users. When installed,
             the tile deploys and maintains a single or three-node cluster running a recent release of MariaDB, SQL Proxies
             for super-fast failover, and Service Brokers for Cloud Foundry integration

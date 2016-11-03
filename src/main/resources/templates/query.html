@@ -7,12 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <!-- Latest compiled and minified CSS -->
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" th:href="@{themes/bootstrap-darly.css}" media="screen" />
+    <link rel="stylesheet" th:href="@{themes/custom-darkly.min.css}" />
+
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
@@ -304,7 +301,7 @@
 <div class="col-xs-12">
     <br />
     <form th:action="@{/uploadsql}" method="post" class="form-horizontal" enctype="multipart/form-data" onsubmit="return checkFile();">
-        <div class="form-group ">
+        <div class="form-group">
             <div class="col-xs-2">
                 <input type="file" name="file" size="20" maxlength="300" />
             </div>
@@ -341,50 +338,62 @@
                          border="0"/>
                     History
                 </a>&nbsp;&nbsp;
-                Query Count:
-                <select id="queryCount" name="queryCount">
-                    <div th:switch="${queryCount}">
-                        <div th:case="'N'">
-                            <option value="N" selected="selected">No</option>
-                            <option value="Y">Yes</option>
+                <div class="col-xs-1">
+                    Query Count:
+                </div>
+                <div class="col-xs-1">
+                    <select id="queryCount" name="queryCount" class="form-control">
+                        <div th:switch="${queryCount}">
+                            <div th:case="'N'">
+                                <option value="N" selected="selected">No</option>
+                                <option value="Y">Yes</option>
+                            </div>
+                            <div th:case="'Y'">
+                                <option value="N">No</option>
+                                <option value="Y" selected="selected">Yes</option>
+                            </div>
                         </div>
-                        <div th:case="'Y'">
-                            <option value="N">No</option>
-                            <option value="Y" selected="selected">Yes</option>
+                    </select>
+                </div>
+                <div class="col-xs-1">
+                    Elapsed Time:
+                </div>
+                <div class="col-xs-1">
+                    <select id="elapsedTime" name="elapsedTime" class="form-control">
+                        <div th:switch="${elapsedTime}">
+                            <div th:case="'N'">
+                                <option value="N" selected="selected">No</option>
+                                <option value="Y">Yes</option>
+                            </div>
+                            <div th:case="'Y'">
+                                <option value="N">No</option>
+                                <option value="Y" selected="selected">Yes</option>
+                            </div>
                         </div>
-                    </div>
-                </select>&nbsp;&nbsp;
-                Elapsed Time:
-                <select id="elapsedTime" name="elapsedTime">
-                    <div th:switch="${elapsedTime}">
-                        <div th:case="'N'">
-                            <option value="N" selected="selected">No</option>
-                            <option value="Y">Yes</option>
+                    </select>
+                </div>
+                <div class="col-xs-1">
+                    Explain Plan:
+                </div>
+                <div class="col-xs-1">
+                    <select id="explainPlan" name="explainPlan" class="form-control">
+                        <div th:switch="${explainPlan}">
+                            <div th:case="'N'">
+                                <option value="N" selected="selected">No</option>
+                                <option value="Y">Yes</option>
+                            </div>
+                            <div th:case="'Y'">
+                                <option value="N">No</option>
+                                <option value="Y" selected="selected">Yes</option>
+                            </div>
                         </div>
-                        <div th:case="'Y'">
-                            <option value="N">No</option>
-                            <option value="Y" selected="selected">Yes</option>
-                        </div>
-                    </div>
-                </select>&nbsp;&nbsp;
-                Explain Plan:
-                <select id="explainPlan" name="explainPlan">
-                    <div th:switch="${explainPlan}">
-                        <div th:case="'N'">
-                            <option value="N" selected="selected">No</option>
-                            <option value="Y">Yes</option>
-                        </div>
-                        <div th:case="'Y'">
-                            <option value="N">No</option>
-                            <option value="Y" selected="selected">Yes</option>
-                        </div>
-                    </div>
-                </select>&nbsp;&nbsp;
+                    </select>
+                </div>
             </div>
         </div>
         <div class="form-group">
             <div class="col-xs-12">
-                <span style="color: darkblue">Run SQL query, DML or DDL into the query window below</span>
+                <span>Run SQL query, DML or DDL into the query window below</span>
             </div>
         </div>
         <div class="form-group">

@@ -7,12 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <!-- Latest compiled and minified CSS -->
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" th:href="@{themes/bootstrap-darly.css}" media="screen" />
+    <link rel="stylesheet" th:href="@{themes/custom-darkly.min.css}" />
+
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
@@ -314,14 +311,20 @@
 </div>
 
 <div class="col-xs-12" th:if="${viewdef != null}">
-    <h3><span th:text="${viewName}" /> Definition </h3>
-    <table class="table table-hover table-bordered table-striped table-condensed">
-        <tbody>
-            <tr>
-                <td><span th:text="${viewdef}" /></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3><span th:text="${viewName}" /> Definition </h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover table-bordered table-striped table-condensed">
+                <tbody>
+                <tr>
+                    <td><span th:text="${viewdef}" /></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <div class="clearfix">
@@ -332,10 +335,10 @@
     <form th:action="@{/views}" method="post" class="form-horizontal">
         <div class="form-group ">
             <div class="col-xs-2">
-                <input type="text" id="search" name="search" placeholder="View Name [case sensitive]" class="form-control" />
+                <input type="text" id="search" name="search" placeholder="View Name" class="form-control" />
             </div>
-            <div class="col-xs-4">
-                <select id="selectedSchema" name="selectedSchema">
+            <div class="col-xs-2">
+                <select id="selectedSchema" name="selectedSchema" class="form-control">
                     <table>
                         <tr th:each="schema : ${schemas}">
                             <div th:if="${schema == chosenSchema}">
@@ -351,6 +354,8 @@
                         </tr>
                     </table>
                 </select>
+            </div>
+            <div class="col-xs-2">
                 <button type="submit" class="btn btn-primary" name="searchpressed" value="searchpressed"><span class="glyphicon glyphicon-search"></span> Search</button>
             </div>
         </div>
@@ -366,7 +371,7 @@
 
 <!-- Add table with Results only if results exist -->
 <div class="bs-example" th:if="${estimatedrecords > 0}">
-    <div class="alert alert-success fade in">
+    <div class="alert alert-success fade in col-xs-8">
         <a href="#" class="close" data-dismiss="alert">&times;</a>
         <strong>Success!</strong> Found <b th:text="${estimatedrecords}"></b> View(s)
     </div>
@@ -426,24 +431,27 @@
             </table>
 
             <div class="clearfloat">
-                <img class="selectallarrow"
-                     src="images/arrow_ltr.png"
-                     th:src="@{images/arrow_ltr.png}"
-                     width="38" height="22" alt="With selected:" />
-                <a th:href="@{/views(selectedSchema=${chosenSchema})}"
-                   onclick="if (setCheckboxes('datatable-mysql', 'true')) return false;">
-                    Check All</a>
+                <div class="col-xs-3">
+                    <img class="selectallarrow"
+                         src="images/arrow_ltr.png"
+                         th:src="@{images/arrow_ltr.png}"
+                         width="38" height="22" alt="With selected:" />
+                    <a th:href="@{/views(selectedSchema=${chosenSchema})}"
+                       onclick="if (setCheckboxes('datatable-mysql', 'true')) return false;">
+                        Check All</a>
 
-                /
-                <a th:href="@{/views(selectedSchema=${chosenSchema})}"
-                   onclick="if (unMarkAllRows('tablesForm')) return false;">
-                    Uncheck All</a>
+                    /
+                    <a th:href="@{/views(selectedSchema=${chosenSchema})}"
+                       onclick="if (unMarkAllRows('tablesForm')) return false;">
+                        Uncheck All</a>
+                </div>
 
-                <select name="submit_mult" onchange="this.form.submit();" style="margin: 0 3em 0 3em;">
-                    <option value="With selected:" selected="selected">With selected:</option>
-                    <option value="Drop" >Drop</option>
-                </select>
-
+                <div class="col-xs-3">
+                    <select name="submit_mult" onchange="this.form.submit();" style="margin: 0 3em 0 3em;" class="form-control">
+                        <option value="With selected:" selected="selected">With selected:</option>
+                        <option value="Drop" >Drop</option>
+                    </select>
+                </div>
 
                 <script type="text/javascript">
                     <!--

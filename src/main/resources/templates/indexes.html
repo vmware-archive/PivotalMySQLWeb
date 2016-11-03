@@ -7,12 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <!-- Latest compiled and minified CSS -->
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" th:href="@{themes/bootstrap-darly.css}" media="screen" />
+    <link rel="stylesheet" th:href="@{themes/custom-darkly.min.css}" />
+
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
@@ -146,6 +143,15 @@
                                      alt="Indexes"
                                      border="0"/>
                                 Indexes[<span th:text="${session.schemaMap.Index}" />]
+                            </a>
+                        </li>
+                        <li>
+                            <a th:href="@{/constraints}">
+                                <img src="images/constraints.png"
+                                     th:src="@{images/constraints.png}"
+                                     alt="Constraints"
+                                     border="0"/>
+                                Constraints[<span th:text="${session.schemaMap.Constraint}" />]
                             </a>
                         </li>
                         <li class="divider"></li>
@@ -306,25 +312,28 @@
 </div>
 
 <div class="col-xs-6" th:if="${indexStructure != null}">
-    <div class="alert alert-info fade in">
-        <a href="#" class="close" data-dismiss="alert">&times;</a>
-        <h3><span th:text="${indexname}" /> Index Details </h3>
-        <table class="table table-hover table-bordered table-condensed">
-            <thead>
-            <th style="text-align:center">Column</th>
-            <th style="text-align:center">Data</th>
-            </thead>
-            <tbody>
-            <div th:each="rows : ${indexStructure.rows}">
-                <div th:each="columnName : ${indexStructure.columnNames}">
-                    <tr>
-                        <td style="text-align:right"><span th:text="${columnName}"/></td>
-                        <td style="text-align:left"><span th:text="${rows.get(columnName)}"/></td>
-                    </tr>
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h3><span th:text="${indexname}" /> Index Details </h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover table-bordered table-condensed">
+                <thead>
+                <th style="text-align:center">Column</th>
+                <th style="text-align:center">Data</th>
+                </thead>
+                <tbody>
+                <div th:each="rows : ${indexStructure.rows}">
+                    <div th:each="columnName : ${indexStructure.columnNames}">
+                        <tr>
+                            <td style="text-align:right"><span th:text="${columnName}"/></td>
+                            <td style="text-align:left"><span th:text="${rows.get(columnName)}"/></td>
+                        </tr>
+                    </div>
                 </div>
-            </div>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -336,10 +345,10 @@
     <form th:action="@{/indexes}" method="post" class="form-horizontal">
         <div class="form-group ">
             <div class="col-xs-2">
-                <input type="text" id="search" name="search" placeholder="Index Name [case sensitive]" class="form-control" />
+                <input type="text" id="search" name="search" placeholder="Index Name" class="form-control" />
             </div>
-            <div class="col-xs-4">
-                <select id="selectedSchema" name="selectedSchema">
+            <div class="col-xs-2">
+                <select id="selectedSchema" name="selectedSchema" class="form-control">
                     <table>
                         <tr th:each="schema : ${schemas}">
                             <div th:if="${schema == chosenSchema}">
@@ -355,6 +364,8 @@
                         </tr>
                     </table>
                 </select>
+            </div>
+            <div class="col-xs-2">
                 <button type="submit" class="btn btn-primary" name="searchpressed" value="searchpressed"><span class="glyphicon glyphicon-search"></span> Search</button>
             </div>
         </div>
@@ -370,7 +381,7 @@
 
 <!-- Add table with Results only if results exist -->
 <div class="bs-example" th:if="${estimatedrecords > 0}">
-    <div class="alert alert-success fade in">
+    <div class="alert alert-success fade in col-xs-8">
         <a href="#" class="close" data-dismiss="alert">&times;</a>
         <strong>Success!</strong> Found <b th:text="${estimatedrecords}"></b> Indexes
     </div>
