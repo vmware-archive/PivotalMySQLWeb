@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -27,6 +28,10 @@ import java.util.regex.Pattern;
 public class QueryController
 {
     protected static Logger logger = Logger.getLogger("controller");
+    private static final String FILENAME = "worksheet.sql";
+    private static final String FILENAME_EXPORT = "query-output.csv";
+    private static final String FILENAME_EXPORT_JSON = "query-output.json";
+    private static final String SAVE_CONTENT_TYPE = "application/x-download";
     private final String QUERY_TYPES[] = {
             "SELECT", "INSERT", "DELETE", "DDL", "UPDATE", "CALL", "COMMIT", "ROLLBACK"
     };
@@ -89,6 +94,35 @@ public class QueryController
 
                 model.addAttribute("result", result);
             }
+            else if (action.trim().equals("export"))
+            {
+                logger.info("export data to CSV action requested");
+                String query = request.getParameter("query");
+                String exportDataCSV = QueryUtil.runQueryForCSV(conn, query);
+
+                response.setContentType(SAVE_CONTENT_TYPE);
+                response.setHeader("Content-Disposition", "attachment; filename=" + FILENAME_EXPORT);
+
+                ServletOutputStream out = response.getOutputStream();
+                out.println(exportDataCSV);
+                out.close();
+                return null;
+            }
+            else if (action.trim().equals("export_json"))
+            {
+                logger.info("export data to JSON action requested");
+                String query = request.getParameter("query");
+                String exportDataJSON = QueryUtil.runQueryForJSON(conn, query);
+
+                response.setContentType(SAVE_CONTENT_TYPE);
+                response.setHeader("Content-Disposition", "attachment; filename=" + FILENAME_EXPORT_JSON);
+
+                ServletOutputStream out = response.getOutputStream();
+                out.println(exportDataJSON);
+                out.close();
+                return null;
+            }
+
 
         }
 

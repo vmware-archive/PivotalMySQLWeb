@@ -37,6 +37,7 @@
             ,toolbar: "search, go_to_line, |, undo, redo, |, select_font, |, highlight"
             ,syntax_selection_allow: "sql"
             ,is_multi_files: false
+            ,resize: true
             ,show_line_colors: true
         });
     </script>
@@ -392,7 +393,7 @@
         </div>
         <div class="form-group">
             <div class="col-xs-12">
-                <textarea class="form-control" id="query" style="height: 300px; width: 100%;" name="query" cols="40" rows="8" th:inline="text">[[${query}]]</textarea>
+                <textarea class="form-control" id="query" style="height: 300px; width: 100%; resize: both" name="query" cols="40" rows="8" th:inline="text">[[${query}]]</textarea>
             </div>
         </div>
         <div class="form-group">
@@ -447,6 +448,22 @@
             <div th:if="${queryResultCount == null}">
                 <strong>Success!</strong> Query completed successfully
             </div>
+            <div>
+                <a th:href="@{/query(query=${querysql},action='export')}">
+                    <img src="images/b_save.png"
+                         th:src="@{images/b_save.png}"
+                         alt="Export Data to CSV"
+                         width="16" height="16"
+                         border="0"/> Save as CSV
+                </a> &nbsp;
+                <a th:href="@{/query(query=${querysql},action='export_json')}">
+                    <img src="images/b_save.png"
+                         th:src="@{images/b_save.png}"
+                         alt="Export Data to JSON"
+                         width="16" height="16"
+                         border="0"/> Save as JSON
+                </a> &nbsp;
+            </div>
             <div th:if="${elapsedTimeResult != null}">
                 Elapsed Time <span th:text="${elapsedTimeResult}" /> second(s)
             </div>
@@ -487,6 +504,22 @@
                 <strong>Success!</strong> Query Completed Successfully
                 <div th:if="${item.value[2] != null}">
                     Elapsed Time <span th:text="${item.value[2]}" /> second(s)
+                </div>
+                <div>
+                    <a th:href="@{/query(query=${item.value[0]},action='export')}">
+                        <img src="images/b_save.png"
+                             th:src="@{images/b_save.png}"
+                             alt="Export Data to CSV"
+                             width="16" height="16"
+                             border="0"/> Save as CSV
+                    </a> &nbsp;
+                    <a th:href="@{/query(query=${item.value[0]},action='export_json')}">
+                        <img src="images/b_save.png"
+                             th:src="@{images/b_save.png}"
+                             alt="Export Data to JSON"
+                             width="16" height="16"
+                             border="0"/> Save as JSON
+                    </a> &nbsp;
                 </div>
             </div>
             <table class="table table-hover table-bordered table-striped table-condensed">
