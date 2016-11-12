@@ -12,6 +12,7 @@ run SQL commands and view schema objects from a browser based interface. It incl
     <li>Manage JDBC Connections</li>
     <li>Load SQL File into SQL Worksheet from Local File System</li>
     <li>SQL Worksheet with syntax highlighting support</li>
+    <li>HTTP GET request to auto login without a login form</li>
 </ul>
 
 ![alt tag](https://dl.dropboxusercontent.com/u/15829935/platform-demos/images/piv-mysqlweb1.png)
