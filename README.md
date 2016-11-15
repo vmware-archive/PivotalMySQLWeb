@@ -22,7 +22,7 @@ run SQL commands and view schema objects from a browser based interface. It incl
 
 - $ git clone https://github.com/papicella/PivotalMySQLWeb.git
 - $ cd PivotalMySQLWeb
-- $ mvn package
+- $ mvn -DskipTests=true package
 - Run as follows
 
 ```
