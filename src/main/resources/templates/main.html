@@ -10,8 +10,8 @@
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
-    <link rel="stylesheet" th:href="@{themes/bootstrap-darly.css}" media="screen" />
-    <link rel="stylesheet" th:href="@{themes/custom-darkly.min.css}" />
+    <link rel="stylesheet" th:href="@{'themes/' + ${session.themeMain}}" media="screen" />
+    <link rel="stylesheet" th:href="@{'themes/' + ${session.themeMin}}" />
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -141,6 +141,15 @@
                                 SQL Worksheet
                             </a>
                         </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle">Themes <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a th:href="@{/selecttheme(theme='default')}">Default</a></li>
+                        <li><a th:href="@{/selecttheme(theme='sandstone')}">Sandstone</a></li>
+                        <li><a th:href="@{/selecttheme(theme='cyborg')}">Cyborg</a></li>
+                        <li><a th:href="@{/selecttheme(theme='slate')}">Slate</a></li>
                     </ul>
                 </li>
                 <li>

@@ -1,10 +1,7 @@
 package com.pivotal.pcf.mysqlweb.controller;
 
 import com.pivotal.pcf.mysqlweb.beans.UserPref;
-import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
-import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
-import com.pivotal.pcf.mysqlweb.utils.MysqlConnection;
-import com.pivotal.pcf.mysqlweb.utils.QueryUtil;
+import com.pivotal.pcf.mysqlweb.utils.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -80,6 +77,8 @@ public class AutoLoginController
             session.setAttribute("prefs", userPref);
             session.setAttribute("history", new LinkedList());
             session.setAttribute("connectedAt", new java.util.Date().toString());
+            session.setAttribute("themeMain", Themes.defaultTheme);
+            session.setAttribute("themeMin", Themes.defaultThemeMin);
 
             Map<String, String> schemaMap = AdminUtil.getSchemaMap();
 

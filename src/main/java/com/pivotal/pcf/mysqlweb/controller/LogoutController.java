@@ -2,6 +2,7 @@ package com.pivotal.pcf.mysqlweb.controller;
 
 import com.pivotal.pcf.mysqlweb.beans.Login;
 import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
+import com.pivotal.pcf.mysqlweb.utils.Themes;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +31,7 @@ public class LogoutController
         session.invalidate();
 
         model.addAttribute("loginObj", new Login("", "", "", ""));
+
         return "login";
 
     }

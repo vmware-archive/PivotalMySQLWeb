@@ -2,10 +2,7 @@ package com.pivotal.pcf.mysqlweb.controller;
 
 import com.pivotal.pcf.mysqlweb.beans.Login;
 import com.pivotal.pcf.mysqlweb.beans.UserPref;
-import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
-import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
-import com.pivotal.pcf.mysqlweb.utils.MysqlConnection;
-import com.pivotal.pcf.mysqlweb.utils.QueryUtil;
+import com.pivotal.pcf.mysqlweb.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
@@ -72,6 +69,8 @@ public class LoginController
                     session.setAttribute("prefs", userPref);
                     session.setAttribute("history", new LinkedList());
                     session.setAttribute("connectedAt", new java.util.Date().toString());
+                    session.setAttribute("themeMain", Themes.defaultTheme);
+                    session.setAttribute("themeMin", Themes.defaultThemeMin);
 
                     Map<String, String> schemaMap = AdminUtil.getSchemaMap();
 
@@ -104,6 +103,8 @@ public class LoginController
             model.addAttribute("loginObj", new Login("", "", "jdbc:mysql://localhost:3306/apples", "apples"));
         }
 
+        session.setAttribute("themeMain", Themes.defaultTheme);
+        session.setAttribute("themeMin", Themes.defaultThemeMin);
         return "login";
     }
 
@@ -149,6 +150,8 @@ public class LoginController
             session.setAttribute("prefs", userPref);
             session.setAttribute("history", new LinkedList());
             session.setAttribute("connectedAt", new java.util.Date().toString());
+            session.setAttribute("themeMain", Themes.defaultTheme);
+            session.setAttribute("themeMin", Themes.defaultThemeMin);
 
             Map<String, String> schemaMap = AdminUtil.getSchemaMap();
 
@@ -166,6 +169,8 @@ public class LoginController
         {
             model.addAttribute("loginerror", ex.getMessage());
             model.addAttribute("loginObj");
+            session.setAttribute("themeMain", Themes.defaultTheme);
+            session.setAttribute("themeMin", Themes.defaultThemeMin);
             return "login";
         }
     }

@@ -7,8 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link rel="stylesheet" th:href="@{themes/bootstrap-darly.css}" media="screen" />
-    <link rel="stylesheet" th:href="@{themes/custom-darkly.min.css}" />
+    <link rel="stylesheet" th:href="@{'themes/' + ${session.themeMain}}" media="screen" />
+    <link rel="stylesheet" th:href="@{'themes/' + ${session.themeMin}}" />
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -157,6 +157,15 @@
                                 SQL Worksheet
                             </a>
                         </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle">Themes <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a th:href="@{/selecttheme(theme='default')}">Default</a></li>
+                        <li><a th:href="@{/selecttheme(theme='sandstone')}">Sandstone</a></li>
+                        <li><a th:href="@{/selecttheme(theme='cyborg')}">Cyborg</a></li>
+                        <li><a th:href="@{/selecttheme(theme='slate')}">Slate</a></li>
                     </ul>
                 </li>
                 <li>
