@@ -74,6 +74,10 @@ public class ThemeController
                         session.setAttribute("themeMain", Themes.defaultThemeSlate);
                         session.setAttribute("themeMin", Themes.defaultThemeSlateMin);
                         break;
+                    case "spacelab":
+                        session.setAttribute("themeMain", Themes.defaultThemeSpacelab);
+                        session.setAttribute("themeMin", Themes.defaultThemeSpacelabMin);
+                        break;
                 }
 
                 session.setAttribute("theme", selectedTheme);

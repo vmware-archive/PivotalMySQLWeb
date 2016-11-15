@@ -13,4 +13,7 @@ public interface Themes
 
     public static final String defaultThemeSlate = "bootstrap-slate.css";
     public static final String defaultThemeSlateMin = "custom-slate.min.css";
+
+    public static final String defaultThemeSpacelab = "bootstrap-spacelab.css";
+    public static final String defaultThemeSpacelabMin = "bootstrap-spacelab.min.css";
 }
