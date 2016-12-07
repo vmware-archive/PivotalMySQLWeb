@@ -315,28 +315,37 @@
     </div>
 </div>
 
-<div class="col-xs-6" th:if="${indexStructure != null}">
-    <div class="panel panel-success">
-        <div class="panel-heading">
-            <h3><span th:text="${indexname}" /> Index Details </h3>
-        </div>
-        <div class="panel-body">
-            <table class="table table-hover table-bordered table-condensed">
-                <thead>
-                <th style="text-align:center">Column</th>
-                <th style="text-align:center">Data</th>
-                </thead>
-                <tbody>
-                <div th:each="rows : ${indexStructure.rows}">
-                    <div th:each="columnName : ${indexStructure.columnNames}">
-                        <tr>
-                            <td style="text-align:right"><span th:text="${columnName}"/></td>
-                            <td style="text-align:left"><span th:text="${rows.get(columnName)}"/></td>
-                        </tr>
-                    </div>
+<div class="col-xs-6">
+    <div class="panel-group" id="accordion" th:if="${indexStructure != null}">
+        <br />
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                        <span th:text="${indexname}" /> Index Details
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <table class="table table-hover table-bordered table-condensed">
+                        <thead>
+                        <th style="text-align:center">Column</th>
+                        <th style="text-align:center">Data</th>
+                        </thead>
+                        <tbody>
+                        <div th:each="rows : ${indexStructure.rows}">
+                            <div th:each="columnName : ${indexStructure.columnNames}">
+                                <tr>
+                                    <td style="text-align:right"><span th:text="${columnName}"/></td>
+                                    <td style="text-align:left"><span th:text="${rows.get(columnName)}"/></td>
+                                </tr>
+                            </div>
+                        </div>
+                        </tbody>
+                    </table>
                 </div>
-                </tbody>
-            </table>
+            </div>
         </div>
     </div>
 </div>
