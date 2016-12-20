@@ -486,6 +486,7 @@
                                  th:src="@{images/b_views.png}"
                                  alt="View Data"
                                  width="16" height="16"
+                                 data-toggle="tooltip" title="View Data"
                                  border="0"/>
                         </a>&nbsp;
                         <a th:href="@{/tables(tabName=${table.tableName},tabAction='DROP',selectedSchema=${chosenSchema})}"
@@ -494,6 +495,7 @@
                                  th:src="@{images/b_drop.png}"
                                  alt="Drop Table"
                                  width="16" height="16"
+                                 data-toggle="tooltip" title="Drop Table"
                                  border="0"/>
                         </a>&nbsp;
                         <a th:href="@{/tables(tabName=${table.tableName},tabAction='EMPTY',selectedSchema=${chosenSchema})}"
@@ -502,6 +504,7 @@
                                  th:src="@{images/b_empty.png}"
                                  alt="Truncate Table"
                                  width="16" height="16"
+                                 data-toggle="tooltip" title="Truncate Table"
                                  border="0"/>
                         </a>&nbsp;
                         <a th:href="@{/tables(tabName=${table.tableName},tabAction='STRUCTURE',selectedSchema=${chosenSchema})}">
@@ -509,6 +512,7 @@
                                  th:src="@{images/b_tbloptimize.png}"
                                  alt="Table Structure"
                                  width="16" height="16"
+                                 data-toggle="tooltip" title="View Table Structure"
                                  border="0"/>
                         </a>&nbsp;
                         <a th:href="@{/tables(tabName=${table.tableName},tabAction='DETAILS',selectedSchema=${chosenSchema})}">
@@ -516,6 +520,7 @@
                                  th:src="@{images/b_tblanalyse.png}"
                                  alt="Table Details"
                                  width="16" height="16"
+                                 data-toggle="tooltip" title="View Table Details"
                                  border="0"/>
                         </a>&nbsp;
                     </td>

@@ -431,6 +431,7 @@
                                  th:src="@{images/b_views.png}"
                                  alt="View Data"
                                  width="16" height="16"
+                                 data-toggle="tooltip" title="View Data"
                                  border="0"/>
                         </a>&nbsp;
                         <a th:href="@{/views(viewName=${view.viewName},viewAction='DROP',selectedSchema=${chosenSchema})}"
@@ -439,6 +440,7 @@
                                  th:src="@{images/b_drop.png}"
                                  alt="Drop View"
                                  width="16" height="16"
+                                 data-toggle="tooltip" title="Drop View"
                                  border="0"/>
                         </a>&nbsp;
                         <a th:href="@{/views(viewName=${view.viewName},viewAction='DEF',selectedSchema=${chosenSchema})}">
@@ -446,6 +448,7 @@
                                  th:src="@{images/b_tbloptimize.png}"
                                  alt="View Definition"
                                  width="16" height="16"
+                                 data-toggle="tooltip" title="View Details"
                                  border="0"/>
                         </a>&nbsp;
                     </td>
