@@ -4,4 +4,3 @@ server:
       enabled: false
   #session:
   #  timeout: 30
-
