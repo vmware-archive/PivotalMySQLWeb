@@ -73,7 +73,7 @@ public class IndexController
 
         if (idxAction != null)
         {
-            logger.debug("idxAction = " + idxAction);
+            logger.info("idxAction = " + idxAction);
             result = null;
 
             if (idxAction.equals("STRUCTURE"))

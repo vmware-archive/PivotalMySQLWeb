@@ -276,6 +276,36 @@
     </li>
 </ul>
 
+<div class="col-xs-6" th:if="${tableDDL != null}">
+    <div class="panel-group" id="accordion">
+        <br />
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                        <span th:text="${tablename}" /> DDL
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <table class="table table-hover table-bordered table-striped table-condensed">
+                        <tbody>
+                        <tr>
+                            <td>
+                        <pre>
+                            <span th:text="${tableDDL}" />
+                        </pre>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="bs-example" th:if="${result != null}">
     <br />
     <div class="col-xs-8">
@@ -521,6 +551,14 @@
                                  alt="Table Details"
                                  width="16" height="16"
                                  data-toggle="tooltip" title="View Table Details"
+                                 border="0"/>
+                        </a>&nbsp;
+                        <a th:href="@{/tables(tabName=${table.tableName},tabAction='DDL',selectedSchema=${chosenSchema})}">
+                            <img src="images/s_vars.png"
+                                 th:src="@{images/s_vars.png}"
+                                 alt="Generate Table DDL"
+                                 width="16" height="16"
+                                 data-toggle="tooltip" title="Generate Table DDL"
                                  border="0"/>
                         </a>&nbsp;
                     </td>

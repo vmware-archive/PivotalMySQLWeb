@@ -333,19 +333,29 @@
 </div>
 
 <div class="col-xs-12" th:if="${viewdef != null}">
-    <br />
-    <div class="panel panel-success">
-        <div class="panel-heading">
-            <h3><span th:text="${viewName}" /> Definition </h3>
-        </div>
-        <div class="panel-body">
-            <table class="table table-hover table-bordered table-striped table-condensed">
-                <tbody>
-                <tr>
-                    <td><span th:text="${viewdef}" /></td>
-                </tr>
-                </tbody>
-            </table>
+    <div class="panel-group" id="accordion">
+        <br />
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                        <span th:text="${viewName}" /> Definition
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <table class="table table-hover table-bordered table-striped table-condensed">
+                        <tbody>
+                        <tr>
+                            <td>
+                                    <span th:text="${viewdef}" />
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -39,6 +39,8 @@ public interface Constants
 
         public static String TRUNCATE_TABLE_PUBLIC = "TRUNCATE TABLE %s";
 
+        public static String CREATE_TABLE_QUERY = "SHOW CREATE TABLE %s.%s";
+
         public static final String USER_TAB_COLUMNS =
                         "SELECT COLUMN_NAME, data_type, is_nullable " +
                         "FROM INFORMATION_SCHEMA.COLUMNS " +

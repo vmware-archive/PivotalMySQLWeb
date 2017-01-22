@@ -80,7 +80,7 @@ public class TableController
 
         if (tabAction != null)
         {
-            logger.debug("tabAction = " + tabAction);
+            logger.info("tabAction = " + tabAction);
             result = null;
 
             if (tabAction.equalsIgnoreCase("STRUCTURE"))
@@ -106,6 +106,15 @@ public class TableController
 
 
                 model.addAttribute("tableDetails", tableDetails);
+                model.addAttribute("tablename", (String)request.getParameter("tabName"));
+            }
+            else if (tabAction.equalsIgnoreCase("DDL"))
+            {
+                String ddl = tableDAO.runShowQuery(schema,
+                                                   (String)request.getParameter("tabName"),
+                                                   (String)session.getAttribute("user_key"));
+
+                model.addAttribute("tableDDL", ddl.trim());
                 model.addAttribute("tablename", (String)request.getParameter("tabName"));
             }
             else

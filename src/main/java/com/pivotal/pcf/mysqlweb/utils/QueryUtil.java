@@ -134,6 +134,31 @@ public class QueryUtil
         return res;
     }
 
+    static public String runShowQuery (Connection conn, String query) throws SQLException
+    {
+        Statement stmt  = null;
+        ResultSet rset  = null;
+        String resultData = null;
+
+
+        try
+        {
+            stmt = conn.createStatement();
+            rset = stmt.executeQuery(query);
+            rset.next();
+
+            resultData = rset.getString(2);
+
+        }
+        finally
+        {
+            JDBCUtil.close(stmt);
+            JDBCUtil.close(rset);
+        }
+
+        return resultData;
+    }
+
     static public List<Result> runStoredprocWithResultSet
             (Connection conn, String query, int maxrows, int resultsets) throws SQLException
     {

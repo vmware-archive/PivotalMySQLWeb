@@ -15,4 +15,6 @@ public interface TableDAO
 
     public javax.servlet.jsp.jstl.sql.Result getTableDetails (String schema, String tableName, String userKey) throws PivotalMySQLWebException;
 
+    public String runShowQuery (String schema, String tableName, String userKey) throws PivotalMySQLWebException;
+
 }

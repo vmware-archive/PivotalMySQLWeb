@@ -5,6 +5,7 @@ import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOUtil;
 import com.pivotal.pcf.mysqlweb.main.PivotalMySQLWebException;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
 import com.pivotal.pcf.mysqlweb.utils.JDBCUtil;
+import com.pivotal.pcf.mysqlweb.utils.QueryUtil;
 import org.apache.log4j.Logger;
 
 import javax.servlet.jsp.jstl.sql.ResultSupport;
@@ -175,6 +176,30 @@ public class TableDAOImpl implements TableDAO
         }
 
         return res;
+    }
+
+    @Override
+    public String runShowQuery (String schema, String tableName, String userKey) throws PivotalMySQLWebException
+    {
+        String queryData = null;
+        Connection        conn = null;
+
+        try
+        {
+            conn = AdminUtil.getConnection(userKey);
+            queryData = QueryUtil.runShowQuery(conn, String.format(Constants.CREATE_TABLE_QUERY, schema, tableName));
+        }
+        catch (SQLException se)
+        {
+            logger.info("Error running runShowQuery table details for table " + tableName);
+            throw new PivotalMySQLWebException(se);
+        }
+        catch (Exception ex) {
+            logger.info("Error running runShowQuery table details for table  " + tableName);
+            throw new PivotalMySQLWebException(ex);
+        }
+
+        return queryData;
     }
 
     private List<Table> makeTableListFromResultSet (ResultSet rset) throws SQLException

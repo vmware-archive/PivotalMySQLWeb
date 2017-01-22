@@ -15,4 +15,5 @@ public class ApplicationSessionConfiguration
     {
         return new ServletListenerRegistrationBean<HttpSessionListener>(new SessionListener());
     }
+
 }

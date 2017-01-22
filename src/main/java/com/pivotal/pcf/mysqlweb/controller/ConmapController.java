@@ -54,11 +54,11 @@ public class ConmapController
         String conMapAction = request.getParameter("conMapAction");
         String key = request.getParameter("key");
 
-        logger.info("conMapAction = " + conMapAction);
-        logger.info("key = " + key);
-
         if (conMapAction != null)
         {
+            logger.info("conMapAction = " + conMapAction);
+            logger.info("key = " + key);
+
             if (conMapAction.equalsIgnoreCase("DELETE"))
             {
                 // remove this connection from Map and close it.

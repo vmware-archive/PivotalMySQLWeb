@@ -75,11 +75,11 @@ public class ViewController
             schema = (String)session.getAttribute("schema");
         }
 
-        logger.debug("schema = " + schema);
+        logger.info("schema = " + schema);
 
         if (viewAction != null)
         {
-            logger.debug("viewAction = " + viewAction);
+            logger.info("viewAction = " + viewAction);
 
             if (viewAction.equals("DEF"))
             {

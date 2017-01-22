@@ -350,7 +350,7 @@ public class QueryController
         Connection conn = cm.getConnection(session.getId());
 
         String query = request.getParameter("query");
-        logger.debug("Query = " + query);
+        logger.info("Query = " + query);
 
         CommandResult result = new CommandResult();
         String s = query.trim();
@@ -393,7 +393,7 @@ public class QueryController
     {
         String sQuery = query.toLowerCase().trim();
 
-        if (sQuery.startsWith("select"))
+        if (sQuery.startsWith("select") || sQuery.startsWith("show"))
         {
             return decodeType(0);
         }

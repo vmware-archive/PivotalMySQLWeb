@@ -56,7 +56,7 @@ public class HistoryController
 
         if (histAction != null)
         {
-            logger.debug("histAction = " + histAction);
+            logger.info("histAction = " + histAction);
             // clear history
             session.setAttribute("history", new LinkedList());
 

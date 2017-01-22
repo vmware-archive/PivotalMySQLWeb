@@ -72,7 +72,7 @@ public class ConstraintController
 
         if (constraintAction != null)
         {
-            logger.debug("constraintAction = " + constraintAction);
+            logger.info("constraintAction = " + constraintAction);
             result = null;
 
             if (constraintAction.equals("DROP"))
