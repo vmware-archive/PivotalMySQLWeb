@@ -112,10 +112,10 @@ public class QueryUtil
             stmt = conn.createStatement();
             rset = stmt.executeQuery(query);
 
-	      /*
-	       * Convert the ResultSet to a
-	       * Result object that can be used with JSTL tags
-	       */
+	        /*
+	         * Convert the ResultSet to a
+	         * Result object that can be used with JSTL tags
+	         */
             if (maxrows == -1)
             {
                 res = ResultSupport.toResult(rset);

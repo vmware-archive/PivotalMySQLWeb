@@ -2,5 +2,5 @@ server:
   error:
     whitelabel:
       enabled: false
-  #session:
-  #  timeout: 30
+  session:
+    timeout: 30

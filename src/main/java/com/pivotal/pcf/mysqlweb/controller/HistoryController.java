@@ -60,7 +60,7 @@ public class HistoryController
             // clear history
             session.setAttribute("history", new LinkedList());
 
-            model.addAttribute("historyremoved", "Succesfully cleared history list");
+            model.addAttribute("historyremoved", "Successfully cleared history list");
         }
 
         LinkedList historyList = (LinkedList) session.getAttribute("history");
