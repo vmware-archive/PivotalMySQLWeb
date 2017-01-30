@@ -440,6 +440,33 @@
     </div>
 </div>
 
+<div class="col-xs-12" th:if="${tableIndexes != null}">
+    <h3><span th:text="${tablename}" /> Indexes </h3>
+    <div class="bs-example">
+        <div class="alert alert-success fade in">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Success!</strong> Query Completed successfully
+        </div>
+    </div>
+    <table class="table table-hover table-bordered table-striped table-condensed">
+        <thead>
+        <div th:each="columnName : ${tableIndexes.columnNames}">
+            <th style="text-align:center"><span th:text="${columnName}"/></th>
+        </div>
+        </thead>
+        <tbody>
+        <div th:each="rows : ${tableIndexes.rows}">
+            <tr>
+                <div th:each="columnName : ${tableIndexes.columnNames}">
+                    <td style="text-align:left"><span th:text="${rows.get(columnName)}"/></td>
+                </div>
+            </tr>
+        </div>
+        </tbody>
+    </table>
+    <br />
+</div>
+
 <div class="clearfix">
 </div>
 
@@ -561,11 +588,19 @@
                                  border="0"/>
                         </a>&nbsp;
                         <a th:href="@{/tables(tabName=${table.tableName},tabAction='DDL',selectedSchema=${chosenSchema})}">
-                            <img src="images/s_vars.png"
-                                 th:src="@{images/s_vars.png}"
-                                 alt="Generate Table DDL"
+                        <img src="images/s_vars.png"
+                             th:src="@{images/s_vars.png}"
+                             alt="Generate Table DDL"
+                             width="16" height="16"
+                             data-toggle="tooltip" title="Generate Table DDL"
+                             border="0"/>
+                        </a>&nbsp;
+                        <a th:href="@{/tables(tabName=${table.tableName},tabAction='INDEXES',selectedSchema=${chosenSchema})}">
+                            <img src="images/b_index.png"
+                                 th:src="@{images/b_index.png}"
+                                 alt="Show Table Indexes"
                                  width="16" height="16"
-                                 data-toggle="tooltip" title="Generate Table DDL"
+                                 data-toggle="tooltip" title="Show Table Indexes"
                                  border="0"/>
                         </a>&nbsp;
                     </td>

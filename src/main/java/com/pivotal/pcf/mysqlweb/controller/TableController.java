@@ -55,7 +55,7 @@ public class TableController
         }
 
         String schema = null;
-        javax.servlet.jsp.jstl.sql.Result tableStructure, tableDetails;
+        javax.servlet.jsp.jstl.sql.Result tableStructure, tableDetails, tableIndexes;
 
         logger.info("Received request to show tables");
 
@@ -115,6 +115,15 @@ public class TableController
                                                    (String)session.getAttribute("user_key"));
 
                 model.addAttribute("tableDDL", ddl.trim());
+                model.addAttribute("tablename", (String)request.getParameter("tabName"));
+            }
+            else if (tabAction.equalsIgnoreCase("INDEXES"))
+            {
+                tableIndexes = tableDAO.showIndexes(schema,
+                        (String)request.getParameter("tabName"),
+                        (String)session.getAttribute("user_key"));
+
+                model.addAttribute("tableIndexes", tableIndexes);
                 model.addAttribute("tablename", (String)request.getParameter("tabName"));
             }
             else

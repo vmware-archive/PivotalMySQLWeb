@@ -12,4 +12,5 @@ public interface IndexDAO
     public Result simpleindexCommand (String schemaName, String indexName, String type, String tableName, String userKey) throws PivotalMySQLWebException;
 
     public javax.servlet.jsp.jstl.sql.Result getIndexDetails(String schema, String tableName, String indexName, String userKey) throws PivotalMySQLWebException;
+
 }

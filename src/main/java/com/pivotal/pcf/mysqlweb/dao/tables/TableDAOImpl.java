@@ -202,6 +202,30 @@ public class TableDAOImpl implements TableDAO
         return queryData;
     }
 
+    public javax.servlet.jsp.jstl.sql.Result showIndexes(String schema, String tableName, String userKey) throws PivotalMySQLWebException
+    {
+        javax.servlet.jsp.jstl.sql.Result tableIndexes = null;
+        Connection        conn = null;
+
+        try
+        {
+            conn = AdminUtil.getConnection(userKey);
+            tableIndexes = QueryUtil.runQuery(conn, String.format(Constants.SHOW_INDEXES, schema, tableName), -1);
+        }
+        catch (SQLException se)
+        {
+            logger.info("Error running index query for table " + tableName);
+            throw new PivotalMySQLWebException(se);
+        }
+        catch (Exception ex)
+        {
+            logger.info("Error running index query for table  " + tableName);
+            throw new PivotalMySQLWebException(ex);
+        }
+
+        return tableIndexes;
+    }
+
     private List<Table> makeTableListFromResultSet (ResultSet rset) throws SQLException
     {
         List<Table> tbls = new ArrayList<Table>();

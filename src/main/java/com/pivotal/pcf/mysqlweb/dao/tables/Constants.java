@@ -48,4 +48,5 @@ public interface Constants
                         "AND TABLE_NAME = ? " +
                         "order by ORDINAL_POSITION";
 
+        public static String SHOW_INDEXES = "SHOW INDEX FROM %s.%s";
 }

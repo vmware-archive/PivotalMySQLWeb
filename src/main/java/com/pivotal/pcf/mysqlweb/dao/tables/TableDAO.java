@@ -17,4 +17,5 @@ public interface TableDAO
 
     public String runShowQuery (String schema, String tableName, String userKey) throws PivotalMySQLWebException;
 
+    public javax.servlet.jsp.jstl.sql.Result showIndexes(String schema, String tableName, String userKey) throws PivotalMySQLWebException;
 }

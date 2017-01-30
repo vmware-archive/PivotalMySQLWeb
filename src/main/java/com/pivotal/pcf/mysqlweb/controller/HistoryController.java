@@ -70,7 +70,6 @@ public class HistoryController
         model.addAttribute("historyList", historyList.toArray());
         model.addAttribute("historysize", historyList.size());
 
-        // This will resolve to /WEB-INF/jsp/history.jsp
         return "history";
     }
 }

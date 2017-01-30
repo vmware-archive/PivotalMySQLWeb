@@ -35,6 +35,5 @@ public interface Constants
 
     public static String DROP_INDEX = "alter table %s.%s drop index %s";
 
-
 }
 
