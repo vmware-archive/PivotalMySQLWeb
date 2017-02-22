@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class HistoryController
 {
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(HistoryController.class);
 
     @RequestMapping(value = "/history", method = RequestMethod.GET)
     public String showHistory

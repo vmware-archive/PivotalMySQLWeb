@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
 
 public class SessionListener implements HttpSessionListener
 {
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(SessionListener.class);
     private HttpSession session = null;
 
     public void sessionCreated(HttpSessionEvent event)

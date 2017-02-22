@@ -35,7 +35,7 @@ import java.util.Map;
 @Controller
 public class ThemeController
 {
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(ThemeController.class);
 
     @RequestMapping(value = "/selecttheme", method = RequestMethod.GET)
     public String alterTheme

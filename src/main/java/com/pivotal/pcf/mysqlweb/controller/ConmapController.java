@@ -33,7 +33,7 @@ import java.sql.Connection;
 @Controller
 public class ConmapController
 {
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(ConmapController.class);
 
     @RequestMapping(value = "/viewconmap", method = RequestMethod.GET)
     public String viewConnections

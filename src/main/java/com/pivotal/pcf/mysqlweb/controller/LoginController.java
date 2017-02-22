@@ -39,7 +39,7 @@ import java.util.Map;
 @Controller
 public class LoginController
 {
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(LoginController.class);
 
     @Autowired
     UserPref userPref;

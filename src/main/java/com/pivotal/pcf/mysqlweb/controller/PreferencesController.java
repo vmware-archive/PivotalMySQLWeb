@@ -34,7 +34,7 @@ import java.sql.Connection;
 @Controller
 public class PreferencesController
 {
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(PreferencesController.class);
 
     @RequestMapping(value = "/prefs", method = RequestMethod.GET)
     public String showPrefs

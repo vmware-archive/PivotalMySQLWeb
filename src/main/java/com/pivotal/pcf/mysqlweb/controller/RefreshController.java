@@ -34,7 +34,7 @@ import java.util.Map;
 @Controller
 public class RefreshController
 {
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(RefreshController.class);
 
     @RequestMapping(value = "/refresh", method = RequestMethod.GET)
     public String refreshPage

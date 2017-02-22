@@ -34,7 +34,7 @@ import java.util.List;
 
 public class IndexDAOImpl implements IndexDAO
 {
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(IndexDAOImpl.class);
 
     @Override
     public List<Index> retrieveIndexList(String schema, String search, String userKey) throws PivotalMySQLWebException

@@ -33,7 +33,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class LogoutController
 {
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(LogoutController.class);
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout

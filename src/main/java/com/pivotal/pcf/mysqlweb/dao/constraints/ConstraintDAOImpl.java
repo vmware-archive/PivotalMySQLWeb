@@ -33,7 +33,7 @@ import java.util.List;
 
 public class ConstraintDAOImpl implements ConstraintDAO
 {
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(ConstraintDAOImpl.class);
 
     @Override
     public List<Constraint> retrieveConstraintList(String schema, String search, String userKey) throws PivotalMySQLWebException

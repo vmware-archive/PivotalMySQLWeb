@@ -27,7 +27,7 @@ import org.apache.log4j.Logger;
 public class ConnectionManager
 {
 
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(ConnectionManager.class);
     private Map<String,MysqlConnection> conList = new HashMap<String,MysqlConnection>();
     private static ConnectionManager instance = null;
 

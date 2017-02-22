@@ -40,7 +40,7 @@ import java.util.List;
 @Controller
 public class TableController
 {
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(TableController.class);
 
     @RequestMapping(value = "/tables", method = RequestMethod.GET)
     public String showTables

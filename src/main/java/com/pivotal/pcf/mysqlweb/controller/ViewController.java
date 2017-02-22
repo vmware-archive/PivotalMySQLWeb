@@ -40,7 +40,7 @@ import java.util.List;
 @Controller
 public class ViewController
 {
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(ViewController.class);
 
     @RequestMapping(value = "/views", method = RequestMethod.GET)
     public String showViews

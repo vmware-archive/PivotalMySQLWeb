@@ -30,7 +30,7 @@ import java.util.List;
 
 public class ViewDAOImpl implements ViewDAO
 {
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(ViewDAOImpl.class);
 
     @Override
     public List<View> retrieveViewList(String schema, String search, String userKey) throws PivotalMySQLWebException

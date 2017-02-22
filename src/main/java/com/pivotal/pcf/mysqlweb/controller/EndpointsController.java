@@ -33,7 +33,7 @@ import java.sql.Connection;
 @Controller
 public class EndpointsController
 {
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(EndpointsController.class);
 
     @RequestMapping(value = "/endpoints", method = RequestMethod.GET)
     public String endpointsPage

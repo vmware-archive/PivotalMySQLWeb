@@ -40,7 +40,7 @@ import org.jooq.impl.DSL;
 
 public class QueryUtil
 {
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(QueryUtil.class);
 
     static public Result runExplainPlan (Connection conn, String query) throws SQLException
     {

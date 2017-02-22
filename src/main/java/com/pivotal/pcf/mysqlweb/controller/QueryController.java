@@ -44,7 +44,7 @@ import java.util.regex.Pattern;
 @Controller
 public class QueryController
 {
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(QueryController.class);
     private static final String FILENAME = "worksheet.sql";
     private static final String FILENAME_EXPORT = "query-output.csv";
     private static final String FILENAME_EXPORT_JSON = "query-output.json";

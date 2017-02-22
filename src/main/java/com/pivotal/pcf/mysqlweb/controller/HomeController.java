@@ -32,7 +32,7 @@ import java.sql.Connection;
 @Controller
 public class HomeController
 {
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(HomeController.class);
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String login(Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception

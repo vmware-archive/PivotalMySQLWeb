@@ -32,7 +32,7 @@ import java.util.List;
 
 public class TableDAOImpl implements TableDAO
 {
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(TableDAOImpl.class);
 
     @Override
     public List<Table> retrieveTableList(String schema, String search, String userKey) throws PivotalMySQLWebException

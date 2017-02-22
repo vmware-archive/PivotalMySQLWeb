@@ -40,7 +40,7 @@ import java.util.List;
 @Controller
 public class ConstraintController
 {
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(ConstraintController.class);
 
     @RequestMapping(value = "/constraints", method = RequestMethod.GET)
     public String showConstraints

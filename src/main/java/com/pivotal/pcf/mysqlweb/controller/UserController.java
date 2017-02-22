@@ -34,7 +34,7 @@ import java.sql.Connection;
 @Controller
 public class UserController
 {
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(UserController.class);
 
     @RequestMapping(value = "/userinfo", method = RequestMethod.GET)
     public String userDetails

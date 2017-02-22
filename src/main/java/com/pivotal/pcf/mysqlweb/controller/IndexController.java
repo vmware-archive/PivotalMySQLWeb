@@ -41,7 +41,7 @@ import java.util.List;
 @Controller
 public class IndexController
 {
-    protected static Logger logger = Logger.getLogger("controller");
+    protected static Logger logger = Logger.getLogger(IndexController.class);
 
     @RequestMapping(value = "/indexes", method = RequestMethod.GET)
     public String showIndexes
