@@ -40,6 +40,7 @@ public class PreferencesController
     public String showPrefs
             (Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
     {
+
         if (session.getAttribute("user_key") == null)
         {
             logger.info("user_key is null new Login required");
