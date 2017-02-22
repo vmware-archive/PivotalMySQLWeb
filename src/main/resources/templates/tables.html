@@ -528,11 +528,11 @@ limitations under the License.
 
 <!-- Add table with Results only if results exist -->
 <div class="bs-example" th:if="${estimatedrecords > 0}">
-    <div class="alert alert-success fade in col-xs-10">
+    <div class="alert alert-success fade in col-xs-12">
         <a href="#" class="close" data-dismiss="alert">&times;</a>
         <strong>Success!</strong> Found <b th:text="${estimatedrecords}"></b> Table(s)
     </div>
-    <div class="col-xs-10">
+    <div class="col-xs-12">
         <form th:action="@{/tables}" method="post" name="tablesForm" id="tablesForm">
             <input type="hidden" name="selectedSchema" th:value="${chosenSchema}" />
             <table id="datatable-mysql" class="table table-hover table-bordered table-striped table-condensed">
