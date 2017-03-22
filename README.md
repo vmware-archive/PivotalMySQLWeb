@@ -78,7 +78,7 @@ $ cf push -f manifest.yml
 
 <h3>Screen Shots</h3>
 
-![alt tag](https://www.dropbox.com/s/ej0b2xpnbgey37y/piv-mysqlweb3.png?dl=0)
+![alt tag](https://image.ibb.co/kKG6rF/piv_mysqlweb3.png)
 
 ![alt tag](https://dl.dropboxusercontent.com/u/15829935/platform-demos/images/piv-mysqlweb4.png)
 
