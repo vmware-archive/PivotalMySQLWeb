@@ -80,11 +80,12 @@ $ cf push -f manifest.yml
 
 ![alt tag](https://image.ibb.co/kKG6rF/piv_mysqlweb3.png)
 
-![alt tag](https://dl.dropboxusercontent.com/u/15829935/platform-demos/images/piv-mysqlweb4.png)
+![alt tag](https://image.ibb.co/f9rZdv/piv_mysqlweb4.png)
 
-![alt tag](https://dl.dropboxusercontent.com/u/15829935/platform-demos/images/piv-mysqlweb5.png)
+![alt tag](https://image.ibb.co/bWG0Jv/piv_mysqlweb5.png)
 
-![alt tag](https://dl.dropboxusercontent.com/u/15829935/platform-demos/images/piv-mysqlweb6.png)
+![alt tag](https://image.ibb.co/bBCJ5a/piv_mysqlweb6.png)
+
 
 <hr />
 Pas Apicella [papicella at pivotal.io] is a Senior Platform Architect at Pivotal Australia 
