@@ -1,10 +1,9 @@
 ---
 applications:
 - name: pivotal-mysqlweb
-  memory: 756M
+  memory: 1024M
   instances: 1
   random-route: true
-  #health-check-type: none
   path: ./target/PivotalMySQLWeb-0.0.1-SNAPSHOT.jar
   services:
     - pas-mysql
