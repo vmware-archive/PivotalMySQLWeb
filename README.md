@@ -16,7 +16,7 @@ run SQL commands and view schema objects from a browser based interface. It incl
     <li>Export SQL query results in JSON or CSV formats</li>
 </ul>
 
-![alt tag](https://dl.dropboxusercontent.com/u/15829935/platform-demos/images/piv-mysqlweb1.png)
+![alt tag](https://image.ibb.co/hsFm0k/piv_mysqlweb1.png)
 
 <h3>Run stand alone outside of PCF</h3>
 
@@ -50,7 +50,7 @@ papicella@papicella:~/pivotal/DemoProjects/spring-starter/pivotal/PivotalMySQLWe
 http://localhost:8080/
 ```
 
-![alt tag](https://dl.dropboxusercontent.com/u/15829935/platform-demos/images/piv-mysqlweb2.png)
+![alt tag](https://image.ibb.co/f3SzLk/piv_mysqlweb2.png)
 
 <h3>Deploy to Pivotal Cloud Foundry</h3>
 
