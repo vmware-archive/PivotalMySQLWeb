@@ -20,7 +20,7 @@ run SQL commands and view schema objects from a browser based interface. It incl
 
 <h3>Run stand alone outside of PCF</h3>
 
-- $ git clone https://github.com/papicella/PivotalMySQLWeb.git
+- $ git clone https://github.com/pivotal-cf/PivotalMySQLWeb.git
 - $ cd PivotalMySQLWeb
 - $ mvn -DskipTests=true package
 - Run as follows
