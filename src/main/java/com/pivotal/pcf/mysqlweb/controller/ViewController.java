@@ -23,6 +23,7 @@ import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOUtil;
 import com.pivotal.pcf.mysqlweb.dao.views.View;
 import com.pivotal.pcf.mysqlweb.dao.views.ViewDAO;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
+import com.pivotal.pcf.mysqlweb.utils.Utils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,29 +47,10 @@ public class ViewController
     public String showViews
             (Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
     {
-        if (session.getAttribute("user_key") == null)
+        if (Utils.verifyConnection(response, session))
         {
-            logger.info("user_key is null new Login required");
-            response.sendRedirect("/");
+            logger.info("user_key is null OR Connection stale so new Login required");
             return null;
-        }
-        else
-        {
-            Connection conn = AdminUtil.getConnection((String) session.getAttribute("user_key"));
-            if (conn == null )
-            {
-                response.sendRedirect("/");
-                return null;
-            }
-            else
-            {
-                if (conn.isClosed())
-                {
-                    response.sendRedirect("/");
-                    return null;
-                }
-            }
-
         }
 
         int startAtIndex = 0, endAtIndex = 0;
@@ -148,29 +130,10 @@ public class ViewController
         String schema = null;
         int startAtIndex = 0, endAtIndex = 0;
 
-        if (session.getAttribute("user_key") == null)
+        if (Utils.verifyConnection(response, session))
         {
-            logger.info("user_key is null new Login required");
-            response.sendRedirect("/");
+            logger.info("user_key is null OR Connection stale so new Login required");
             return null;
-        }
-        else
-        {
-            Connection conn = AdminUtil.getConnection((String) session.getAttribute("user_key"));
-            if (conn == null )
-            {
-                response.sendRedirect("/");
-                return null;
-            }
-            else
-            {
-                if (conn.isClosed())
-                {
-                    response.sendRedirect("/");
-                    return null;
-                }
-            }
-
         }
 
         Result result = new Result();

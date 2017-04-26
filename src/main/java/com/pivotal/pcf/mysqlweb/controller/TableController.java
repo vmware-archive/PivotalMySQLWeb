@@ -23,6 +23,7 @@ import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOUtil;
 import com.pivotal.pcf.mysqlweb.dao.tables.Table;
 import com.pivotal.pcf.mysqlweb.dao.tables.TableDAO;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
+import com.pivotal.pcf.mysqlweb.utils.Utils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,30 +47,13 @@ public class TableController
     public String showTables
             (Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
     {
-        if (session.getAttribute("user_key") == null)
+
+        if (Utils.verifyConnection(response, session))
         {
-            logger.info("user_key is null new Login required");
-            response.sendRedirect("/");
+            logger.info("user_key is null OR Connection stale so new Login required");
             return null;
         }
-        else
-        {
-            Connection conn = AdminUtil.getConnection((String) session.getAttribute("user_key"));
-            if (conn == null )
-            {
-                response.sendRedirect("/");
-                return null;
-            }
-            else
-            {
-                if (conn.isClosed())
-                {
-                    response.sendRedirect("/");
-                    return null;
-                }
-            }
 
-        }
 
         String schema = null;
         javax.servlet.jsp.jstl.sql.Result tableStructure, tableDetails, tableIndexes;
@@ -175,29 +159,10 @@ public class TableController
     public String performTableAction
             (Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
     {
-        if (session.getAttribute("user_key") == null)
+        if (Utils.verifyConnection(response, session))
         {
-            logger.info("user_key is null new Login required");
-            response.sendRedirect("/");
+            logger.info("user_key is null OR Connection stale so new Login required");
             return null;
-        }
-        else
-        {
-            Connection conn = AdminUtil.getConnection((String) session.getAttribute("user_key"));
-            if (conn == null )
-            {
-                response.sendRedirect("/");
-                return null;
-            }
-            else
-            {
-                if (conn.isClosed())
-                {
-                    response.sendRedirect("/");
-                    return null;
-                }
-            }
-
         }
 
         String schema = null;

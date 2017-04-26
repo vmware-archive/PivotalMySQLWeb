@@ -59,6 +59,12 @@ limitations under the License.
         });
     </script>
 
+    <script>
+        function enableLoad() {
+            document.getElementById("load_button").disabled=false;
+        }
+    </script>
+
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
             $('#datatable-mysql').DataTable();
@@ -347,15 +353,16 @@ limitations under the License.
     <br />
 </div>
 
-<div class="col-xs-12">
+<div>
     <br />
     <form th:action="@{/uploadsql}" method="post" class="form-horizontal" enctype="multipart/form-data" onsubmit="return checkFile();">
         <div class="form-group">
-            <div class="col-xs-2">
-                <input type="file" name="file" size="20" maxlength="300" />
-            </div>
-            <div class="col-xs-2">
-                <button type="submit" class="btn btn-primary">Load SQL File</button>
+            <div class="col-xs-8">
+                <label class="btn btn-primary">
+                    Browse SQL File&hellip; <input type="file" name="file" style="display: none" onchange="enableLoad()" />
+                </label>
+                <button id="load_button" type="submit" class="btn btn-primary" disabled="disabled">Load</button>
+                &nbsp; Use Browse SQL File button to enable load of SQL File
             </div>
         </div>
     </form>

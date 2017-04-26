@@ -17,6 +17,7 @@ limitations under the License.
  */
 package com.pivotal.pcf.mysqlweb.utils;
 
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,9 @@ import java.util.Properties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class Utils
 {
@@ -74,5 +78,32 @@ public class Utils
         Map<String, String> map = new HashMap<String, String>((Map) props);
 
         return map;
+    }
+
+    public static boolean verifyConnection(HttpServletResponse response, HttpSession session) throws Exception {
+        if (session.getAttribute("user_key") == null)
+        {
+            response.sendRedirect("/");
+            return true;
+        }
+        else
+        {
+            Connection conn = AdminUtil.getConnection((String) session.getAttribute("user_key"));
+            if (conn == null )
+            {
+                response.sendRedirect("/");
+                return true;
+            }
+            else
+            {
+                if (conn.isClosed())
+                {
+                    response.sendRedirect("/");
+                    return true;
+                }
+            }
+
+        }
+        return false;
     }
 }

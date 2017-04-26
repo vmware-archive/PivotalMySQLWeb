@@ -22,6 +22,7 @@ import com.pivotal.pcf.mysqlweb.beans.UserPref;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
 import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
 import com.pivotal.pcf.mysqlweb.utils.QueryUtil;
+import com.pivotal.pcf.mysqlweb.utils.Utils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,29 +60,10 @@ public class QueryController
              HttpServletRequest request,
              HttpSession session) throws Exception
     {
-        if (session.getAttribute("user_key") == null)
+        if (Utils.verifyConnection(response, session))
         {
-            logger.info("user_key is null new Login required");
-            response.sendRedirect("/");
+            logger.info("user_key is null OR Connection stale so new Login required");
             return null;
-        }
-        else
-        {
-            Connection conn = AdminUtil.getConnection((String) session.getAttribute("user_key"));
-            if (conn == null )
-            {
-                response.sendRedirect("/");
-                return null;
-            }
-            else
-            {
-                if (conn.isClosed())
-                {
-                    response.sendRedirect("/");
-                    return null;
-                }
-            }
-
         }
 
         logger.info("Received request to show query worksheet");
@@ -162,29 +144,10 @@ public class QueryController
              HttpServletRequest request,
              HttpSession session) throws Exception
     {
-        if (session.getAttribute("user_key") == null)
+        if (Utils.verifyConnection(response, session))
         {
-            logger.info("user_key is null new Login required");
-            response.sendRedirect("/");
+            logger.info("user_key is null OR Connection stale so new Login required");
             return null;
-        }
-        else
-        {
-            Connection conn = AdminUtil.getConnection((String) session.getAttribute("user_key"));
-            if (conn == null )
-            {
-                response.sendRedirect("/");
-                return null;
-            }
-            else
-            {
-                if (conn.isClosed())
-                {
-                    response.sendRedirect("/");
-                    return null;
-                }
-            }
-
         }
 
         logger.info("Received request to action SQL from query worksheet");
@@ -271,6 +234,12 @@ public class QueryController
                             model.addAttribute("result", result);
                             if (result.getMessage().startsWith("SUCCESS")) {
                                 addCommandToHistory(session, userPrefs, s);
+                                Map schemaMap = (Map) session.getAttribute("schemaMap");
+                                // get schema count now
+                                schemaMap = QueryUtil.populateSchemaMap
+                                        (conn, schemaMap, (String) session.getAttribute("schema"));
+
+                                session.setAttribute("schemaMap", schemaMap);
                             }
                         }
 
@@ -334,29 +303,10 @@ public class QueryController
              HttpServletRequest request,
              HttpSession session) throws Exception
     {
-        if (session.getAttribute("user_key") == null)
+        if (Utils.verifyConnection(response, session))
         {
-            logger.info("user_key is null new Login required");
-            response.sendRedirect("/");
+            logger.info("user_key is null OR Connection stale so new Login required");
             return null;
-        }
-        else
-        {
-            Connection conn = AdminUtil.getConnection((String) session.getAttribute("user_key"));
-            if (conn == null )
-            {
-                response.sendRedirect("/");
-                return null;
-            }
-            else
-            {
-                if (conn.isClosed())
-                {
-                    response.sendRedirect("/");
-                    return null;
-                }
-            }
-
         }
 
         logger.info("Received request to action a query directly");
@@ -511,6 +461,7 @@ public class QueryController
              HttpSession session) throws SQLException
     {
         int counter = 9000;
+        boolean ddl = false;
 
         SortedMap<String, Object> queryResults = new TreeMap<String, Object>();
 
@@ -604,12 +555,23 @@ public class QueryController
                     else
                     {
                         queryResults.put(counter + "DDL", result);
+                        ddl = true;
                     }
 
                     counter++;
                 }
             }
 
+        }
+
+        if (ddl == true)
+        {
+            Map schemaMap = (Map) session.getAttribute("schemaMap");
+            // get schema count now
+            schemaMap = QueryUtil.populateSchemaMap
+                    (conn, schemaMap, (String) session.getAttribute("schema"));
+
+            session.setAttribute("schemaMap", schemaMap);
         }
 
         return queryResults;

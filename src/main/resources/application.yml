@@ -3,4 +3,6 @@ server:
     whitelabel:
       enabled: false
   session:
-    timeout: 30
+    timeout: 1800
+
+#server.session.timeout= # Session timeout in seconds.

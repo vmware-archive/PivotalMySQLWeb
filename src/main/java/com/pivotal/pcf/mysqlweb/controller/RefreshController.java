@@ -19,6 +19,7 @@ package com.pivotal.pcf.mysqlweb.controller;
 
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
 import com.pivotal.pcf.mysqlweb.utils.QueryUtil;
+import com.pivotal.pcf.mysqlweb.utils.Utils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,29 +41,10 @@ public class RefreshController
     public String refreshPage
             (Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
     {
-        if (session.getAttribute("user_key") == null)
+        if (Utils.verifyConnection(response, session))
         {
-            logger.info("user_key is null new Login required");
-            response.sendRedirect("/");
+            logger.info("user_key is null OR Connection stale so new Login required");
             return null;
-        }
-        else
-        {
-            Connection conn = AdminUtil.getConnection((String) session.getAttribute("user_key"));
-            if (conn == null )
-            {
-                response.sendRedirect("/");
-                return null;
-            }
-            else
-            {
-                if (conn.isClosed())
-                {
-                    response.sendRedirect("/");
-                    return null;
-                }
-            }
-
         }
 
         logger.info("Received request refresh schema object list");
