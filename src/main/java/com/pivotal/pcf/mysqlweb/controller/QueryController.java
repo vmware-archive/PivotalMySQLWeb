@@ -19,6 +19,7 @@ package com.pivotal.pcf.mysqlweb.controller;
 
 import com.pivotal.pcf.mysqlweb.beans.CommandResult;
 import com.pivotal.pcf.mysqlweb.beans.UserPref;
+import com.pivotal.pcf.mysqlweb.dao.tables.Constants;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
 import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
 import com.pivotal.pcf.mysqlweb.utils.QueryUtil;
@@ -51,7 +52,7 @@ public class QueryController
     private static final String FILENAME_EXPORT_JSON = "query-output.json";
     private static final String SAVE_CONTENT_TYPE = "application/x-download";
     private final String QUERY_TYPES[] = {
-            "SELECT", "INSERT", "DELETE", "DDL", "UPDATE", "CALL", "COMMIT", "ROLLBACK"
+            "SELECT", "INSERT", "DELETE", "DDL", "UPDATE", "CALL", "COMMIT", "ROLLBACK", "DESCRIBE"
     };
 
     @RequestMapping(value = "/query", method = RequestMethod.GET)
@@ -170,11 +171,14 @@ public class QueryController
 
                 if (determineQueryType(s).equals("SELECT")) {
                     try {
-                        if (explainPlan.equals("Y")) {
+                        if (explainPlan.equals("Y"))
+                        {
                             logger.info("Need to run explain plan");
                             model.addAttribute("explainresult", QueryUtil.runExplainPlan(conn, query));
                             model.addAttribute("query", s);
-                        } else {
+                        }
+                        else
+                        {
                             long start = System.currentTimeMillis();
                             Result res = QueryUtil.runQuery(conn, s, userPrefs.getMaxRecordsinSQLQueryWindow());
                             long end = System.currentTimeMillis();
@@ -223,13 +227,38 @@ public class QueryController
                             if (result.getMessage().startsWith("SUCCESS")) {
                                 addCommandToHistory(session, userPrefs, s);
                             }
-                        } else if (determineQueryType(s).equals("CALL")) {
+                        }
+                        else if (determineQueryType(s).equals("CALL"))
+                        {
                             result = QueryUtil.runCommand(conn, s, elapsedTime);
                             model.addAttribute("result", result);
                             if (result.getMessage().startsWith("SUCCESS")) {
                                 addCommandToHistory(session, userPrefs, s);
                             }
-                        } else {
+                        }
+                        else if (determineQueryType(s).equals("DESCRIBE"))
+                        {
+                            try
+                            {
+                                Result res = QueryUtil.runQuery(conn, s, -1);
+                                model.addAttribute("queryResults", res);
+                                model.addAttribute("query", s);
+                                model.addAttribute("querysql", s);
+                                addCommandToHistory(session, userPrefs, s);
+                            }
+                            catch (Exception ex)
+                            {
+                                result.setCommand(s);
+                                result.setMessage(ex.getMessage() == null ? "ERROR: Unable to run query" : "ERROR: " + ex.getMessage());
+                                result.setRows(-1);
+                                model.addAttribute("result", result);
+                                model.addAttribute("query", s);
+                                //logger.info("Error Result = " + result);
+                            }
+
+                        }
+                        else
+                        {
                             result = QueryUtil.runCommand(conn, s, elapsedTime);
                             model.addAttribute("result", result);
                             if (result.getMessage().startsWith("SUCCESS")) {
@@ -392,6 +421,10 @@ public class QueryController
         {
             return decodeType(7);
         }
+        else if (sQuery.startsWith("describe"))
+        {
+            return decodeType(8);
+        }
         else
         {
             return decodeType(3);
@@ -473,7 +506,7 @@ public class QueryController
             String s = checkForComments(nextQuery.trim());
             s = s.trim();
 
-            if (determineQueryType(s).equals("SELECT"))
+            if (determineQueryType(s).equals("SELECT") || determineQueryType(s).equals("DESCRIBE"))
             {
                 Result res = null;
                 try

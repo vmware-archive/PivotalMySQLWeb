@@ -123,19 +123,13 @@ public class TableDAOImpl implements TableDAO
     public javax.servlet.jsp.jstl.sql.Result getTableStructure(String schema, String tableName, String userKey) throws PivotalMySQLWebException
     {
         Connection        conn = null;
-        PreparedStatement stmt = null;
         ResultSet         rset = null;
         javax.servlet.jsp.jstl.sql.Result res = null;
 
         try
         {
             conn = AdminUtil.getConnection(userKey);
-            stmt = conn.prepareStatement(Constants.USER_TAB_COLUMNS);
-            stmt.setString(1, schema);
-            stmt.setString(2, tableName);
-            rset = stmt.executeQuery();
-
-            res = ResultSupport.toResult(rset);
+            res = QueryUtil.runQuery(conn, String.format(Constants.TABLE_STUCTURE, schema, tableName), -1);
 
         }
         catch (SQLException se)
@@ -151,7 +145,6 @@ public class TableDAOImpl implements TableDAO
         {
             // close all resources
             JDBCUtil.close(rset);
-            JDBCUtil.close(stmt);
         }
 
         return res;

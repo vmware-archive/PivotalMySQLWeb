@@ -58,12 +58,8 @@ public interface Constants
 
         public static String CREATE_TABLE_QUERY = "SHOW CREATE TABLE %s.%s";
 
-        public static final String USER_TAB_COLUMNS =
-                        "SELECT COLUMN_NAME, data_type, is_nullable " +
-                        "FROM INFORMATION_SCHEMA.COLUMNS " +
-                        "WHERE TABLE_SCHEMA = ? " +
-                        "AND TABLE_NAME = ? " +
-                        "order by ORDINAL_POSITION";
+        public static final String TABLE_STUCTURE =
+                        "describe %s.%s";
 
         public static String SHOW_INDEXES = "SHOW INDEX FROM %s.%s";
 }
