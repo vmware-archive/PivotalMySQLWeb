@@ -301,33 +301,88 @@ limitations under the License.
 
 <br />
 
-<div class="bs-example">
-    <br />
-    <blockquote>
-        <p>
-            The p-mysql product delivers a fully managed, “Database as a Service” to Cloud Foundry users. When installed,
-            the tile deploys and maintains a single or three-node cluster running a recent release of MariaDB, SQL Proxies
-            for super-fast failover, and Service Brokers for Cloud Foundry integration
-        </p>
-        <small>by <cite>Pivotal</cite></small>
-        <br />
-        <p>
-            <b>Current Preferences</b> &nbsp;
-            <a th:href="@{/prefs}">
-                <img src="images/b_props.png"
-                     th:src="@{images/b_props.png}"
-                     alt="Preferences"
-                     border="0"/>
-                Preferences
-            </a>
-            <br />
-            Size of SQL History List : <span class="label label-info" th:text="${session.prefs.historySize}"/> <br />
-            Records to Display in Worksheet: <span class="label label-info" th:text="${session.prefs.maxRecordsinSQLQueryWindow}"/>
-            <p/>
-            <input type="button" class="btn btn-primary open-modal" value="About Pivotal MySQL*Web" />
-        </p>
+<div class="container">
+    <!--Row with two columns divided in 1:2 ratio-->
+    <div class="row">
+        <div class="col-xs-9">
+            <blockquote>
+                <p>
+                    The p-mysql product delivers a fully managed, “Database as a Service” to Cloud Foundry users. When installed,
+                    the tile deploys and maintains a single or three-node cluster running a recent release of MariaDB, SQL Proxies
+                    for super-fast failover, and Service Brokers for Cloud Foundry integration
+                </p>
+                <small>by <cite>Pivotal</cite></small>
+                <br />
+                <p>
+                    <b>Current Preferences</b> &nbsp;
+                    <a th:href="@{/prefs}">
+                        <img src="images/b_props.png"
+                             th:src="@{images/b_props.png}"
+                             alt="Preferences"
+                             border="0"/>
+                        Preferences
+                    </a>
+                    <br />
+                    Size of SQL History List : <span class="label label-info" th:text="${session.prefs.historySize}"/> <br />
+                    Records to Display in Worksheet: <span class="label label-info" th:text="${session.prefs.maxRecordsinSQLQueryWindow}"/>
+                <p/>
+                <input type="button" class="btn btn-primary open-modal" value="About Pivotal MySQL*Web" />
+                </p>
 
-    </blockquote>
+            </blockquote>
+        </div>
+        <div class="col-xs-3">
+            <p>
+                <b>Schema Objects</b> &nbsp;
+                <ul>
+                    <li>
+                        <a th:href="@{/tables}">
+                            <img src="images/s_tbl.png"
+                                 th:src="@{images/s_tbl.png}"
+                                 alt="Tables"
+                                 border="0"/>
+                            Tables[<span th:text="${session.schemaMap.Table}" />]
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/views}">
+                            <img src="images/b_views.png"
+                                 th:src="@{images/b_views.png}"
+                                 alt="Views"
+                                 border="0"/>
+                            Views[<span th:text="${session.schemaMap.View}" />]
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/indexes}">
+                            <img src="images/b_index.png"
+                                 th:src="@{images/b_index.png}"
+                                 alt="Indexes"
+                                 border="0"/>
+                            Indexes[<span th:text="${session.schemaMap.Index}" />]
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/constraints}">
+                            <img src="images/constraints.png"
+                                 th:src="@{images/constraints.png}"
+                                 alt="Constraints"
+                                 border="0"/>
+                            Constraints[<span th:text="${session.schemaMap.Constraint}" />]
+                        </a>
+                    </li>
+                </ul>
+                <b>Select Theme</b> &nbsp;
+                <ul>
+                    <li><a th:href="@{/selecttheme(theme='default')}">Default</a></li>
+                    <li><a th:href="@{/selecttheme(theme='sandstone')}">Sandstone</a></li>
+                    <li><a th:href="@{/selecttheme(theme='cyborg')}">Cyborg</a></li>
+                    <li><a th:href="@{/selecttheme(theme='slate')}">Slate</a></li>
+                    <li><a th:href="@{/selecttheme(theme='spacelab')}">Spacelab</a></li>
+                </ul>
+            </p>
+        </div>
+    </div>
 </div>
 
 <!-- Modal HTML -->
@@ -355,7 +410,9 @@ limitations under the License.
                         <li>Generate DDL for schema objects</li>
                     </ul>
                     <h3> More Information</h3>
-                    <a href="https://github.com/papicella/PivotalMySQLWeb" style="font-size: 16px" target="_top">https://github.com/papicella/PivotalMySQLWeb</a>
+                    <a href="https://github.com/pivotal-cf/PivotalMySQLWeb" style="font-size: 16px" target="_top">
+                        https://github.com/pivotal-cf/PivotalMySQLWeb
+                    </a>
                     <br />
                 </p>
             </div>
