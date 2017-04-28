@@ -295,6 +295,32 @@ limitations under the License.
 
 <p />
 
+<div class="col-xs-12" th:if="${tableStatus != null}">
+    <h3>Table Status</h3>
+    <div class="bs-example">
+        <div class="alert alert-success fade in">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Success!</strong> Table status Query Completed successfully
+        </div>
+    </div>
+    <table class="table table-hover table-bordered table-striped table-condensed">
+        <thead>
+        <div th:each="columnName : ${tableStatus.columnNames}">
+            <th style="text-align:center"><span th:text="${columnName}"/></th>
+        </div>
+        </thead>
+        <tbody>
+        <div th:each="rows : ${tableStatus.rows}">
+            <tr>
+                <div th:each="columnName : ${tableStatus.columnNames}">
+                    <td style="text-align:center"><span th:text="${rows.get(columnName)}"/></td>
+                </div>
+            </tr>
+        </div>
+        </tbody>
+    </table>
+</div>
+
 <div class="col-xs-12" th:if="${processList != null}">
     <h3>User Processes</h3>
     <div class="bs-example">
