@@ -52,6 +52,7 @@ public class AutoLoginController
         String username = null;
         String passwd = null;
         String url = null;
+        javax.servlet.jsp.jstl.sql.Result databaseList;
 
         try
         {
@@ -103,6 +104,13 @@ public class AutoLoginController
             session.setAttribute("schemaMap", schemaMap);
 
             logger.info("schemaMap=" + schemaMap);
+
+            databaseList = QueryUtil.runQuery(conn,
+                    "SELECT SCHEMA_NAME 'database', default_character_set_name 'charset', DEFAULT_COLLATION_NAME 'collation' FROM information_schema.SCHEMATA",
+                    -1);
+
+            model.addAttribute("databaseList", databaseList);
+
             logger.info(userPref.toString());
 
         }

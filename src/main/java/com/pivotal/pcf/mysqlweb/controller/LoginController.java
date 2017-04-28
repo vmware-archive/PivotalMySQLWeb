@@ -48,6 +48,7 @@ public class LoginController
     public String login(Model model, HttpSession session) throws Exception
     {
         logger.info("Received request to show login page");
+        javax.servlet.jsp.jstl.sql.Result databaseList;
 
         String jsonString = null;
         jsonString = System.getenv().get("VCAP_SERVICES");
@@ -103,6 +104,12 @@ public class LoginController
 
                     session.setAttribute("autobound", autobound);
 
+                    databaseList = QueryUtil.runQuery(conn,
+                            "SELECT SCHEMA_NAME 'database', default_character_set_name 'charset', DEFAULT_COLLATION_NAME 'collation' FROM information_schema.SCHEMATA",
+                            -1);
+
+                    model.addAttribute("databaseList", databaseList);
+
                     return "main";
 
                 }
@@ -133,6 +140,8 @@ public class LoginController
              Model model,
              HttpSession session) throws Exception
     {
+        javax.servlet.jsp.jstl.sql.Result databaseList;
+
         logger.info("Received request to login");
         ConnectionManager cm = ConnectionManager.getInstance();
         Connection conn;
@@ -179,6 +188,12 @@ public class LoginController
 
             logger.info("schemaMap=" + schemaMap);
             logger.info(userPref.toString());
+
+            databaseList = QueryUtil.runQuery(conn,
+                    "SELECT SCHEMA_NAME 'database', default_character_set_name 'charset', DEFAULT_COLLATION_NAME 'collation' FROM information_schema.SCHEMATA",
+                    -1);
+
+            model.addAttribute("databaseList", databaseList);
 
             return "main";
         }

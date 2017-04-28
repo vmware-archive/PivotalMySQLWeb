@@ -304,7 +304,7 @@ limitations under the License.
 <div class="container">
     <!--Row with two columns divided in 1:2 ratio-->
     <div class="row">
-        <div class="col-xs-9">
+        <div class="col-xs-6">
             <blockquote>
                 <p>
                     The p-mysql product delivers a fully managed, “Database as a Service” to Cloud Foundry users. When installed,
@@ -328,10 +328,9 @@ limitations under the License.
                 <p/>
                 <input type="button" class="btn btn-primary open-modal" value="About Pivotal MySQL*Web" />
                 </p>
-
             </blockquote>
         </div>
-        <div class="col-xs-3">
+        <div class="col-xs-6">
             <p>
                 <b>Schema Objects</b> &nbsp;
                 <ul>
@@ -374,12 +373,33 @@ limitations under the License.
                 </ul>
                 <b>Select Theme</b> &nbsp;
                 <ul>
-                    <li><a th:href="@{/selecttheme(theme='default')}">Default</a></li>
-                    <li><a th:href="@{/selecttheme(theme='sandstone')}">Sandstone</a></li>
-                    <li><a th:href="@{/selecttheme(theme='cyborg')}">Cyborg</a></li>
-                    <li><a th:href="@{/selecttheme(theme='slate')}">Slate</a></li>
-                    <li><a th:href="@{/selecttheme(theme='spacelab')}">Spacelab</a></li>
+                    <li>
+                        <a th:href="@{/selecttheme(theme='default')}">Default</a> &nbsp; | &nbsp;
+                        <a th:href="@{/selecttheme(theme='sandstone')}">Sandstone</a> &nbsp; | &nbsp;
+                        <a th:href="@{/selecttheme(theme='cyborg')}">Cyborg</a> &nbsp; | &nbsp;
+                        <a th:href="@{/selecttheme(theme='spacelab')}">Spacelab</a>
+                    </li>
                 </ul>
+
+                <div th:if="${databaseList != null}">
+                    <h3>Current Databases</h3>
+                    <table class="table table-hover table-bordered table-striped table-condensed">
+                        <thead>
+                        <div th:each="columnName : ${databaseList.columnNames}">
+                            <th style="text-align:center"><span th:text="${columnName}"/></th>
+                        </div>
+                        </thead>
+                        <tbody>
+                        <div th:each="rows : ${databaseList.rows}">
+                            <tr>
+                                <div th:each="columnName : ${databaseList.columnNames}">
+                                    <td style="text-align:center"><span th:text="${rows.get(columnName)}"/></td>
+                                </div>
+                            </tr>
+                        </div>
+                        </tbody>
+                    </table>
+                </div>
             </p>
         </div>
     </div>

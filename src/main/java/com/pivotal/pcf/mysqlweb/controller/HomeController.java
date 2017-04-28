@@ -18,6 +18,8 @@ limitations under the License.
 package com.pivotal.pcf.mysqlweb.controller;
 
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
+import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
+import com.pivotal.pcf.mysqlweb.utils.QueryUtil;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -45,6 +47,18 @@ public class HomeController
             logger.info("user_key is null OR Connection stale so new Login required");
             return null;
         }
+
+        javax.servlet.jsp.jstl.sql.Result databaseList;
+
+        // retrieve connection
+        ConnectionManager cm = ConnectionManager.getInstance();
+        Connection conn = cm.getConnection(session.getId());
+
+        databaseList = QueryUtil.runQuery(conn,
+                                         "SELECT SCHEMA_NAME 'database', default_character_set_name 'charset', DEFAULT_COLLATION_NAME 'collation' FROM information_schema.SCHEMATA",
+                                         -1);
+
+        model.addAttribute("databaseList", databaseList);
 
         return "main";
     }

@@ -49,22 +49,22 @@ public class UserController
 
         logger.info("Received request to show user information");
 
-        javax.servlet.jsp.jstl.sql.Result processList, privsList, tableStatus;
+        javax.servlet.jsp.jstl.sql.Result processList, privsList, sizeVariables;
 
         // retrieve connection
         ConnectionManager cm = ConnectionManager.getInstance();
         Connection conn = cm.getConnection(session.getId());
 
-        tableStatus = QueryUtil.runQuery(conn,
-                                         String.format("show table status from %s", session.getAttribute("schema")),
-                                        -1);
+        sizeVariables = QueryUtil.runQuery(conn,
+                                          "SHOW VARIABLES LIKE '%size%'",
+                                          -1);
 
         privsList = QueryUtil.runQuery(conn, "SHOW PRIVILEGES", -1);
         processList = QueryUtil.runQuery(conn, "SHOW processlist", -1);
 
         model.addAttribute("privsList", privsList);
         model.addAttribute("processList", processList);
-        model.addAttribute("tableStatus", tableStatus);
+        model.addAttribute("sizeVariables", sizeVariables);
 
         return "info";
     }

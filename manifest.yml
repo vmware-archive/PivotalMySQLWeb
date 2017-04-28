@@ -6,6 +6,6 @@ applications:
   random-route: true
   path: ./target/PivotalMySQLWeb-0.0.1-SNAPSHOT.jar
   services:
-    - nab-mysql
+    - pmysql-test
   env:
     JAVA_OPTS: -Djava.security.egd=file:///dev/urando
