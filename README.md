@@ -16,7 +16,7 @@ run SQL commands and view schema objects from a browser based interface. It incl
     <li>Export SQL query results in JSON or CSV formats</li>
 </ul>
 
-![alt tag](https://image.ibb.co/hsFm0k/piv_mysqlweb1.png)
+![alt tag](https://image.ibb.co/kxYJLk/piv_mysqlweb1.png)
 
 <h3>Run stand alone outside of PCF</h3>
 

@@ -102,7 +102,7 @@ public class Utils
                 if (conn.isClosed() || ! conn.isValid(5))
                 {
                     logger.info("Connection = null OR Connection no longer valid");
-                    // Need logic to reconnect here
+                    // Need logic to reconnect here if VCAP_SERVICES is populated and running in CF
                     response.sendRedirect("/");
                     return true;
                 }
