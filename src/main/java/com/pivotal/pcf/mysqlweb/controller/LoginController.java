@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import javax.sql.ConnectionPoolDataSource;
 import java.sql.Connection;
 import java.util.LinkedList;
 import java.util.List;
@@ -229,7 +230,9 @@ public class LoginController
             Map clearDBMap = (Map) mysqlService.get(0);
             Map credentailsMap = (Map) clearDBMap.get("credentials");
 
-            login.setUrl((String) credentailsMap.get("jdbcUrl") + "&connectTimeout=1800000&socketTimeout=1800000&autoReconnect=true");
+            //login.setUrl((String) credentailsMap.get("jdbcUrl") + "&connectTimeout=1800000&socketTimeout=1800000&autoReconnect=true&reconnect=true");
+            login.setUrl((String) credentailsMap.get("jdbcUrl") + "&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
+
             login.setUsername((String) credentailsMap.get("username"));
             login.setPassword((String) credentailsMap.get("password"));
             login.setSchema((String) credentailsMap.get("name"));

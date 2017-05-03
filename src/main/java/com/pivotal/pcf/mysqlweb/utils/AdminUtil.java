@@ -44,17 +44,43 @@ public class AdminUtil
     }
 
     /*
-     * Get connection from ConnectionManager conList Map
+     * Get connection from ConnectionManager conList Map or the DBCP
      */
     static public Connection getConnection(String userKey) throws Exception
     {
         Connection conn = null;
         ConnectionManager cm = null;
+        DBCPConnectionPool dbcp = null;
 
-        cm = ConnectionManager.getInstance();
-        conn = cm.getConnection(userKey);
+        if (userKey.startsWith("POOLED-CONNECTION-"))
+        {
+            dbcp = DBCPConnectionPool.getInstance();
+            conn = dbcp.getConnection();
+        }
+        else
+        {
+            cm = ConnectionManager.getInstance();
+            conn = cm.getConnection(userKey);
+        }
+
 
         return conn;
+    }
+
+    static public void closePooledConnection(String userKey, Connection conn)
+    {
+        DBCPConnectionPool dbcp = null;
+
+        if (userKey.startsWith("POOLED-CONNECTION-"))
+        {
+            try
+            {
+                conn.close();
+            }
+            catch (Exception e)
+            {
+            }
+        }
     }
 
     static public Map<String, String> getSchemaMap ()
