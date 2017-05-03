@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.log4j.Logger;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
 
@@ -32,6 +33,8 @@ import javax.servlet.http.HttpSession;
 
 public class Utils
 {
+    protected static Logger logger = Logger.getLogger(Utils.class);
+
     public static String getVcapServices ()
     {
         String jsonString = null;
@@ -96,8 +99,10 @@ public class Utils
             }
             else
             {
-                if (conn.isClosed())
+                if (conn.isClosed() || ! conn.isValid(5))
                 {
+                    logger.info("Connection = null OR Connection no longer valid");
+                    // Need logic to reconnect here
                     response.sendRedirect("/");
                     return true;
                 }

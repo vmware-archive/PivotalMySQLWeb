@@ -47,7 +47,6 @@ public class DBCPConnectionPool
 
     public Connection getConnection() throws SQLException
     {
-
         return dataSource.getConnection();
     }
 }
