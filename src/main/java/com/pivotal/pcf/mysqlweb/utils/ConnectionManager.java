@@ -80,8 +80,15 @@ public class ConnectionManager
             Connection conn = getConnection(key);
             if (conn != null)
             {
-                conn.close();
-                conn = null;
+                try
+                {
+                    conn.close();
+                    conn = null;
+                }
+                catch (SQLException se)
+                {
+                    conn = null;
+                }
             }
 
             conList.remove(key);

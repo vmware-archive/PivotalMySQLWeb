@@ -65,7 +65,7 @@ public class LoginController
                     logger.info("** Attempting login using VCAP_SERVICES **");
                     logger.info(jsonString);
 
-                    Login login = parseLoginCredentials(jsonString);
+                    Login login = Utils.parseLoginCredentials(jsonString);
 
                     logger.info("Login : " + login);
 
@@ -205,40 +205,6 @@ public class LoginController
             session.setAttribute("themeMin", Themes.defaultThemeMin);
             return "login";
         }
-    }
-
-    private Login parseLoginCredentials (String jsonString)
-    {
-        Login login = new Login();
-        JsonParser parser = JsonParserFactory.getJsonParser();
-
-        Map<String, Object> jsonMap = parser.parseMap(jsonString);
-
-        List mysqlService = (List) jsonMap.get("cleardb");
-
-        if (mysqlService == null)
-        {
-            // just check if it's "p-mysql"
-            mysqlService = (List) jsonMap.get("p-mysql");
-        }
-
-        
-        if (mysqlService != null)
-        {
-            logger.info("Obtaining VCAP_SERVICES credentials");
-            Map clearDBMap = (Map) mysqlService.get(0);
-            Map credentailsMap = (Map) clearDBMap.get("credentials");
-
-            login.setUrl((String) credentailsMap.get("jdbcUrl") + "&connectTimeout=1800000&socketTimeout=1800000&autoReconnect=true&reconnect=true");
-            //login.setUrl((String) credentailsMap.get("jdbcUrl") + "&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
-
-            login.setUsername((String) credentailsMap.get("username"));
-            login.setPassword((String) credentailsMap.get("password"));
-            login.setSchema((String) credentailsMap.get("name"));
-        }
-
-        return login;
-
     }
 
     private String mysqlInstanceType (String jsonString)

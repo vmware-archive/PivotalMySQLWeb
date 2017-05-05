@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pivotal.pcf.mysqlweb.beans.Login;
 import org.apache.log4j.Logger;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
@@ -103,6 +104,36 @@ public class Utils
                 {
                     logger.info("Connection = null OR Connection no longer valid");
                     // Need logic to reconnect here if VCAP_SERVICES is populated and running in CF
+                    ConnectionManager cm = ConnectionManager.getInstance();
+
+                    String jsonString = System.getenv().get("VCAP_SERVICES");
+                    if (jsonString != null) {
+                        if (jsonString.length() > 0) {
+                            logger.info("** Attempting login using VCAP_SERVICES **");
+
+                            Login login = Utils.parseLoginCredentials(jsonString);
+                            cm.removeConnection((String) session.getAttribute("user_key"));
+
+                            conn = AdminUtil.getNewConnection
+                                    (login.getUrl(), login.getUsername(), login.getPassword());
+
+                            conn.setAutoCommit(true);
+
+                            MysqlConnection newConn =
+                                    new MysqlConnection
+                                            (conn, login.getUrl(), new java.util.Date().toString(), login.getUsername().toUpperCase());
+
+                            cm.addConnection(newConn, session.getId());
+
+                            session.setAttribute("user_key", session.getId());
+                            session.setAttribute("user", login.getUsername().toUpperCase());
+                            session.setAttribute("schema", login.getSchema());
+                            session.setAttribute("url", login.getUrl());
+
+                            return false;
+                        }
+                    }
+
                     response.sendRedirect("/");
                     return true;
                 }
@@ -110,5 +141,39 @@ public class Utils
 
         }
         return false;
+    }
+
+    public static Login parseLoginCredentials (String jsonString)
+    {
+        Login login = new Login();
+        JsonParser parser = JsonParserFactory.getJsonParser();
+
+        Map<String, Object> jsonMap = parser.parseMap(jsonString);
+
+        List mysqlService = (List) jsonMap.get("cleardb");
+
+        if (mysqlService == null)
+        {
+            // just check if it's "p-mysql"
+            mysqlService = (List) jsonMap.get("p-mysql");
+        }
+
+
+        if (mysqlService != null)
+        {
+            logger.info("Obtaining VCAP_SERVICES credentials");
+            Map clearDBMap = (Map) mysqlService.get(0);
+            Map credentailsMap = (Map) clearDBMap.get("credentials");
+
+            login.setUrl((String) credentailsMap.get("jdbcUrl") + "&connectTimeout=1800000&socketTimeout=1800000&autoReconnect=true&reconnect=true");
+            //login.setUrl((String) credentailsMap.get("jdbcUrl") + "&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
+
+            login.setUsername((String) credentailsMap.get("username"));
+            login.setPassword((String) credentailsMap.get("password"));
+            login.setSchema((String) credentailsMap.get("name"));
+        }
+
+        return login;
+
     }
 }
