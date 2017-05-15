@@ -58,7 +58,7 @@ public interface Constants
 
         public static String CREATE_TABLE_QUERY = "SHOW CREATE TABLE %s.%s";
 
-        public static final String TABLE_STUCTURE =
+        public static final String TABLE_STRUCTURE =
                         "describe %s.%s";
 
         public static String SHOW_INDEXES = "SHOW INDEX FROM %s.%s";

@@ -129,7 +129,7 @@ public class TableDAOImpl implements TableDAO
         try
         {
             conn = AdminUtil.getConnection(userKey);
-            res = QueryUtil.runQuery(conn, String.format(Constants.TABLE_STUCTURE, schema, tableName), -1);
+            res = QueryUtil.runQuery(conn, String.format(Constants.TABLE_STRUCTURE, schema, tableName), -1);
 
         }
         catch (SQLException se)

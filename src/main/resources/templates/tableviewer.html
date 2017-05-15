@@ -18,7 +18,7 @@ limitations under the License.
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Pivotal MySQL*Web - Tables</title>
+    <title>Pivotal MySQL*Web - Table Viewer</title>
 
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -214,7 +214,7 @@ limitations under the License.
 
 <div class="bs-example">
     <div class="page-header">
-        <h1>Pivotal MySQL*Web - <small>Tables</small></h1>
+        <h1>Pivotal MySQL*Web - <small><span th:text="${tablename}" /> Table Viewer</small></h1>
     </div>
 </div>
 
@@ -228,7 +228,7 @@ limitations under the License.
             Home
         </a>
     </li>
-    <li class="active">
+    <li>
         <a th:href="@{/tables}">
             <img src="images/s_tbl.png"
                  th:src="@{images/s_tbl.png}"
@@ -302,18 +302,39 @@ limitations under the License.
     </li>
 </ul>
 
-<div class="col-xs-6" th:if="${tableDDL != null}">
+<div class="col-xs-12" th:if="${queryResults != null}">
+    <h2>Sample Data</h2>
+    <table id="datatable-mysql" class="table table-hover table-bordered table-striped table-condensed">
+        <thead>
+        <div th:each="columnName : ${queryResults.columnNames}">
+            <th style="text-align:center"><span th:text="${columnName}"/></th>
+        </div>
+        </thead>
+        <tbody>
+        <div th:each="rows : ${queryResults.rows}">
+            <tr>
+                <div th:each="columnName : ${queryResults.columnNames}">
+                    <td style="text-align:center"><span th:text="${rows.get(columnName)}"/></td>
+                </div>
+            </tr>
+        </div>
+        </tbody>
+    </table>
+    <br />
+</div>
+
+<div class="col-xs-12">
     <div class="panel-group" id="accordion">
         <br />
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4 class="panel-title">
+                <h3 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                        <span th:text="${tablename}" /> DDL
+                        DDL [<span th:text="${tablename}" />]
                     </a>
-                </h4>
+                </h3>
             </div>
-            <div id="collapseOne" class="panel-collapse collapse in">
+            <div id="collapseOne" class="panel-collapse collapse">
                 <div class="panel-body">
                     <table class="table table-hover table-bordered table-striped table-condensed">
                         <tbody>
@@ -327,89 +348,26 @@ limitations under the License.
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
-<div class="bs-example" th:if="${result != null}">
-    <br />
-    <div class="col-xs-8">
-        <div th:if="${#strings.contains(result.message, 'ERROR:')}">
-            <div class="alert alert-danger fade in">
-                <a href="#" class="close" data-dismiss="alert">&times;</a>
-                <div>
-                    <b>Pivotal MySQL*Web&gt;</b> <span th:text="${result.command}" />
-                </div>
-            </div>
-            <table class="table table-hover table-bordered table-striped table-condensed">
-                <tr class="info">
-                    <td th:text="${result.message}" style="text-align:left} " ></td>
-                </tr>
-            </table>
-        </div>
-        <div th:if="!${#strings.contains(result.message, 'ERROR:')}">
-            <div class="alert alert-success fade in">
-                <a href="#" class="close" data-dismiss="alert">&times;</a>
-                <div>
-                    <b>Pivotal MySQL*Web&gt;</b> <span th:text="${result.command}" />
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="bs-example" th:if="${arrayresult != null}">
-    <br />
-    <div class="col-xs-8">
-        <div th:each="result : ${arrayresult}">
-            <div th:if="${#strings.contains(result.message, 'ERROR:')}">
-                <div class="alert alert-danger fade in">
-                    <a href="#" class="close" data-dismiss="alert">&times;</a>
-                    <div>
-                        <b>Pivotal MySQL*Web&gt;</b> <span th:text="${result.command}" />
-                    </div>
-                </div>
-                <table class="table table-hover table-bordered table-striped table-condensed">
-                    <tr class="info">
-                        <td style="text-align: right">Message:</td>
-                        <td th:text="${result.message}" style="text-align:left} " ></td>
-                    </tr>
-                </table>
-            </div>
-            <div th:if="!${#strings.contains(result.message, 'ERROR:')}">
-                <div class="alert alert-success fade in">
-                    <a href="#" class="close" data-dismiss="alert">&times;</a>
-                    <div>
-                        <b>Pivotal MySQL*Web&gt;</b> <span th:text="${result.command}" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="col-xs-6">
-    <div class="panel-group" id="accordion" th:if="${tableStructure != null}">
-        <br />
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                        <span th:text="${tablename}" /> Structure
+                <h3 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                        DESCRIBE [<span th:text="${tablename}" />]
                     </a>
-                </h4>
+                </h3>
             </div>
-            <div id="collapseOne" class="panel-collapse collapse in">
+            <div id="collapseTwo" class="panel-collapse collapse">
                 <div class="panel-body">
-                    <table class="table table-hover table-bordered table-condensed">
+                    <table id="datatable-mysql" class="table table-hover table-bordered table-striped table-condensed">
                         <thead>
-                        <div th:each="columnName : ${tableStructure.columnNames}">
+                        <div th:each="columnName : ${queryResultsDescribe.columnNames}">
                             <th style="text-align:center"><span th:text="${columnName}"/></th>
                         </div>
                         </thead>
                         <tbody>
-                        <div th:each="rows : ${tableStructure.rows}">
+                        <div th:each="rows : ${queryResultsDescribe.rows}">
                             <tr>
-                                <div th:each="columnName : ${tableStructure.columnNames}">
+                                <div th:each="columnName : ${queryResultsDescribe.columnNames}">
                                     <td style="text-align:center"><span th:text="${rows.get(columnName)}"/></td>
                                 </div>
                             </tr>
@@ -419,21 +377,15 @@ limitations under the License.
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
-<div class="col-xs-8">
-    <div class="panel-group" id="accordion2" th:if="${tableDetails != null}">
-        <br />
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-                        <span th:text="${tablename}" /> Details
+                    <a data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+                        DETAILS [<span th:text="${tablename}" />]
                     </a>
                 </h4>
             </div>
-            <div id="collapseTwo" class="panel-collapse collapse in">
+            <div id="collapseThree" class="panel-collapse collapse">
                 <div class="panel-body">
                     <table class="table table-hover table-bordered table-condensed">
                         <thead>
@@ -454,219 +406,36 @@ limitations under the License.
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
-<div class="col-xs-12" th:if="${tableIndexes != null}">
-    <h3><span th:text="${tablename}" /> Indexes </h3>
-    <div class="bs-example">
-        <div class="alert alert-success fade in">
-            <a href="#" class="close" data-dismiss="alert">&times;</a>
-            <strong>Success!</strong> Query Completed successfully
-        </div>
-    </div>
-    <table class="table table-hover table-bordered table-striped table-condensed">
-        <thead>
-        <div th:each="columnName : ${tableIndexes.columnNames}">
-            <th style="text-align:center"><span th:text="${columnName}"/></th>
-        </div>
-        </thead>
-        <tbody>
-        <div th:each="rows : ${tableIndexes.rows}">
-            <tr>
-                <div th:each="columnName : ${tableIndexes.columnNames}">
-                    <td style="text-align:left"><span th:text="${rows.get(columnName)}"/></td>
-                </div>
-            </tr>
-        </div>
-        </tbody>
-    </table>
-    <br />
-</div>
-
-<div class="clearfix">
-</div>
-
-<div class="bs-example">
-    <br />
-    <form th:action="@{/tables}" method="post" class="form-horizontal">
-        <div class="form-group ">
-            <div class="col-xs-2">
-                <input type="text" id="search" name="search" placeholder="Table Name" class="form-control" />
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
+                        INDEXES [<span th:text="${tablename}" />]
+                    </a>
+                </h4>
             </div>
-            <div class="col-xs-2">
-                <select id="selectedSchema" name="selectedSchema" class="form-control">
-                    <table>
-                        <tr th:each="schema : ${schemas}">
-                            <div th:if="${schema == chosenSchema}">
-                                <option th:value="${schema}" selected="selected">
-                                    <span th:text="${schema}" />
-                                </option>
-                            </div>
-                            <div th:if="${schema != chosenSchema}">
-                                <option th:value="${schema}">
-                                    <span th:text="${schema}" />
-                                </option>
-                            </div>
-                        </tr>
+            <div id="collapseFour" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <table class="table table-hover table-bordered table-striped table-condensed">
+                        <thead>
+                        <div th:each="columnName : ${tableIndexes.columnNames}">
+                            <th style="text-align:center"><span th:text="${columnName}"/></th>
+                        </div>
+                        </thead>
+                        <tbody>
+                        <div th:each="rows : ${tableIndexes.rows}">
+                            <tr>
+                                <div th:each="columnName : ${tableIndexes.columnNames}">
+                                    <td style="text-align:left"><span th:text="${rows.get(columnName)}"/></td>
+                                </div>
+                            </tr>
+                        </div>
+                        </tbody>
                     </table>
-                </select>
-            </div>
-            <div class="col-xs-2">
-                <button type="submit" class="btn btn-primary" name="searchpressed" value="searchpressed"><span class="glyphicon glyphicon-search"></span> Search</button>
+                </div>
             </div>
         </div>
-    </form>
-</div>
-
-<div class="bs-example" th:if="${estimatedrecords == 0}">
-    <div class="alert alert-info fade in">
-        <a href="#" class="close" data-dismiss="alert">&times;</a>
-        <strong>Info!</strong> Found 0 Tables
     </div>
-</div>
-
-<!-- Add table with Results only if results exist -->
-<div class="bs-example" th:if="${estimatedrecords > 0}">
-    <div class="alert alert-success fade in col-xs-12">
-        <a href="#" class="close" data-dismiss="alert">&times;</a>
-        <strong>Success!</strong> Found <b th:text="${estimatedrecords}"></b> Table(s)
-    </div>
-    <div class="col-xs-12">
-        <form th:action="@{/tables}" method="post" name="tablesForm" id="tablesForm">
-            <input type="hidden" name="selectedSchema" th:value="${chosenSchema}" />
-            <table id="datatable-mysql" class="table table-hover table-bordered table-striped table-condensed">
-                <thead>
-                <tr>
-                    <th colspan="6" style="text-align:center"><b>Tables</b></th>
-                </tr>
-                <tr>
-                    <th style="text-align:center"></th>
-                    <th style="text-align:center">Catalog</th>
-                    <th style="text-align:center">Schema</th>
-                    <th style="text-align:center">Name</th>
-                    <th style="text-align:center">Type</th>
-                    <th style="text-align:center">Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="table,iterStat : ${tables}">
-                    <td style="text-align:center;width:5%">
-                        <input type="checkbox"
-                               name="selected_tbl[]"
-                               th:value="${table.tableName}"
-                               th:id="'checkbox_tbl_' + ${iterStat.count} + ''" />
-                    </td>
-                    <td th:text="${table.catalog}" style="text-align:center"></td>
-                    <td th:text="${table.schemaName}" style="text-align:center"></td>
-                    <td style="text-align:center">
-                        <a th:href="@{/tableviewer(tabName=${table.tableName},selectedSchema=${chosenSchema})}">
-                            <span th:text="${table.tableName}" />
-                        </a>
-                    </td>
-                    <td th:text="${table.tableType}" style="text-align:center"></td>
-                    <td style="text-align:center ">
-                        <a th:href="@{/executequery(query='select * from ' + ${chosenSchema} + '.' + ${table.tableName})}">
-                            <img src="images/b_views.png"
-                                 th:src="@{images/b_views.png}"
-                                 alt="View Data"
-                                 width="16" height="16"
-                                 data-toggle="tooltip" title="View Data"
-                                 border="0"/>
-                        </a>&nbsp;
-                        <a th:href="@{/tables(tabName=${table.tableName},tabAction='DROP',selectedSchema=${chosenSchema})}"
-                           th:onclick="'return confirmLink(this, \'Drop TABLE ' + ${table.tableName} + '?\')'">
-                            <img src="images/b_drop.png"
-                                 th:src="@{images/b_drop.png}"
-                                 alt="Drop Table"
-                                 width="16" height="16"
-                                 data-toggle="tooltip" title="Drop Table"
-                                 border="0"/>
-                        </a>&nbsp;
-                        <a th:href="@{/tables(tabName=${table.tableName},tabAction='EMPTY',selectedSchema=${chosenSchema})}"
-                           th:onclick="'return confirmLink(this, \'Truncate TABLE ' + ${table.tableName} + '?\')'">
-                            <img src="images/b_empty.png"
-                                 th:src="@{images/b_empty.png}"
-                                 alt="Truncate Table"
-                                 width="16" height="16"
-                                 data-toggle="tooltip" title="Truncate Table"
-                                 border="0"/>
-                        </a>&nbsp;
-                        <a th:href="@{/tables(tabName=${table.tableName},tabAction='STRUCTURE',selectedSchema=${chosenSchema})}">
-                            <img src="images/b_tbloptimize.png"
-                                 th:src="@{images/b_tbloptimize.png}"
-                                 alt="Table Structure"
-                                 width="16" height="16"
-                                 data-toggle="tooltip" title="View Table Structure"
-                                 border="0"/>
-                        </a>&nbsp;
-                        <a th:href="@{/tables(tabName=${table.tableName},tabAction='DETAILS',selectedSchema=${chosenSchema})}">
-                            <img src="images/b_tblanalyse.png"
-                                 th:src="@{images/b_tblanalyse.png}"
-                                 alt="Table Details"
-                                 width="16" height="16"
-                                 data-toggle="tooltip" title="View Table Details"
-                                 border="0"/>
-                        </a>&nbsp;
-                        <a th:href="@{/tables(tabName=${table.tableName},tabAction='DDL',selectedSchema=${chosenSchema})}">
-                        <img src="images/s_vars.png"
-                             th:src="@{images/s_vars.png}"
-                             alt="Generate Table DDL"
-                             width="16" height="16"
-                             data-toggle="tooltip" title="Generate Table DDL"
-                             border="0"/>
-                        </a>&nbsp;
-                        <a th:href="@{/tables(tabName=${table.tableName},tabAction='INDEXES',selectedSchema=${chosenSchema})}">
-                            <img src="images/b_index.png"
-                                 th:src="@{images/b_index.png}"
-                                 alt="Show Table Indexes"
-                                 width="16" height="16"
-                                 data-toggle="tooltip" title="Show Table Indexes"
-                                 border="0"/>
-                        </a>&nbsp;
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-
-            <div class="clearfloat">
-                <div class="col-xs-3">
-                    <img class="selectallarrow"
-                         src="images/arrow_ltr.png"
-                         th:src="@{images/arrow_ltr.png}"
-                         width="38" height="22" alt="With selected:" />
-                    <a th:href="@{/tables(selectedSchema=${chosenSchema})}"
-                       onclick="if (setCheckboxes('datatable-mysql', 'true')) return false;">
-                        Check All</a>
-                    /
-                    <a th:href="@{/tables(selectedSchema=${chosenSchema})}"
-                       onclick="if (unMarkAllRows('tablesForm')) return false;">
-                        Uncheck All</a>
-                </div>
-
-                <div class="col-xs-2">
-                    <select name="submit_mult" onchange="this.form.submit();" style="margin: 0 3em 0 3em;" class="form-control">
-                        <option value="With selected:" selected="selected">With selected:</option>
-                        <option value="Drop" >Drop</option>
-                        <option value="Empty" >Truncate</option>
-                    </select>
-                </div>
-
-                <script type="text/javascript">
-                    <!--
-                    // Fake js to allow the use of the <noscript> tag
-                    //-->
-                </script>
-                <noscript>
-                    <button type="submit" class="btn btn-primary">Go</button>
-                </noscript>
-            </div>
-
-        </form>
-    </div>
-</div>
-
-<div class="clearfix">
 </div>
 
 <div th:include="footer :: copy"></div>
