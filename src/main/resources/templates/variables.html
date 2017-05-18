@@ -15,17 +15,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Pivotal MySQL*Web - Preferences Page</title>
+    <title>Pivotal MySQL*Web - Information</title>
 
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
     <link rel="stylesheet" th:href="@{'themes/' + ${session.themeMain}}" media="screen" />
     <link rel="stylesheet" th:href="@{'themes/' + ${session.themeMin}}" />
@@ -33,7 +30,30 @@ limitations under the License.
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <script type="text/javascript" src="https://cdn.datatables.net/r/bs-3.3.5/jqc-1.11.3,dt-1.10.8/datatables.min.js"></script>
+
+    <link href="https://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet" />
+    <script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+
     <script th:src="@{js/functions.js}" type="text/javascript"></script>
+
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function() {
+            $('#datatable-mysql').DataTable();
+        } );
+    </script>
+
+    <script type="text/javascript">
+        // <![CDATA[
+
+        // js form validation stuff
+        var confirmMsg  = 'Do you really want to ';
+        // ]]>
+    </script>
 
 </head>
 <body>
@@ -83,15 +103,6 @@ limitations under the License.
                                      alt="Preferences"
                                      border="0"/>
                                 Preferences
-                            </a>
-                        </li>
-                        <li>
-                            <a th:href="@{/endpoints}">
-                                <img src="images/s_notice.png"
-                                     th:src="@{images/s_notice.png}"
-                                     alt="Endpoints"
-                                     border="0"/>
-                                Heath Endpoints
                             </a>
                         </li>
                         <li>
@@ -156,7 +167,7 @@ limitations under the License.
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="#">
+                            <a th:href="@{/query}">
                                 <img src="images/b_sql.png"
                                      th:src="@{images/b_sql.png}"
                                      alt="SQL Worksheet"
@@ -194,7 +205,7 @@ limitations under the License.
 
 <div class="bs-example">
     <div class="page-header">
-        <h1>Pivotal MySQL*Web - <small>Preferences</small></h1>
+        <h1>Pivotal MySQL*Web - <small>Database Variables</small></h1>
     </div>
 </div>
 
@@ -280,7 +291,7 @@ limitations under the License.
             Information
         </a>
     </li>
-    <li>
+    <li class="active">
         <a th:href="@{/variables}">
             <img src="images/s_vars.png"
                  th:src="@{images/s_vars.png}"
@@ -291,45 +302,33 @@ limitations under the License.
     </li>
 </ul>
 
-<div th:if="${success != null}">
-    <div class="alert alert-success fade in">
-        <a href="#" class="close" data-dismiss="alert">&times;</a>
-        <strong>Success!</strong> <strong th:text="${success}"></strong>
+<p />
+
+<div class="col-xs-12" th:if="${dbVariables != null}">
+    <div class="bs-example">
+        <div class="alert alert-success fade in">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>Success!</strong> Database Variables Query Completed successfully
+        </div>
     </div>
+    <table id="datatable-mysql" class="table table-hover table-bordered table-striped table-condensed">
+        <thead>
+        <div th:each="columnName : ${dbVariables.columnNames}">
+            <th style="text-align:center"><span th:text="${columnName}"/></th>
+        </div>
+        </thead>
+        <tbody>
+        <div th:each="rows : ${dbVariables.rows}">
+            <tr>
+                <div th:each="columnName : ${dbVariables.columnNames}">
+                    <td style="text-align:center"><span th:text="${rows.get(columnName)}"/></td>
+                </div>
+            </tr>
+        </div>
+        </tbody>
+    </table>
 </div>
 
-<div class="bs-example">
-    <br />
-    <form th:action="@{/prefs}" method="post" class="form-horizontal">
-        <div class="form-group">
-            <label for="maxrecordsinsqlworksheet" class="control-label col-xs-2">Max Records in Worksheet</label>
-            <div class="col-xs-6">
-                <input type="text" class="form-control" id="maxrecordsinsqlworksheet" name="maxrecordsinsqlworksheet"
-                       th:value="${userPref.maxRecordsinSQLQueryWindow}" onkeyup="checkInput(this)"
-                       placeholder="Max Records in SQL Worksheet" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="historysize" class="control-label col-xs-2">History Size</label>
-            <div class="col-xs-6">
-                <input type="text" class="form-control" id="historysize" name="historysize" th:value="${userPref.historySize}" onkeyup="checkInput(this)"
-                       placeholder="Size of SQL History List" />
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-xs-offset-2 col-xs-10">
-                <button type="submit" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-save"></span> Update Preferences
-                </button>
-                <button type="reset" class="btn btn-primary">Reset</button>
-            </div>
-        </div>
-    </form>
-</div>
-
-
-<div class="clearfix">
-</div>
 
 <div th:include="footer :: copy"></div>
 
