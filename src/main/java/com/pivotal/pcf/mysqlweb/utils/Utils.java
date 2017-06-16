@@ -156,6 +156,12 @@ public class Utils
         {
             // just check if it's "p-mysql"
             mysqlService = (List) jsonMap.get("p-mysql");
+
+            // for dedicated v2 mysql we
+            if (mysqlService == null)
+            {
+                mysqlService = (List) jsonMap.get("p.mysql");
+            }
         }
 
 
