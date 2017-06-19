@@ -66,12 +66,14 @@ to a MySQL instance itself.
 ---
 applications:
 - name: pivotal-mysqlweb
-  memory: 1G
+  memory: 1024M
   instances: 1
-  host: pivotal-mysqlweb-${random-word}
+  random-route: true
   path: ./target/PivotalMySQLWeb-0.0.1-SNAPSHOT.jar
   services:
-    - pas-mysql
+    - pas-mysql-dedicated-v2
+  env:
+    JAVA_OPTS: -Djava.security.egd=file:///dev/urando
 ```
 
 Push to PCF using
