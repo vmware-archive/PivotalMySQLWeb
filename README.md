@@ -66,7 +66,7 @@ to a MySQL instance itself.
 ---
 applications:
 - name: pivotal-mysqlweb
-  memory: 512M
+  memory: 1G
   instances: 1
   host: pivotal-mysqlweb-${random-word}
   path: ./target/PivotalMySQLWeb-0.0.1-SNAPSHOT.jar
