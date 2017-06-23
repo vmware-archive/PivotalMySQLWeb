@@ -22,7 +22,7 @@ It includes the following capabilities:
     <li>Export SQL query results in JSON or CSV formats</li>
 </ul>
 
-![alt tag](https://image.ibb.co/kxYJLk/piv_mysqlweb1.png)
+![alt tag](https://image.ibb.co/nbMBq5/PVLG_Pivotal_MYSQLWeb.png)
 
 <h3>Run stand alone outside of PCF</h3>
 
