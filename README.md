@@ -1,6 +1,6 @@
-<h1>Pivotal MySQL*Web </h1>
+<h1>Pivotal MySQLWeb </h1>
 
-![alt tag](https://image.ibb.co/cP5aXk/Pivotal_My_SQLWeb.png)
+![alt tag](https://image.ibb.co/nbMBq5/PVLG_Pivotal_MYSQLWeb.png)
 
 PivotalMySQLWeb is a free Pivotal open source project, intended to handle the administration of a Pivotal MySQL Service 
 Instance over the Web. PivotalMySQLWeb supports a wide range of operations on a Pivotal MySQL Service Instance such as 
@@ -22,7 +22,7 @@ It includes the following capabilities:
     <li>Export SQL query results in JSON or CSV formats</li>
 </ul>
 
-![alt tag](https://image.ibb.co/nbMBq5/PVLG_Pivotal_MYSQLWeb.png)
+![alt tag](https://image.ibb.co/kxYJLk/piv_mysqlweb1.png)
 
 <h3>Run stand alone outside of PCF</h3>
 
