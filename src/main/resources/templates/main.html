@@ -39,6 +39,16 @@ limitations under the License.
             });
         });
     </script>
+    <style>
+        .navbar-brand
+        {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            margin: auto;
+            margin-left: 48%;
+        }
+    </style>
 </head>
 <body>
 <div class="navbar navbar-default">
@@ -49,11 +59,13 @@ limitations under the License.
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">
-                <img src="images/PVLG-PivotalMYSQLWeb-SM.png"
-                     th:src="@{images/PVLG-PivotalMYSQLWeb-SM.png}"
-                     alt="Brand" />
-            </a>
+            <div class="navbar-brand navbar-left">
+                <a href="#">
+                    <img src="images/PVLG-PivotalMYSQLWeb-SM.png"
+                         th:src="@{images/PVLG-PivotalMYSQLWeb-SM.png}"
+                         alt="Brand" />
+                </a>
+            </div>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right nav-pills">
