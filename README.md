@@ -1,5 +1,3 @@
-<h1>Pivotal MySQLWeb </h1>
-
 ![alt tag](https://image.ibb.co/jrEmOQ/PVLG_Pivotal_MYSQLWeb_MD.png)
 
 PivotalMySQLWeb is a free Pivotal open source project, intended to handle the administration of a Pivotal MySQL Service 

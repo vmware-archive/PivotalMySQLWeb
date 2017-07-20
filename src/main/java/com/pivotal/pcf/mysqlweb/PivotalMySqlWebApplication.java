@@ -26,4 +26,5 @@ public class PivotalMySqlWebApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PivotalMySqlWebApplication.class, args);
 	}
+
 }

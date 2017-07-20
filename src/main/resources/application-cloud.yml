@@ -1,0 +1,11 @@
+server:
+  error:
+    whitelabel:
+      enabled: false
+  session:
+    timeout: 1800
+management:
+  security:
+    enabled: false
+
+#server.session.timeout= # Session timeout in seconds.
