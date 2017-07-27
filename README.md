@@ -1,6 +1,4 @@
-![alt tag](https://image.ibb.co/jrEmOQ/PVLG_Pivotal_MYSQLWeb_MD.png)
-
-<img src="https://image.ibb.co/iCvjc5/Pivotal_My_SQLWeb_BLOG.png" width="100" height="50" />
+<img src="https://image.ibb.co/iCvjc5/Pivotal_My_SQLWeb_BLOG.png" width="300" height="100" />
 
 PivotalMySQLWeb is a free Pivotal open source project, intended to handle the administration of a Pivotal MySQL Service 
 Instance over the Web. PivotalMySQLWeb supports a wide range of operations on a Pivotal MySQL Service Instance such as 
