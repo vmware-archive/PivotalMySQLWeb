@@ -94,6 +94,22 @@ function confirmLink(theLink, theSqlQuery)
     return is_confirmed;
 } // end of the 'confirmLink()' function
 
+function confirmMultiLink(theLink, form)
+{
+    // Confirmation is not required in the configuration file
+    // or browser is Opera (crappy js implementation)
+    if (multiConfirmMsg == '' || typeof(window.opera) != 'undefined') {
+        return true;
+    }
+
+    var is_confirmed = confirm(multiConfirmMsg + ' :\n');
+    if (is_confirmed) {
+       form.submit();
+    }
+
+    return is_confirmed;
+} // end of the 'confirmMultiLink()' function
+
 /**
  * Checks/unchecks all checkbox in given conainer (f.e. a form, fieldset or div)
  *
