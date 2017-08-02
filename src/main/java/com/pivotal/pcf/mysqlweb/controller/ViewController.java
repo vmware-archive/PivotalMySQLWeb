@@ -23,6 +23,8 @@ import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOUtil;
 import com.pivotal.pcf.mysqlweb.dao.views.View;
 import com.pivotal.pcf.mysqlweb.dao.views.ViewDAO;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
+import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
+import com.pivotal.pcf.mysqlweb.utils.QueryUtil;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -37,6 +39,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ViewController
@@ -102,6 +105,14 @@ public class ViewController
                                         (String)session.getAttribute("user_key"));
 
                 model.addAttribute("result", result);
+
+                if (result.getMessage().startsWith("SUCCESS"))
+                {
+                    if (viewAction.equalsIgnoreCase("DROP"))
+                    {
+                        Utils.refresh(session);
+                    }
+                }
             }
         }
 

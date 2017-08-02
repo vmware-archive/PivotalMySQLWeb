@@ -1,4 +1,5 @@
 <img src="https://image.ibb.co/iCvjc5/Pivotal_My_SQLWeb_BLOG.png" height="120" width="350"/>
+
 PivotalMySQLWeb is a free Pivotal open source project, intended to handle the administration of a Pivotal MySQL Service 
 Instance over the Web. PivotalMySQLWeb supports a wide range of operations on a Pivotal MySQL Service Instance such as 
 managing tables, views, indexes which can all be performed via the user interface, while you still have the ability to 

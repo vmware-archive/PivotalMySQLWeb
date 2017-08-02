@@ -84,6 +84,19 @@ public class Utils
         return map;
     }
 
+    public static void refresh (HttpSession session) throws Exception
+    {
+        ConnectionManager cm = ConnectionManager.getInstance();
+        Connection conn = cm.getConnection(session.getId());
+
+        // get schema count now
+        Map schemaMap = (Map) session.getAttribute("schemaMap");
+        schemaMap = QueryUtil.populateSchemaMap
+                (conn, schemaMap, (String) session.getAttribute("schema"));
+
+        session.setAttribute("schemaMap", schemaMap);
+    }
+
     public static boolean verifyConnection(HttpServletResponse response, HttpSession session) throws Exception {
         if (session.getAttribute("user_key") == null)
         {
