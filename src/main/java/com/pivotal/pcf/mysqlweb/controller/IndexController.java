@@ -105,6 +105,14 @@ public class IndexController
                                         (String) request.getParameter("tableName"),
                                         (String) session.getAttribute("user_key"));
                 model.addAttribute("result", result);
+
+                if (result.getMessage().startsWith("SUCCESS"))
+                {
+                    if (idxAction.equalsIgnoreCase("DROP"))
+                    {
+                        Utils.refresh(session);
+                    }
+                }
             }
         }
 
