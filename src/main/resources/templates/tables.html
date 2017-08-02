@@ -666,7 +666,7 @@ limitations under the License.
                 </div>
 
                 <div class="col-xs-2">
-                    <select name="submit_mult" onchange="this.form.submit();" style="margin: 0 3em 0 3em;" class="form-control">
+                    <select name="submit_mult" onchange="if(confirm('This action can not be reversed are you sure you want to continue?')){this.form.submit();}" style="margin: 0 3em 0 3em;" class="form-control">
                         <option value="With selected:" selected="selected">With selected:</option>
                         <option value="Drop" >Drop</option>
                         <option value="Empty" >Truncate</option>
