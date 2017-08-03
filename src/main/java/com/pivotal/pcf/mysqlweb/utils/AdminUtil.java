@@ -50,37 +50,11 @@ public class AdminUtil
     {
         Connection conn = null;
         ConnectionManager cm = null;
-        DBCPConnectionPool dbcp = null;
 
-        if (userKey.startsWith("POOLED-CONNECTION-"))
-        {
-            dbcp = DBCPConnectionPool.getInstance();
-            conn = dbcp.getConnection();
-        }
-        else
-        {
-            cm = ConnectionManager.getInstance();
-            conn = cm.getConnection(userKey);
-        }
-
+        cm = ConnectionManager.getInstance();
+        conn = cm.getConnection(userKey);
 
         return conn;
-    }
-
-    static public void closePooledConnection(String userKey, Connection conn)
-    {
-        DBCPConnectionPool dbcp = null;
-
-        if (userKey.startsWith("POOLED-CONNECTION-"))
-        {
-            try
-            {
-                conn.close();
-            }
-            catch (Exception e)
-            {
-            }
-        }
     }
 
     static public Map<String, String> getSchemaMap ()
