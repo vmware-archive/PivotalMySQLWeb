@@ -19,6 +19,8 @@ package com.pivotal.pcf.mysqlweb.dao;
 
 import com.pivotal.pcf.mysqlweb.dao.constraints.ConstraintDAO;
 import com.pivotal.pcf.mysqlweb.dao.constraints.ConstraintDAOImpl;
+import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
+import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAOImpl;
 import com.pivotal.pcf.mysqlweb.dao.indexes.IndexDAO;
 import com.pivotal.pcf.mysqlweb.dao.indexes.IndexDAOImpl;
 import com.pivotal.pcf.mysqlweb.dao.tables.TableDAO;
@@ -46,5 +48,10 @@ public class PivotalMySQLWebDAOFactory
     public static ConstraintDAO getConstraintDAO()
     {
         return new ConstraintDAOImpl();
+    }
+
+    public static GenericDAO getGenericDAO()
+    {
+        return new GenericDAOImpl();
     }
 }

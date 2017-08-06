@@ -18,12 +18,11 @@ limitations under the License.
 package com.pivotal.pcf.mysqlweb.controller;
 
 import com.pivotal.pcf.mysqlweb.beans.Result;
+import com.pivotal.pcf.mysqlweb.beans.WebResult;
 import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
-import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOUtil;
+import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.dao.indexes.Index;
 import com.pivotal.pcf.mysqlweb.dao.indexes.IndexDAO;
-import com.pivotal.pcf.mysqlweb.dao.tables.Table;
-import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -34,7 +33,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -55,11 +53,12 @@ public class IndexController
         }
 
         String schema = null;
-        javax.servlet.jsp.jstl.sql.Result indexStructure;
+        WebResult indexStructure;
 
         logger.info("Received request to show indexes");
 
         IndexDAO indexDAO = PivotalMySQLWebDAOFactory.getIndexDAO();
+        GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
 
         String selectedSchema = request.getParameter("selectedSchema");
         logger.info("selectedSchema = " + selectedSchema);
@@ -110,7 +109,10 @@ public class IndexController
                 {
                     if (idxAction.equalsIgnoreCase("DROP"))
                     {
-                        Utils.refresh(session);
+                        session.setAttribute("schemaMap",
+                                            genericDAO.populateSchemaMap
+                                                ((String)session.getAttribute("schema"),
+                                                (String)session.getAttribute("user_key")));
                     }
                 }
             }
@@ -123,9 +125,8 @@ public class IndexController
         model.addAttribute("estimatedrecords", indexes.size());
         model.addAttribute("indexes", indexes);
 
-        model.addAttribute("schemas",
-                PivotalMySQLWebDAOUtil.getAllSchemas
-                        ((String) session.getAttribute("user_key")));
+        model.addAttribute
+                ("schemas", genericDAO.allSchemas((String) session.getAttribute("user_key")));
 
         model.addAttribute("chosenSchema", schema);
 
@@ -149,6 +150,7 @@ public class IndexController
         logger.info("Received request to perform an action on the indexes");
 
         IndexDAO indexDAO = PivotalMySQLWebDAOFactory.getIndexDAO();
+        GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
 
         String selectedSchema = request.getParameter("selectedSchema");
         logger.info("selectedSchema = " + selectedSchema);
@@ -211,9 +213,8 @@ public class IndexController
         model.addAttribute("estimatedrecords", indexes.size());
         model.addAttribute("indexes", indexes);
 
-        model.addAttribute("schemas",
-                PivotalMySQLWebDAOUtil.getAllSchemas
-                        ((String) session.getAttribute("user_key")));
+        model.addAttribute
+                ("schemas", genericDAO.allSchemas((String) session.getAttribute("user_key")));
 
         model.addAttribute("chosenSchema", schema);
 

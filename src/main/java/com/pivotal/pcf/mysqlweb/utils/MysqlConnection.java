@@ -17,31 +17,19 @@ limitations under the License.
  */
 package com.pivotal.pcf.mysqlweb.utils;
 
-import java.sql.Connection;
-
 public class MysqlConnection
 {
-    private Connection conn;
     private String url;
     private String connectedAt;
     private String schema;
 
     public MysqlConnection
-            (Connection conn, String url, String connectedAt, String schema)
+            (String url, String connectedAt, String schema)
     {
         super();
-        this.conn = conn;
         this.url = url;
         this.connectedAt = connectedAt;
         this.schema = schema;
-    }
-
-    public Connection getConn() {
-        return conn;
-    }
-
-    public void setConn(Connection conn) {
-        this.conn = conn;
     }
 
     public String getUrl() {

@@ -17,6 +17,8 @@ limitations under the License.
  */
 package com.pivotal.pcf.mysqlweb.controller;
 
+import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
+import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
 import com.pivotal.pcf.mysqlweb.utils.QueryUtil;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
@@ -49,15 +51,14 @@ public class RefreshController
 
         logger.info("Received request refresh schema object list");
 
-        Map schemaMap = (Map) session.getAttribute("schemaMap");
-        Connection conn = AdminUtil.getConnection((String)session.getAttribute("user_key"));
+        GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
 
-        // get schema count now
-        schemaMap = QueryUtil.populateSchemaMap
-                (conn, schemaMap, (String) session.getAttribute("schema"));
+        Map<String, Long> schemaMap;
+        schemaMap = genericDAO.populateSchemaMap((String)session.getAttribute("schema"),
+                                                 (String)session.getAttribute("user_key"));
 
+        logger.info("schemaMap=" + schemaMap);
         session.setAttribute("schemaMap", schemaMap);
-
 
         return "main";
     }

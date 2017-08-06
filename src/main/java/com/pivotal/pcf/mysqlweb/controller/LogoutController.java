@@ -41,10 +41,6 @@ public class LogoutController
     {
         logger.info("Received request to logout of PivotalMySQL*Web");
 
-        // remove connection from list
-        ConnectionManager cm = ConnectionManager.getInstance();
-        cm.removeConnection(session.getId());
-
         session.invalidate();
 
         model.addAttribute("loginObj", new Login("", "", "", ""));

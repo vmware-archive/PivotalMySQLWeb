@@ -19,12 +19,9 @@ package com.pivotal.pcf.mysqlweb.controller;
 
 import com.pivotal.pcf.mysqlweb.beans.Result;
 import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
-import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOUtil;
+import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.dao.views.View;
 import com.pivotal.pcf.mysqlweb.dao.views.ViewDAO;
-import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
-import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
-import com.pivotal.pcf.mysqlweb.utils.QueryUtil;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -35,11 +32,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class ViewController
@@ -62,6 +57,8 @@ public class ViewController
         logger.info("Received request to show views");
 
         ViewDAO viewDAO = PivotalMySQLWebDAOFactory.getViewDAO();
+        GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
+
         Result result = new Result();
 
         String viewAction = request.getParameter("viewAction");
@@ -110,7 +107,10 @@ public class ViewController
                 {
                     if (viewAction.equalsIgnoreCase("DROP"))
                     {
-                        Utils.refresh(session);
+                        session.setAttribute("schemaMap",
+                                        genericDAO.populateSchemaMap
+                                                ((String)session.getAttribute("schema"),
+                                                (String)session.getAttribute("user_key")));
                     }
                 }
             }
@@ -125,9 +125,8 @@ public class ViewController
         model.addAttribute("estimatedrecords", views.size());
         model.addAttribute("views", views);
 
-        model.addAttribute("schemas",
-                PivotalMySQLWebDAOUtil.getAllSchemas
-                        ((String) session.getAttribute("user_key")));
+        model.addAttribute
+                ("schemas", genericDAO.allSchemas((String) session.getAttribute("user_key")));
 
         model.addAttribute("chosenSchema", schema);
 
@@ -167,6 +166,8 @@ public class ViewController
         logger.info("schema = " + schema);
 
         ViewDAO viewDAO = PivotalMySQLWebDAOFactory.getViewDAO();
+        GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
+
         if (request.getParameter("searchpressed") != null)
         {
             views = viewDAO.retrieveViewList
@@ -214,9 +215,8 @@ public class ViewController
         model.addAttribute("records", views.size());
         model.addAttribute("estimatedrecords", views.size());
         model.addAttribute("views", views);
-        model.addAttribute("schemas",
-                PivotalMySQLWebDAOUtil.getAllSchemas
-                        ((String) session.getAttribute("user_key")));
+        model.addAttribute
+                ("schemas", genericDAO.allSchemas((String) session.getAttribute("user_key")));
 
         model.addAttribute("chosenSchema", schema);
 

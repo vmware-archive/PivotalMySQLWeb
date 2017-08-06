@@ -18,66 +18,50 @@ limitations under the License.
 package com.pivotal.pcf.mysqlweb.dao.indexes;
 
 import com.pivotal.pcf.mysqlweb.beans.Result;
-import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOUtil;
+import com.pivotal.pcf.mysqlweb.beans.WebResult;
+import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
+import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.main.PivotalMySQLWebException;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
-import com.pivotal.pcf.mysqlweb.utils.JDBCUtil;
 import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
-import javax.servlet.jsp.jstl.sql.ResultSupport;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class IndexDAOImpl implements IndexDAO
 {
     protected static Logger logger = Logger.getLogger(IndexDAOImpl.class);
 
+    private JdbcTemplate jdbcTemplate;
+
+    public void setDataSource(SingleConnectionDataSource ds) {
+        this.jdbcTemplate = new JdbcTemplate(ds);
+    }
+
     @Override
     public List<Index> retrieveIndexList(String schema, String search, String userKey) throws PivotalMySQLWebException
     {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rset = null;
         List<Index>       indexes = null;
         String            srch = null;
+        SingleConnectionDataSource dataSource = null;
 
         try
         {
-            conn = AdminUtil.getConnection(userKey);
-
-            stmt = conn.prepareStatement(Constants.USER_INDEXES);
+            dataSource = AdminUtil.getDataSource(userKey);
+            setDataSource(dataSource);
 
             if (search == null)
                 srch = "%";
             else
                 srch = "%" + search + "%";
 
-
-            stmt.setString(1, schema);
-            stmt.setString(2, srch);
-            rset = stmt.executeQuery();
-
-            indexes = makeIndexListFromResultSet(rset);
-        }
-        catch (SQLException se)
-        {
-            logger.info("Error retrieving all indexes with search string = " + search);
-            throw new PivotalMySQLWebException(se);
+            indexes = jdbcTemplate.query(Constants.USER_INDEXES, new Object[]{schema, srch}, new IndexMapper());
         }
         catch (Exception ex)
         {
             logger.info("Error retrieving all indexes with search string = " + search);
             throw new PivotalMySQLWebException(ex);
-        }
-        finally
-        {
-            // close all resources
-            JDBCUtil.close(rset);
-            JDBCUtil.close(stmt);
         }
 
         return indexes;
@@ -87,7 +71,8 @@ public class IndexDAOImpl implements IndexDAO
     public Result simpleindexCommand(String schemaName, String indexName, String type, String tableName, String userKey) throws PivotalMySQLWebException
     {
         String            command = null;
-        Result            res     = null;
+        Result            res     = new Result();
+        SingleConnectionDataSource dataSource = null;
 
         if (type != null)
         {
@@ -105,65 +90,33 @@ public class IndexDAOImpl implements IndexDAO
 
         }
 
-        res = PivotalMySQLWebDAOUtil.runCommand(command, userKey);
+        GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
+        res = genericDAO.runCommand(command, userKey);
 
         return res;
     }
 
     @Override
-    public javax.servlet.jsp.jstl.sql.Result getIndexDetails(String schema, String tableName, String indexName, String userKey) throws PivotalMySQLWebException
+    public WebResult getIndexDetails(String schema, String tableName, String indexName, String userKey) throws PivotalMySQLWebException
     {
-        Connection        conn = null;
-        PreparedStatement stmt = null;
-        ResultSet         rset = null;
-        javax.servlet.jsp.jstl.sql.Result res = null;
+        SingleConnectionDataSource dataSource;
+        GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
+        WebResult webResult;
 
         try
         {
-            conn = AdminUtil.getConnection(userKey);
-            stmt = conn.prepareStatement(Constants.INDEX_DETAILS);
-            stmt.setString(1, schema);
-            stmt.setString(2, tableName);
-            stmt.setString(3, indexName);
-            rset = stmt.executeQuery();
+            dataSource = AdminUtil.getDataSource(userKey);
+            setDataSource(dataSource);
 
-            res = ResultSupport.toResult(rset);
+            webResult = genericDAO.runGenericQuery
+                    (Constants.INDEX_DETAILS, new Object[]{schema, tableName, indexName}, userKey, -1);
 
-        }
-        catch (SQLException se)
-        {
-            logger.info("Error retrieving index details for index " + indexName);
-            throw new PivotalMySQLWebException(se);
         }
         catch (Exception ex) {
             logger.info("Error retrieving index details for index " + indexName);
             throw new PivotalMySQLWebException(ex);
         }
-        finally
-        {
-            // close all resources
-            JDBCUtil.close(rset);
-            JDBCUtil.close(stmt);
-        }
 
-        return res;
-    }
-
-    private List<Index> makeIndexListFromResultSet (ResultSet rset) throws SQLException
-    {
-        List<Index> indexes = new ArrayList<Index>();
-
-        while (rset.next())
-        {
-            Index index = new Index(rset.getString(1),
-                    rset.getString(2),
-                    rset.getString(3),
-                    rset.getString(4));
-
-            indexes.add(index);
-        }
-
-        return indexes;
-
+        return webResult;
     }
 }

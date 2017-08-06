@@ -18,60 +18,51 @@ limitations under the License.
 package com.pivotal.pcf.mysqlweb.dao.views;
 
 import com.pivotal.pcf.mysqlweb.beans.Result;
-import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOUtil;
+import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
+import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.main.PivotalMySQLWebException;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
-import com.pivotal.pcf.mysqlweb.utils.JDBCUtil;
 import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ViewDAOImpl implements ViewDAO
 {
     protected static Logger logger = Logger.getLogger(ViewDAOImpl.class);
 
+    private JdbcTemplate jdbcTemplate;
+
+    public void setDataSource(SingleConnectionDataSource ds) {
+        this.jdbcTemplate = new JdbcTemplate(ds);
+    }
+
     @Override
     public List<View> retrieveViewList(String schema, String search, String userKey) throws PivotalMySQLWebException
     {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rset = null;
-        List<View>        views = null;
-        String            srch = null;
+        List<View> views;
+        String srch;
+
+        SingleConnectionDataSource dataSource = null;
 
         try
         {
-            conn = AdminUtil.getConnection(userKey);
+            dataSource = AdminUtil.getDataSource(userKey);
+            setDataSource(dataSource);
 
-            stmt = conn.prepareStatement(Constants.USER_VIEWS);
             if (search == null)
                 srch = "%";
             else
                 srch = "%" + search + "%";
 
-            stmt.setString(1, schema);
-            stmt.setString(2, srch);
-            rset = stmt.executeQuery();
+            views = jdbcTemplate.query(Constants.USER_VIEWS, new Object[]{schema, srch}, new ViewMapper());
 
-            views = makeViewListFromResultSet(rset);
-        }
-        catch (SQLException se)
-        {
-            logger.info("Error retrieving all views with search string = " + search);
-            throw new PivotalMySQLWebException(se);
         }
         catch (Exception ex)
         {
             logger.info("Error retrieving all views with search string = " + search);
             throw new PivotalMySQLWebException(ex);
-        }
-        finally
-        {
-            // close all resources
-            JDBCUtil.close(rset);
-            JDBCUtil.close(stmt);
         }
 
         return views;
@@ -81,7 +72,8 @@ public class ViewDAOImpl implements ViewDAO
     public Result simpleviewCommand(String schemaName, String viewName, String type, String userKey) throws PivotalMySQLWebException
     {
         String            command = null;
-        Result            res     = null;
+        Result            res     = new Result();
+        SingleConnectionDataSource dataSource = null;
 
         if (type != null)
         {
@@ -98,7 +90,8 @@ public class ViewDAOImpl implements ViewDAO
             }
         }
 
-        res = PivotalMySQLWebDAOUtil.runCommand(command, userKey);
+        GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
+        res = genericDAO.runCommand(command, userKey);
 
         return res;
     }
@@ -106,58 +99,26 @@ public class ViewDAOImpl implements ViewDAO
     @Override
     public String getViewDefinition(String schemaName, String viewName, String userKey) throws PivotalMySQLWebException
     {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet         rset = null;
-        String            def = null;
+        String            def;
+        SingleConnectionDataSource dataSource;
 
         try
         {
-            conn = AdminUtil.getConnection(userKey);
-            stmt = conn.prepareStatement(Constants.USER_VIEW_DEF);
-            stmt.setString(1, schemaName);
-            stmt.setString(2, viewName);
-            rset = stmt.executeQuery();
+            dataSource = AdminUtil.getDataSource(userKey);
+            setDataSource(dataSource);
 
-            rset.next();
+            def = jdbcTemplate.queryForObject
+                    (Constants.USER_VIEW_DEF, new Object[]{schemaName, viewName}, String.class);
 
-            def = rset.getString(1);
-
-        }
-        catch (SQLException se)
-        {
-            logger.info("Error retrieving view definition for view = " + viewName);
-            throw new PivotalMySQLWebException(se);
         }
         catch (Exception ex)
         {
             logger.info("Error retrieving view definition for view = " + viewName);
             throw new PivotalMySQLWebException(ex);
         }
-        finally
-        {
-            // close all resources
-            JDBCUtil.close(rset);
-            JDBCUtil.close(stmt);
-        }
 
         return def;
 
     }
 
-    private List<View> makeViewListFromResultSet (ResultSet rset) throws SQLException
-    {
-        List<View> views = new ArrayList<View>();
-
-        while (rset.next())
-        {
-            View view = new View(rset.getString(1),
-                    rset.getString(2),
-                    rset.getString(3));
-            views.add(view);
-        }
-
-        return views;
-
-    }
 }

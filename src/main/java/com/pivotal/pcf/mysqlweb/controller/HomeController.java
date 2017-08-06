@@ -17,6 +17,10 @@ limitations under the License.
  */
 package com.pivotal.pcf.mysqlweb.controller;
 
+import com.pivotal.pcf.mysqlweb.beans.WebResult;
+import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
+import com.pivotal.pcf.mysqlweb.dao.generic.Constants;
+import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
 import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
 import com.pivotal.pcf.mysqlweb.utils.QueryUtil;
@@ -40,6 +44,7 @@ public class HomeController
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String login(Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
     {
+
         logger.info("Received request to show home page");
 
         if (Utils.verifyConnection(response, session))
@@ -48,15 +53,11 @@ public class HomeController
             return null;
         }
 
-        javax.servlet.jsp.jstl.sql.Result databaseList;
+        GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
+        WebResult databaseList;
 
-        // retrieve connection
-        ConnectionManager cm = ConnectionManager.getInstance();
-        Connection conn = cm.getConnection(session.getId());
-
-        databaseList = QueryUtil.runQuery(conn,
-                                         "SELECT SCHEMA_NAME 'database', default_character_set_name 'charset', DEFAULT_COLLATION_NAME 'collation' FROM information_schema.SCHEMATA",
-                                         -1);
+        databaseList = genericDAO.runGenericQuery
+                (Constants.DATABASE_LIST, null, session.getId(), -1);
 
         model.addAttribute("databaseList", databaseList);
 

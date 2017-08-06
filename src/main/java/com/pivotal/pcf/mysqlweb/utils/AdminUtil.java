@@ -17,6 +17,8 @@ limitations under the License.
  */
 package com.pivotal.pcf.mysqlweb.utils;
 
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -26,47 +28,49 @@ import java.util.Map;
 public class AdminUtil
 {
 
-    static public Connection getNewConnection
+    static public SingleConnectionDataSource newSingleConnectionDataSource
             (String url,
              String username,
-             String password) throws SQLException, ClassNotFoundException
+             String passwd)
     {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(url,username,password);
-        return conn;
-    }
+        SingleConnectionDataSource ds = new SingleConnectionDataSource();
 
-    static public Connection getNewConnection (String url) throws SQLException, ClassNotFoundException
-    {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(url);
-        return conn;
+        ds.setDriverClassName("com.mysql.jdbc.Driver");
+        ds.setUrl(url);
+
+        if (username != null)
+            ds.setUsername(username);
+
+        if (passwd != null)
+            ds.setPassword(passwd);
+
+        return ds;
     }
 
 
     /*
-     * Get connection from ConnectionManager conList Map or the DBCP
+     * Get connection from ConnectionManager conList Map
      */
     static public Connection getConnection(String userKey) throws Exception
     {
         Connection conn = null;
-        ConnectionManager cm = null;
-
-        cm = ConnectionManager.getInstance();
-        conn = cm.getConnection(userKey);
-
+        ConnectionManager cm = ConnectionManager.getInstance();
+        conn = cm.getDataSource(userKey).getConnection();
         return conn;
     }
 
-    static public Map<String, String> getSchemaMap ()
+    /*
+     * Get DataSource from ConnectionManager conList Map
+     */
+    static public SingleConnectionDataSource getDataSource(String userKey) throws Exception
     {
-        Map<String, String> schemaMap = new HashMap<String, String>();
+        SingleConnectionDataSource dataSource = null;
+        ConnectionManager cm = null;
 
-        schemaMap.put("Table", "0");
-        schemaMap.put("View", "0");
-        schemaMap.put("Index", "0");
-        schemaMap.put("Constraint", "0");
+        cm = ConnectionManager.getInstance();
+        dataSource = cm.getDataSource(userKey);
 
-        return schemaMap;
+        return dataSource;
     }
+
 }

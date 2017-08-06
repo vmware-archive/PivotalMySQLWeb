@@ -17,18 +17,20 @@ limitations under the License.
  */
 package com.pivotal.pcf.mysqlweb.dao.indexes;
 
-import com.pivotal.pcf.mysqlweb.beans.Result;
-import com.pivotal.pcf.mysqlweb.beans.WebResult;
-import com.pivotal.pcf.mysqlweb.main.PivotalMySQLWebException;
+import org.springframework.jdbc.core.RowMapper;
 
-import java.util.List;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-public interface IndexDAO
+public class IndexMapper implements RowMapper<Index>
 {
-    public List<Index> retrieveIndexList(String schema, String search, String userKey) throws PivotalMySQLWebException;
-
-    public Result simpleindexCommand (String schemaName, String indexName, String type, String tableName, String userKey) throws PivotalMySQLWebException;
-
-    public WebResult getIndexDetails(String schema, String tableName, String indexName, String userKey) throws PivotalMySQLWebException;
-
+    @Override
+    public Index mapRow(ResultSet resultSet, int i) throws SQLException {
+        Index index = new Index();
+        index.setCatalog(resultSet.getString("Catalog"));
+        index.setSchemaName(resultSet.getString("Schema"));
+        index.setTableName(resultSet.getString("Name"));
+        index.setIndexName(resultSet.getString("Index Name"));
+        return index;
+    }
 }

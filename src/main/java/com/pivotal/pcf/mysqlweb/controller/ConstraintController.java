@@ -19,10 +19,9 @@ package com.pivotal.pcf.mysqlweb.controller;
 
 import com.pivotal.pcf.mysqlweb.beans.Result;
 import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
-import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOUtil;
 import com.pivotal.pcf.mysqlweb.dao.constraints.Constraint;
 import com.pivotal.pcf.mysqlweb.dao.constraints.ConstraintDAO;
-import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
+import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -33,7 +32,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -58,6 +56,7 @@ public class ConstraintController
         logger.info("Received request to show constraints");
 
         ConstraintDAO constraintDAO = PivotalMySQLWebDAOFactory.getConstraintDAO();
+        GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
 
         String selectedSchema = request.getParameter("selectedSchema");
         logger.info("selectedSchema = " + selectedSchema);
@@ -102,9 +101,8 @@ public class ConstraintController
         model.addAttribute("estimatedrecords", constraints.size());
         model.addAttribute("constraints", constraints);
 
-        model.addAttribute("schemas",
-                PivotalMySQLWebDAOUtil.getAllSchemas
-                        ((String) session.getAttribute("user_key")));
+        model.addAttribute
+                ("schemas", genericDAO.allSchemas((String) session.getAttribute("user_key")));
 
         model.addAttribute("chosenSchema", schema);
 
@@ -130,6 +128,7 @@ public class ConstraintController
         logger.info("Received request to perform an action on the constraints");
 
         ConstraintDAO constraintDAO = PivotalMySQLWebDAOFactory.getConstraintDAO();
+        GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
 
         String selectedSchema = request.getParameter("selectedSchema");
         logger.info("selectedSchema = " + selectedSchema);
@@ -193,9 +192,8 @@ public class ConstraintController
         model.addAttribute("estimatedrecords", constraints.size());
         model.addAttribute("constraints", constraints);
 
-        model.addAttribute("schemas",
-                PivotalMySQLWebDAOUtil.getAllSchemas
-                        ((String) session.getAttribute("user_key")));
+        model.addAttribute
+                ("schemas", genericDAO.allSchemas((String) session.getAttribute("user_key")));
 
         model.addAttribute("chosenSchema", schema);
 

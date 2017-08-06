@@ -19,10 +19,15 @@ package com.pivotal.pcf.mysqlweb.controller;
 
 import com.pivotal.pcf.mysqlweb.beans.Login;
 import com.pivotal.pcf.mysqlweb.beans.UserPref;
+import com.pivotal.pcf.mysqlweb.beans.WebResult;
+import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
+import com.pivotal.pcf.mysqlweb.dao.generic.Constants;
+import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.stereotype.Controller;
 import org.apache.log4j.Logger;
 import org.springframework.ui.Model;
@@ -32,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Connection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +54,8 @@ public class LoginController
     public String login(Model model, HttpSession session) throws Exception
     {
         logger.info("Received request to show login page");
-        javax.servlet.jsp.jstl.sql.Result databaseList;
+        WebResult databaseList;
+        SingleConnectionDataSource ds = new SingleConnectionDataSource();
 
         String jsonString = null;
         jsonString = System.getenv().get("VCAP_SERVICES");
@@ -60,7 +67,6 @@ public class LoginController
                 try
                 {
                     ConnectionManager cm = ConnectionManager.getInstance();
-                    Connection conn;
 
                     logger.info("** Attempting login using VCAP_SERVICES **");
                     logger.info(jsonString);
@@ -69,16 +75,13 @@ public class LoginController
 
                     logger.info("Login : " + login);
 
-                    conn = AdminUtil.getNewConnection
-                            (login.getUrl(), login.getUsername(), login.getPassword());
-
-                    conn.setAutoCommit(true);
-
                     MysqlConnection newConn =
                             new MysqlConnection
-                                    (conn, login.getUrl(), new java.util.Date().toString(), login.getUsername().toUpperCase());
+                                    (login.getUrl(), new java.util.Date().toString(), login.getUsername().toUpperCase());
 
                     cm.addConnection(newConn, session.getId());
+                    cm.addDataSourceConnection(AdminUtil.newSingleConnectionDataSource
+                            (login.getUrl(), login.getUsername(), login.getPassword()), session.getId());
 
                     session.setAttribute("user_key", session.getId());
                     session.setAttribute("user", login.getUsername().toUpperCase());
@@ -90,11 +93,15 @@ public class LoginController
                     session.setAttribute("themeMain", Themes.defaultTheme);
                     session.setAttribute("themeMin", Themes.defaultThemeMin);
 
-                    Map<String, String> schemaMap = AdminUtil.getSchemaMap();
+                    GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
 
-                    schemaMap = QueryUtil.populateSchemaMap
-                            (conn, schemaMap, login.getSchema());
+                    databaseList = genericDAO.runGenericQuery
+                            (Constants.DATABASE_LIST, null, session.getId(), -1);
 
+                    Map<String, Long> schemaMap;
+                    schemaMap = genericDAO.populateSchemaMap(login.getSchema(), session.getId());
+
+                    logger.info("schemaMap=" + schemaMap);
                     session.setAttribute("schemaMap", schemaMap);
 
                     logger.info("schemaMap=" + schemaMap);
@@ -103,11 +110,6 @@ public class LoginController
                     String autobound = mysqlInstanceType(jsonString);
 
                     session.setAttribute("autobound", autobound);
-
-                    databaseList = QueryUtil.runQuery(conn,
-                            "SELECT SCHEMA_NAME 'database', default_character_set_name 'charset', DEFAULT_COLLATION_NAME 'collation' FROM information_schema.SCHEMATA",
-                            -1);
-
                     model.addAttribute("databaseList", databaseList);
 
                     return "main";
@@ -140,11 +142,11 @@ public class LoginController
              Model model,
              HttpSession session) throws Exception
     {
-        javax.servlet.jsp.jstl.sql.Result databaseList;
+        WebResult databaseList, schemaMapResult;
+        SingleConnectionDataSource ds = new SingleConnectionDataSource();
 
         logger.info("Received request to login");
         ConnectionManager cm = ConnectionManager.getInstance();
-        Connection conn;
 
         Login loginObj = new Login(username, password, url, "");
 
@@ -153,19 +155,16 @@ public class LoginController
 
         try
         {
-            conn = AdminUtil.getNewConnection
-                    (url, username, password);
-
-            conn.setAutoCommit(true);
 
             MysqlConnection newConn =
                     new MysqlConnection
-                            (conn,
-                                    url,
-                                    new java.util.Date().toString(),
-                                    username.toUpperCase());
+                            (url,
+                             new java.util.Date().toString(),
+                             username.toUpperCase());
 
             cm.addConnection(newConn, session.getId());
+            cm.addDataSourceConnection(AdminUtil.newSingleConnectionDataSource
+                    (url, username, password), session.getId());
 
             String schema = url.substring(url.lastIndexOf("/") + 1);
 
@@ -179,19 +178,16 @@ public class LoginController
             session.setAttribute("themeMain", Themes.defaultTheme);
             session.setAttribute("themeMin", Themes.defaultThemeMin);
 
-            Map<String, String> schemaMap = AdminUtil.getSchemaMap();
+            GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
 
-            schemaMap = QueryUtil.populateSchemaMap
-                    (conn, schemaMap, schema);
+            databaseList = genericDAO.runGenericQuery
+                    (Constants.DATABASE_LIST, null, session.getId(), -1);
 
-            session.setAttribute("schemaMap", schemaMap);
+            Map<String, Long> schemaMap;
+            schemaMap = genericDAO.populateSchemaMap(schema, session.getId());
 
             logger.info("schemaMap=" + schemaMap);
-            logger.info(userPref.toString());
-
-            databaseList = QueryUtil.runQuery(conn,
-                    "SELECT SCHEMA_NAME 'database', default_character_set_name 'charset', DEFAULT_COLLATION_NAME 'collation' FROM information_schema.SCHEMATA",
-                    -1);
+            session.setAttribute("schemaMap", schemaMap);
 
             model.addAttribute("databaseList", databaseList);
 

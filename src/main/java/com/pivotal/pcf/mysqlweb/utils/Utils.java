@@ -84,19 +84,6 @@ public class Utils
         return map;
     }
 
-    public static void refresh (HttpSession session) throws Exception
-    {
-        ConnectionManager cm = ConnectionManager.getInstance();
-        Connection conn = cm.getConnection(session.getId());
-
-        // get schema count now
-        Map schemaMap = (Map) session.getAttribute("schemaMap");
-        schemaMap = QueryUtil.populateSchemaMap
-                (conn, schemaMap, (String) session.getAttribute("schema"));
-
-        session.setAttribute("schemaMap", schemaMap);
-    }
-
     public static boolean verifyConnection(HttpServletResponse response, HttpSession session) throws Exception {
         if (session.getAttribute("user_key") == null)
         {
@@ -125,18 +112,14 @@ public class Utils
                             logger.info("** Attempting login using VCAP_SERVICES **");
 
                             Login login = Utils.parseLoginCredentials(jsonString);
-                            cm.removeConnection((String) session.getAttribute("user_key"));
-
-                            conn = AdminUtil.getNewConnection
-                                    (login.getUrl(), login.getUsername(), login.getPassword());
-
-                            conn.setAutoCommit(true);
+                            cm.removeDataSource((String) session.getAttribute("user_key"));
 
                             MysqlConnection newConn =
                                     new MysqlConnection
-                                            (conn, login.getUrl(), new java.util.Date().toString(), login.getUsername().toUpperCase());
+                                            (login.getUrl(), new java.util.Date().toString(), login.getUsername().toUpperCase());
 
-                            cm.addConnection(newConn, session.getId());
+                            cm.addDataSourceConnection(AdminUtil.newSingleConnectionDataSource
+                                    (login.getUrl(), login.getUsername(), login.getPassword()), session.getId());
 
                             session.setAttribute("user_key", session.getId());
                             session.setAttribute("user", login.getUsername().toUpperCase());
@@ -194,5 +177,17 @@ public class Utils
 
         return login;
 
+    }
+
+    static public Map<String, Long> getSchemaMap ()
+    {
+        Map<String, Long> schemaMap = new HashMap<String, Long>();
+
+        schemaMap.put("Table", 0L);
+        schemaMap.put("View", 0L);
+        schemaMap.put("Index", 0L);
+        schemaMap.put("Constraint", 0L);
+
+        return schemaMap;
     }
 }

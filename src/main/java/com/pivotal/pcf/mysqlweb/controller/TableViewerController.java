@@ -17,11 +17,11 @@ limitations under the License.
  */
 package com.pivotal.pcf.mysqlweb.controller;
 
+import com.pivotal.pcf.mysqlweb.beans.WebResult;
 import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
+import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.dao.tables.Constants;
 import com.pivotal.pcf.mysqlweb.dao.tables.TableDAO;
-import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
-import com.pivotal.pcf.mysqlweb.utils.QueryUtil;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -32,14 +32,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.sql.Connection;
 
 @Controller
 public class TableViewerController
 {
     protected static Logger logger = Logger.getLogger(TableViewerController.class);
 
-    private String tableRows = "select * from %s limit 30";
+    private String tableRows = "select * from %s.%s limit 30";
 
     @RequestMapping(value = "/tableviewer", method = RequestMethod.GET)
     public String showTables
@@ -54,9 +53,10 @@ public class TableViewerController
         logger.info("Received request to show table viewer page");
 
         String schema = null;
-        javax.servlet.jsp.jstl.sql.Result describeStructure, tableData, queryResultsDescribe, tableDetails, tableIndexes;
+        WebResult describeStructure, tableData, queryResultsDescribe, tableDetails, tableIndexes;
 
         TableDAO tableDAO = PivotalMySQLWebDAOFactory.getTableDAO();
+        GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
 
         String selectedSchema = request.getParameter("selectedSchema");
         String tabName = (String)request.getParameter("tabName");
@@ -73,25 +73,23 @@ public class TableViewerController
             schema = (String) session.getAttribute("schema");
         }
 
-        ConnectionManager cm = ConnectionManager.getInstance();
-        Connection conn = cm.getConnection(session.getId());
-
         // describe table
         String ddl = tableDAO.runShowQuery(schema,
                 tabName,
                 (String)session.getAttribute("user_key"));
 
-        model.addAttribute("tableDDL", ddl.trim());
+        model.addAttribute("tableDDL", ddl);
         model.addAttribute("tablename", tabName.toUpperCase());
 
         // get table rows
-        tableData = QueryUtil.runQuery(conn, String.format(tableRows, tabName), -1);
+        tableData = genericDAO.runGenericQuery
+                (String.format(tableRows, schema, tabName), null, (String)session.getAttribute("user_key"), -1);
+
         model.addAttribute("queryResults", tableData);
 
         // describe table
-        queryResultsDescribe = QueryUtil.runQuery(conn,
-                                        String.format(Constants.TABLE_STRUCTURE, schema, tabName),
-                                       -1);
+        queryResultsDescribe = genericDAO.runGenericQuery
+                (String.format(Constants.TABLE_STRUCTURE, schema, tabName), null, (String)session.getAttribute("user_key"), -1);
         model.addAttribute("queryResultsDescribe", queryResultsDescribe);
 
         // view all table details

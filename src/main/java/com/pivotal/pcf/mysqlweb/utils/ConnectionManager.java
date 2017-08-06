@@ -17,18 +17,19 @@ limitations under the License.
  */
 package com.pivotal.pcf.mysqlweb.utils;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
 public class ConnectionManager
 {
 
     protected static Logger logger = Logger.getLogger(ConnectionManager.class);
     private Map<String,MysqlConnection> conList = new HashMap<String,MysqlConnection>();
+    private Map<String,SingleConnectionDataSource> dsList = new HashMap<String,SingleConnectionDataSource>();
     private static ConnectionManager instance = null;
 
     static
@@ -52,11 +53,17 @@ public class ConnectionManager
         logger.info("Connection added with key " + key);
     }
 
-    public Connection getConnection (String key)
+    public void addDataSourceConnection (SingleConnectionDataSource dataSource, String key)
+    {
+        dsList.put(key, dataSource);
+        logger.info("SingleConnectionDataSource added with key " + key);
+    }
+
+    public SingleConnectionDataSource getDataSource (String key)
     {
         try
         {
-            return conList.get(key).getConn();
+            return dsList.get(key);
         }
         catch (Exception ex)
         {
@@ -65,38 +72,19 @@ public class ConnectionManager
 
     }
 
-    public void updateConnection(Connection conn, String key)
+    public void removeDataSource(String key) throws SQLException
     {
-        MysqlConnection mysqlConn = conList.get(key);
-        mysqlConn.setConn(conn);
-        conList.put(key, mysqlConn);
-        logger.info("Connection updated with key " + key);
-    }
-
-    public void removeConnection(String key) throws SQLException
-    {
-        if (conList.containsKey(key))
+        if (dsList.containsKey(key))
         {
-            Connection conn = getConnection(key);
-            if (conn != null)
-            {
-                try
-                {
-                    conn.close();
-                    conn = null;
-                }
-                catch (SQLException se)
-                {
-                    conn = null;
-                }
-            }
-
+            SingleConnectionDataSource ds = dsList.get(key);
+            ds.destroy();
+            dsList.remove(key);
             conList.remove(key);
-            logger.info("Connection removed with key " + key);
+            logger.info("SingleConnectionDataSource removed with key " + key);
         }
         else
         {
-            logger.info("No connection with key " + key + " exists");
+            logger.info("No SingleConnectionDataSource with key " + key + " exists");
         }
     }
 
@@ -110,17 +98,4 @@ public class ConnectionManager
         return conList.size();
     }
 
-    public String displayMap ()
-    {
-        StringBuffer sb = new StringBuffer();
-
-        sb.append("-- Current Connection List --\n\n");
-        sb.append("Size = " + getConnectionListSize() + "\n\n");
-        for (String key : conList.keySet())
-        {
-            sb.append(String.format("Key %s, Connection %s\n", key, getConnection(key)));
-        }
-
-        return sb.toString();
-    }
 }

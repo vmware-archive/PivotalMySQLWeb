@@ -43,7 +43,7 @@ public class SessionListener implements HttpSessionListener
         try
         {
             cm = ConnectionManager.getInstance();
-            cm.removeConnection(session.getId());
+            cm.removeDataSource(session.getId());
             logger.info("Session destroyed for id " + session.getId());
         }
         catch (Exception e)

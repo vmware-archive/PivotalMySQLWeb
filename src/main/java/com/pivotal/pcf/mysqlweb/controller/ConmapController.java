@@ -17,7 +17,6 @@ limitations under the License.
  */
 package com.pivotal.pcf.mysqlweb.controller;
 
-import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
 import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
 import org.apache.log4j.Logger;
@@ -29,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.sql.Connection;
 
 @Controller
 public class ConmapController
@@ -61,7 +59,7 @@ public class ConmapController
             if (conMapAction.equalsIgnoreCase("DELETE"))
             {
                 // remove this connection from Map and close it.
-                cm.removeConnection(key);
+                cm.removeDataSource(key);
                 logger.info("Connection closed for key " + key);
                 model.addAttribute("saved", "Successfully closed connection with key " + key);
             }

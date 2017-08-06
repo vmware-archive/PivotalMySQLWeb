@@ -18,13 +18,21 @@ limitations under the License.
 package com.pivotal.pcf.mysqlweb.controller;
 
 import com.pivotal.pcf.mysqlweb.beans.UserPref;
-import com.pivotal.pcf.mysqlweb.utils.*;
+import com.pivotal.pcf.mysqlweb.beans.WebResult;
+import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
+import com.pivotal.pcf.mysqlweb.dao.generic.Constants;
+import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
+import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
+import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
+import com.pivotal.pcf.mysqlweb.utils.MysqlConnection;
+import com.pivotal.pcf.mysqlweb.utils.Themes;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Connection;
@@ -52,8 +60,7 @@ public class AutoLoginController
         String username = null;
         String passwd = null;
         String url = null;
-        javax.servlet.jsp.jstl.sql.Result databaseList;
-
+        WebResult databaseList, schemaMapResult;
         try
         {
             username = fixRequestParam(request.getParameter("username"));
@@ -61,28 +68,25 @@ public class AutoLoginController
             url = fixRequestParam(request.getParameter("url"));
 
             logger.info("username = " + username);
-            logger.info("passwd = " + passwd);
             logger.info("url = " + url);
 
             if (username.trim().equals(""))
             {
-                conn = AdminUtil.getNewConnection(url);
+                cm.addDataSourceConnection(AdminUtil.newSingleConnectionDataSource(url, null, null), session.getId());
             }
             else
             {
-                conn = AdminUtil.getNewConnection(url, username, passwd);
+                cm.addDataSourceConnection(AdminUtil.newSingleConnectionDataSource(url, username, passwd), session.getId());
             }
-
-            conn.setAutoCommit(true);
 
             MysqlConnection newConn =
                     new MysqlConnection
-                            (conn,
-                                    url,
-                                    new java.util.Date().toString(),
-                                    username.toUpperCase());
+                            (url,
+                             new java.util.Date().toString(),
+                             username.toUpperCase());
 
             cm.addConnection(newConn, session.getId());
+            cm.addDataSourceConnection(AdminUtil.newSingleConnectionDataSource(url, username, passwd), session.getId());
 
             String schema = url.substring(url.lastIndexOf("/") + 1);
 
@@ -96,18 +100,16 @@ public class AutoLoginController
             session.setAttribute("themeMain", Themes.defaultTheme);
             session.setAttribute("themeMin", Themes.defaultThemeMin);
 
-            Map<String, String> schemaMap = AdminUtil.getSchemaMap();
+            GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
 
-            schemaMap = QueryUtil.populateSchemaMap
-                    (conn, schemaMap, schema);
+            databaseList = genericDAO.runGenericQuery
+                    (Constants.DATABASE_LIST, null, session.getId(), -1);
 
-            session.setAttribute("schemaMap", schemaMap);
+            Map<String, Long> schemaMap;
+            schemaMap = genericDAO.populateSchemaMap(schema, session.getId());
 
             logger.info("schemaMap=" + schemaMap);
-
-            databaseList = QueryUtil.runQuery(conn,
-                    "SELECT SCHEMA_NAME 'database', default_character_set_name 'charset', DEFAULT_COLLATION_NAME 'collation' FROM information_schema.SCHEMATA",
-                    -1);
+            session.setAttribute("schemaMap", schemaMap);
 
             model.addAttribute("databaseList", databaseList);
 

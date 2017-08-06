@@ -15,20 +15,25 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
  */
-package com.pivotal.pcf.mysqlweb.dao.indexes;
+package com.pivotal.pcf.mysqlweb.dao.generic;
 
+import com.pivotal.pcf.mysqlweb.beans.CommandResult;
 import com.pivotal.pcf.mysqlweb.beans.Result;
 import com.pivotal.pcf.mysqlweb.beans.WebResult;
 import com.pivotal.pcf.mysqlweb.main.PivotalMySQLWebException;
 
 import java.util.List;
+import java.util.Map;
 
-public interface IndexDAO
+public interface GenericDAO
 {
-    public List<Index> retrieveIndexList(String schema, String search, String userKey) throws PivotalMySQLWebException;
+    WebResult runGenericQuery (String sql, Object[] args, String userKey, int maxRows) throws PivotalMySQLWebException;
 
-    public Result simpleindexCommand (String schemaName, String indexName, String type, String tableName, String userKey) throws PivotalMySQLWebException;
+    CommandResult runStatement(String sql, String elapsedTime, String ddl, String userKey) throws PivotalMySQLWebException;
 
-    public WebResult getIndexDetails(String schema, String tableName, String indexName, String userKey) throws PivotalMySQLWebException;
+    Map<String, Long> populateSchemaMap(String schema, String userKey) throws PivotalMySQLWebException;
 
+    List<String> allSchemas (String userKey) throws PivotalMySQLWebException;
+
+    Result runCommand (String sql, String userKey);
 }

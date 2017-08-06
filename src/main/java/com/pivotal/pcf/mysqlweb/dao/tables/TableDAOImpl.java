@@ -18,64 +18,52 @@ limitations under the License.
 package com.pivotal.pcf.mysqlweb.dao.tables;
 
 import com.pivotal.pcf.mysqlweb.beans.Result;
-import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOUtil;
+import com.pivotal.pcf.mysqlweb.beans.WebResult;
+import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
+import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.main.PivotalMySQLWebException;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
-import com.pivotal.pcf.mysqlweb.utils.JDBCUtil;
-import com.pivotal.pcf.mysqlweb.utils.QueryUtil;
 import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
-import javax.servlet.jsp.jstl.sql.ResultSupport;
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class TableDAOImpl implements TableDAO
 {
     protected static Logger logger = Logger.getLogger(TableDAOImpl.class);
 
+    private JdbcTemplate jdbcTemplate;
+
+    public void setDataSource(SingleConnectionDataSource ds) {
+        this.jdbcTemplate = new JdbcTemplate(ds);
+    }
+
     @Override
     public List<Table> retrieveTableList(String schema, String search, String userKey) throws PivotalMySQLWebException
     {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rset = null;
         List<Table>       tbls = null;
         String            srch = null;
+        SingleConnectionDataSource dataSource = null;
 
         try
         {
-            conn = AdminUtil.getConnection(userKey);
-
-            stmt = conn.prepareStatement(Constants.USER_TABLES);
+            dataSource = AdminUtil.getDataSource(userKey);
+            setDataSource(dataSource);
 
             if (search == null)
                 srch = "%";
             else
                 srch = "%" + search + "%";
 
+            tbls = jdbcTemplate.query(Constants.USER_TABLES, new Object[]{schema, srch}, new TableMapper());
 
-            stmt.setString(1, schema);
-            stmt.setString(2, srch);
-            rset = stmt.executeQuery();
-
-            tbls = makeTableListFromResultSet(rset);
-        }
-        catch (SQLException se)
-        {
-            logger.info("Error retrieving all tables with search string = " + search);
-            throw new PivotalMySQLWebException(se);
         }
         catch (Exception ex)
         {
             logger.info("Error retrieving all tables with search string = " + search);
             throw new PivotalMySQLWebException(ex);
-        }
-        finally
-        {
-            // close all resources
-            JDBCUtil.close(rset);
-            JDBCUtil.close(stmt);
         }
 
         return tbls;
@@ -85,7 +73,8 @@ public class TableDAOImpl implements TableDAO
     public Result simpletableCommand(String schemaName, String tableName, String type, String userKey) throws PivotalMySQLWebException
     {
         String            command = null;
-        Result            res     = null;
+        Result            res     = new Result();
+        SingleConnectionDataSource dataSource = null;
 
         if (type != null)
         {
@@ -114,97 +103,86 @@ public class TableDAOImpl implements TableDAO
 
         }
 
-        res = PivotalMySQLWebDAOUtil.runCommand(command, userKey);
+        GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
+        res = genericDAO.runCommand(command, userKey);
 
         return res;
     }
 
     @Override
-    public javax.servlet.jsp.jstl.sql.Result getTableStructure(String schema, String tableName, String userKey) throws PivotalMySQLWebException
+    public WebResult getTableStructure(String schema, String tableName, String userKey) throws PivotalMySQLWebException
     {
-        Connection        conn = null;
-        ResultSet         rset = null;
-        javax.servlet.jsp.jstl.sql.Result res = null;
+        WebResult webResult;
+        SingleConnectionDataSource dataSource;
+        GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
 
         try
         {
-            conn = AdminUtil.getConnection(userKey);
-            res = QueryUtil.runQuery(conn, String.format(Constants.TABLE_STRUCTURE, schema, tableName), -1);
+            dataSource = AdminUtil.getDataSource(userKey);
+            setDataSource(dataSource);
+
+            webResult = genericDAO.runGenericQuery
+                    (String.format(Constants.TABLE_STRUCTURE, schema, tableName), null, userKey, -1);
 
         }
-        catch (SQLException se)
+        catch (Exception ex)
         {
-            logger.info("Error retrieving table structure for table " + tableName);
-            throw new PivotalMySQLWebException(se);
-        }
-        catch (Exception ex) {
             logger.info("Error retrieving table structure for table  " + tableName);
             throw new PivotalMySQLWebException(ex);
         }
-        finally
-        {
-            // close all resources
-            JDBCUtil.close(rset);
-        }
 
-        return res;
+        return webResult;
     }
 
     @Override
-    public javax.servlet.jsp.jstl.sql.Result getTableDetails (String schema, String tableName, String userKey) throws PivotalMySQLWebException
+    public WebResult getTableDetails (String schema, String tableName, String userKey) throws PivotalMySQLWebException
     {
-        Connection        conn = null;
-        PreparedStatement stmt = null;
-        ResultSet         rset = null;
-        javax.servlet.jsp.jstl.sql.Result res = null;
+        SingleConnectionDataSource dataSource = null;
+        WebResult webResult = null;
+        GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
 
         try
         {
-            conn = AdminUtil.getConnection(userKey);
-            stmt = conn.prepareStatement(Constants.TABLE_DETAILS);
-            stmt.setString(1, schema);
-            stmt.setString(2, tableName);
-            rset = stmt.executeQuery();
+            dataSource = AdminUtil.getDataSource(userKey);
+            setDataSource(dataSource);
 
-            res = ResultSupport.toResult(rset);
+            webResult = genericDAO.runGenericQuery
+                    (Constants.TABLE_DETAILS, new Object[]{schema, tableName}, userKey, -1);
 
         }
-        catch (SQLException se)
+        catch (Exception ex)
         {
-            logger.info("Error retrieving table details for table " + tableName);
-            throw new PivotalMySQLWebException(se);
-        }
-        catch (Exception ex) {
             logger.info("Error retrieving table details for table  " + tableName);
             throw new PivotalMySQLWebException(ex);
         }
-        finally
-        {
-            // close all resources
-            JDBCUtil.close(rset);
-            JDBCUtil.close(stmt);
-        }
 
-        return res;
+        return webResult;
     }
 
     @Override
     public String runShowQuery (String schema, String tableName, String userKey) throws PivotalMySQLWebException
     {
         String queryData = null;
-        Connection        conn = null;
+        SingleConnectionDataSource dataSource = null;
+        List<Map<String, Object>> resultList = null;
 
         try
         {
-            conn = AdminUtil.getConnection(userKey);
-            queryData = QueryUtil.runShowQuery(conn, String.format(Constants.CREATE_TABLE_QUERY, schema, tableName));
+            dataSource = AdminUtil.getDataSource(userKey);
+            setDataSource(dataSource);
+
+            resultList = jdbcTemplate.queryForList
+                    (String.format(Constants.CREATE_TABLE_QUERY, schema, tableName));
+
+            queryData = (String) resultList.get(0).get("Create Table");
+
+            if (queryData == null)
+            {
+                queryData = (String) resultList.get(0).get("Create View");
+            }
         }
-        catch (SQLException se)
+        catch (Exception ex)
         {
-            logger.info("Error running runShowQuery table details for table " + tableName);
-            throw new PivotalMySQLWebException(se);
-        }
-        catch (Exception ex) {
             logger.info("Error running runShowQuery table details for table  " + tableName);
             throw new PivotalMySQLWebException(ex);
         }
@@ -212,20 +190,20 @@ public class TableDAOImpl implements TableDAO
         return queryData;
     }
 
-    public javax.servlet.jsp.jstl.sql.Result showIndexes(String schema, String tableName, String userKey) throws PivotalMySQLWebException
+    public WebResult showIndexes(String schema, String tableName, String userKey) throws PivotalMySQLWebException
     {
-        javax.servlet.jsp.jstl.sql.Result tableIndexes = null;
-        Connection        conn = null;
+        SingleConnectionDataSource dataSource = null;
+        WebResult webResult = null;
+        GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
 
         try
         {
-            conn = AdminUtil.getConnection(userKey);
-            tableIndexes = QueryUtil.runQuery(conn, String.format(Constants.SHOW_INDEXES, schema, tableName), -1);
-        }
-        catch (SQLException se)
-        {
-            logger.info("Error running index query for table " + tableName);
-            throw new PivotalMySQLWebException(se);
+            dataSource = AdminUtil.getDataSource(userKey);
+            setDataSource(dataSource);
+
+            webResult = genericDAO.runGenericQuery
+                    (String.format(Constants.SHOW_INDEXES, schema, tableName), null, userKey, -1);
+
         }
         catch (Exception ex)
         {
@@ -233,24 +211,7 @@ public class TableDAOImpl implements TableDAO
             throw new PivotalMySQLWebException(ex);
         }
 
-        return tableIndexes;
+        return webResult;
     }
 
-    private List<Table> makeTableListFromResultSet (ResultSet rset) throws SQLException
-    {
-        List<Table> tbls = new ArrayList<Table>();
-
-        while (rset.next())
-        {
-            Table table = new Table(rset.getString(1),
-                                    rset.getString(2),
-                                    rset.getString(3),
-                                    rset.getString(4));
-
-            tbls.add(table);
-        }
-
-        return tbls;
-
-    }
 }

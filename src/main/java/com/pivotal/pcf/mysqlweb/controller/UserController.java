@@ -17,6 +17,9 @@ limitations under the License.
  */
 package com.pivotal.pcf.mysqlweb.controller;
 
+import com.pivotal.pcf.mysqlweb.beans.WebResult;
+import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
+import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
 import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
 import com.pivotal.pcf.mysqlweb.utils.QueryUtil;
@@ -49,18 +52,19 @@ public class UserController
 
         logger.info("Received request to show user information");
 
-        javax.servlet.jsp.jstl.sql.Result processList, privsList, sizeVariables;
+        WebResult processList, privsList, sizeVariables;
 
-        // retrieve connection
-        ConnectionManager cm = ConnectionManager.getInstance();
-        Connection conn = cm.getConnection(session.getId());
+        GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
 
-        sizeVariables = QueryUtil.runQuery(conn,
-                                          "SHOW VARIABLES LIKE '%size%'",
-                                          -1);
+        sizeVariables = genericDAO.runGenericQuery
+                ("SHOW VARIABLES LIKE '%size%'", null, (String)session.getAttribute("user_key"), -1);
 
-        privsList = QueryUtil.runQuery(conn, "SHOW PRIVILEGES", -1);
-        processList = QueryUtil.runQuery(conn, "SHOW processlist", -1);
+
+        privsList = genericDAO.runGenericQuery
+                ("SHOW PRIVILEGES", null, (String)session.getAttribute("user_key"), -1);
+
+        processList = genericDAO.runGenericQuery
+                ("SHOW processlist", null, (String)session.getAttribute("user_key"), -1);
 
         model.addAttribute("privsList", privsList);
         model.addAttribute("processList", processList);

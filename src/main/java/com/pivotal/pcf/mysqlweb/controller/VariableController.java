@@ -17,6 +17,9 @@ limitations under the License.
  */
 package com.pivotal.pcf.mysqlweb.controller;
 
+import com.pivotal.pcf.mysqlweb.beans.WebResult;
+import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
+import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
 import com.pivotal.pcf.mysqlweb.utils.QueryUtil;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
@@ -48,15 +51,12 @@ public class VariableController
 
         logger.info("Received request to show database variables");
 
-        javax.servlet.jsp.jstl.sql.Result dbVariables;
+        WebResult dbVariables;
 
-        // retrieve connection
-        ConnectionManager cm = ConnectionManager.getInstance();
-        Connection conn = cm.getConnection(session.getId());
+        GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
 
-        dbVariables = QueryUtil.runQuery(conn,
-                                        "SHOW VARIABLES",
-                                        -1);
+        dbVariables = genericDAO.runGenericQuery
+                ("SHOW VARIABLES", null, (String)session.getAttribute("user_key"), -1);
 
         model.addAttribute("dbVariables", dbVariables);
 
