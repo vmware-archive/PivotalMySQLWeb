@@ -34,7 +34,7 @@ public class ViewDAOImpl implements ViewDAO
 
     private JdbcTemplate jdbcTemplate;
 
-    public void setDataSource(SingleConnectionDataSource ds) {
+    public void setDataSource(javax.sql.DataSource ds) {
         this.jdbcTemplate = new JdbcTemplate(ds);
     }
 
@@ -44,7 +44,7 @@ public class ViewDAOImpl implements ViewDAO
         List<View> views;
         String srch;
 
-        SingleConnectionDataSource dataSource = null;
+        javax.sql.DataSource dataSource = null;
 
         try
         {
@@ -100,7 +100,7 @@ public class ViewDAOImpl implements ViewDAO
     public String getViewDefinition(String schemaName, String viewName, String userKey) throws PivotalMySQLWebException
     {
         String            def;
-        SingleConnectionDataSource dataSource;
+        javax.sql.DataSource dataSource;
 
         try
         {

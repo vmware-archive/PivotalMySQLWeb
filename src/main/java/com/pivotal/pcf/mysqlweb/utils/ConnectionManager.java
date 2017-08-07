@@ -21,7 +21,9 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.pivotal.pcf.mysqlweb.beans.Login;
 import org.apache.log4j.Logger;
+import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
 public class ConnectionManager
@@ -31,6 +33,7 @@ public class ConnectionManager
     private Map<String,MysqlConnection> conList = new HashMap<String,MysqlConnection>();
     private Map<String,SingleConnectionDataSource> dsList = new HashMap<String,SingleConnectionDataSource>();
     private static ConnectionManager instance = null;
+    private static DataSource cfDataSource = null;
 
     static
     {
@@ -47,6 +50,16 @@ public class ConnectionManager
         return instance;
     }
 
+    public void setupCFDataSource (Login login) throws Exception
+    {
+        if (cfDataSource == null)
+        {
+            cfDataSource = AdminUtil.getDriverManagerDataSourceForCF(login);
+            logger.info(" CF DataSource created for all users");
+        }
+
+    }
+
     public void addConnection (MysqlConnection conn, String key)
     {
         conList.put(key, conn);
@@ -59,17 +72,30 @@ public class ConnectionManager
         logger.info("SingleConnectionDataSource added with key " + key);
     }
 
-    public SingleConnectionDataSource getDataSource (String key)
+    public javax.sql.DataSource getDataSource (String key)
     {
         try
         {
-            return dsList.get(key);
+            if (getCfDataSource() != null)
+            {
+                return getCfDataSource();
+            }
+            else
+            {
+                return dsList.get(key);
+            }
         }
         catch (Exception ex)
         {
+            logger.info("Unable to retrive DataSource : " + ex.getMessage());
             return null;
         }
 
+    }
+
+    public DataSource getCfDataSource ()
+    {
+        return cfDataSource;
     }
 
     public void removeDataSource(String key) throws SQLException

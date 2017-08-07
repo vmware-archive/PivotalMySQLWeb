@@ -35,7 +35,7 @@ public class IndexDAOImpl implements IndexDAO
 
     private JdbcTemplate jdbcTemplate;
 
-    public void setDataSource(SingleConnectionDataSource ds) {
+    public void setDataSource(javax.sql.DataSource ds) {
         this.jdbcTemplate = new JdbcTemplate(ds);
     }
 
@@ -44,7 +44,7 @@ public class IndexDAOImpl implements IndexDAO
     {
         List<Index>       indexes = null;
         String            srch = null;
-        SingleConnectionDataSource dataSource = null;
+        javax.sql.DataSource dataSource = null;
 
         try
         {
@@ -99,7 +99,7 @@ public class IndexDAOImpl implements IndexDAO
     @Override
     public WebResult getIndexDetails(String schema, String tableName, String indexName, String userKey) throws PivotalMySQLWebException
     {
-        SingleConnectionDataSource dataSource;
+        javax.sql.DataSource dataSource;
         GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
         WebResult webResult;
 

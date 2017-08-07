@@ -36,7 +36,7 @@ public class TableDAOImpl implements TableDAO
 
     private JdbcTemplate jdbcTemplate;
 
-    public void setDataSource(SingleConnectionDataSource ds) {
+    public void setDataSource(javax.sql.DataSource ds) {
         this.jdbcTemplate = new JdbcTemplate(ds);
     }
 
@@ -45,7 +45,7 @@ public class TableDAOImpl implements TableDAO
     {
         List<Table>       tbls = null;
         String            srch = null;
-        SingleConnectionDataSource dataSource = null;
+        javax.sql.DataSource dataSource = null;
 
         try
         {
@@ -113,7 +113,7 @@ public class TableDAOImpl implements TableDAO
     public WebResult getTableStructure(String schema, String tableName, String userKey) throws PivotalMySQLWebException
     {
         WebResult webResult;
-        SingleConnectionDataSource dataSource;
+        javax.sql.DataSource dataSource;
         GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
 
         try
@@ -137,7 +137,7 @@ public class TableDAOImpl implements TableDAO
     @Override
     public WebResult getTableDetails (String schema, String tableName, String userKey) throws PivotalMySQLWebException
     {
-        SingleConnectionDataSource dataSource = null;
+        javax.sql.DataSource dataSource = null;
         WebResult webResult = null;
         GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
 
@@ -163,7 +163,7 @@ public class TableDAOImpl implements TableDAO
     public String runShowQuery (String schema, String tableName, String userKey) throws PivotalMySQLWebException
     {
         String queryData = null;
-        SingleConnectionDataSource dataSource = null;
+        javax.sql.DataSource dataSource = null;
         List<Map<String, Object>> resultList = null;
 
         try
@@ -192,7 +192,7 @@ public class TableDAOImpl implements TableDAO
 
     public WebResult showIndexes(String schema, String tableName, String userKey) throws PivotalMySQLWebException
     {
-        SingleConnectionDataSource dataSource = null;
+        javax.sql.DataSource dataSource = null;
         WebResult webResult = null;
         GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
 

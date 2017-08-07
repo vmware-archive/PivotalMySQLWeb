@@ -39,14 +39,14 @@ public class GenericDAOImpl implements GenericDAO
 
     private JdbcTemplate jdbcTemplate;
 
-    public void setDataSource(SingleConnectionDataSource ds) {
+    public void setDataSource(javax.sql.DataSource ds) {
         this.jdbcTemplate = new JdbcTemplate(ds);
     }
 
     @Override
     public WebResult runGenericQuery (String sql, Object[] args, String userKey, int maxRows) throws PivotalMySQLWebException
     {
-        SingleConnectionDataSource dataSource = null;
+        javax.sql.DataSource dataSource = null;
         WebResult webResult = null;
         List<Map<String, Object>> resultList = null;
 
@@ -88,7 +88,7 @@ public class GenericDAOImpl implements GenericDAO
 
     @Override
     public CommandResult runStatement(String sql, String elapsedTime, String ddl, String userKey) throws PivotalMySQLWebException {
-        SingleConnectionDataSource dataSource;
+        javax.sql.DataSource dataSource;
         CommandResult res = new CommandResult();
 
         try {
@@ -133,7 +133,7 @@ public class GenericDAOImpl implements GenericDAO
 
     @Override
     public Map<String, Long> populateSchemaMap(String schema, String userKey) throws PivotalMySQLWebException {
-        SingleConnectionDataSource dataSource;
+        javax.sql.DataSource dataSource;
         CommandResult res = new CommandResult();
         Map<String, Long> schemaMap = new HashMap<String, Long>();
         try
@@ -164,7 +164,7 @@ public class GenericDAOImpl implements GenericDAO
     @Override
     public List<String> allSchemas(String userKey) throws PivotalMySQLWebException
     {
-        SingleConnectionDataSource dataSource;
+        javax.sql.DataSource dataSource;
         List<String> schemas;
 
         try
@@ -189,7 +189,7 @@ public class GenericDAOImpl implements GenericDAO
     {
         Result res = new Result();
 
-        SingleConnectionDataSource dataSource;
+        javax.sql.DataSource dataSource;
 
         try
         {

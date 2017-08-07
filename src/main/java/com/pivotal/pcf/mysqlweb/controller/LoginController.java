@@ -80,9 +80,12 @@ public class LoginController
                                     (login.getUrl(), new java.util.Date().toString(), login.getUsername().toUpperCase());
 
                     cm.addConnection(newConn, session.getId());
+
+                    cm.setupCFDataSource(login);
+                    /*
                     cm.addDataSourceConnection(AdminUtil.newSingleConnectionDataSource
                             (login.getUrl(), login.getUsername(), login.getPassword()), session.getId());
-
+                    */
                     session.setAttribute("user_key", session.getId());
                     session.setAttribute("user", login.getUsername().toUpperCase());
                     session.setAttribute("schema", login.getSchema());

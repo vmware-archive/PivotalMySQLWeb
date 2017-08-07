@@ -34,7 +34,7 @@ public class ConstraintDAOImpl implements ConstraintDAO
 
     private JdbcTemplate jdbcTemplate;
 
-    public void setDataSource(SingleConnectionDataSource ds) {
+    public void setDataSource(javax.sql.DataSource ds) {
         this.jdbcTemplate = new JdbcTemplate(ds);
     }
 
@@ -44,7 +44,7 @@ public class ConstraintDAOImpl implements ConstraintDAO
         List<Constraint>       constraints = null;
         String            srch = null;
 
-        SingleConnectionDataSource dataSource = null;
+        javax.sql.DataSource dataSource = null;
 
         try
         {

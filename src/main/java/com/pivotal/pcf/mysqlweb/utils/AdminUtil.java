@@ -17,13 +17,11 @@ limitations under the License.
  */
 package com.pivotal.pcf.mysqlweb.utils;
 
+import com.pivotal.pcf.mysqlweb.beans.Login;
+import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class AdminUtil
 {
@@ -55,6 +53,8 @@ public class AdminUtil
     {
         Connection conn = null;
         ConnectionManager cm = ConnectionManager.getInstance();
+
+        // check if cfDataSource != null which will mean we have a CF Data Source to use
         conn = cm.getDataSource(userKey).getConnection();
         return conn;
     }
@@ -62,13 +62,29 @@ public class AdminUtil
     /*
      * Get DataSource from ConnectionManager conList Map
      */
-    static public SingleConnectionDataSource getDataSource(String userKey) throws Exception
+    static public javax.sql.DataSource getDataSource(String userKey) throws Exception
     {
-        SingleConnectionDataSource dataSource = null;
+        javax.sql.DataSource dataSource = null;
         ConnectionManager cm = null;
 
         cm = ConnectionManager.getInstance();
         dataSource = cm.getDataSource(userKey);
+
+        return dataSource;
+    }
+
+    static public DataSource getDriverManagerDataSourceForCF (Login login) throws Exception
+    {
+        DataSource dataSource = new DataSource();
+
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+
+        dataSource.setUrl(login.getUrl());
+        dataSource.setUsername(login.getUsername());
+        dataSource.setPassword(login.getPassword());
+        dataSource.setRemoveAbandoned(true);
+        dataSource.setTimeBetweenEvictionRunsMillis(30000);
+        dataSource.setValidationQuery("SELECT 1");
 
         return dataSource;
     }
