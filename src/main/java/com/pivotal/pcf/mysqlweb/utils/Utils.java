@@ -84,7 +84,15 @@ public class Utils
         return map;
     }
 
-    public static boolean verifyConnection(HttpServletResponse response, HttpSession session) throws Exception {
+    public static boolean verifyConnection(HttpServletResponse response, HttpSession session) throws Exception
+    {
+
+        // if autobound via VCAP_SERVICES no need to do any verification the Connection Pool will do that.
+        if (session.getAttribute("autobound") != null)
+        {
+            return false;
+        }
+
         if (session.getAttribute("user_key") == null)
         {
             response.sendRedirect("/");
