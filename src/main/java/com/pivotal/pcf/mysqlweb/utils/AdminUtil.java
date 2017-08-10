@@ -86,6 +86,9 @@ public class AdminUtil
         dataSource.setTimeBetweenEvictionRunsMillis(30000);
         dataSource.setValidationQuery("SELECT 1");
 
+        // recently added
+        dataSource.setTestWhileIdle(true);
+
         return dataSource;
     }
 
