@@ -107,7 +107,6 @@ public class LoginController
                     logger.info("schemaMap=" + schemaMap);
                     session.setAttribute("schemaMap", schemaMap);
 
-                    logger.info("schemaMap=" + schemaMap);
                     logger.info(userPref.toString());
 
                     String autobound = mysqlInstanceType(jsonString);
