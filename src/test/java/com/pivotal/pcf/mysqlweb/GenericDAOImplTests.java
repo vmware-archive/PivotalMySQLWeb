@@ -1,14 +1,16 @@
 package com.pivotal.pcf.mysqlweb;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.pivotal.pcf.mysqlweb.beans.CommandResult;
+import com.pivotal.pcf.mysqlweb.beans.WebResult;
 import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAOImpl;
 import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GenericDAOImplTests extends PivotalMySqlWebApplicationTests
 {
 
@@ -29,32 +31,39 @@ public class GenericDAOImplTests extends PivotalMySqlWebApplicationTests
         dataSource.setUsername("pas");
         dataSource.setPassword("pas");
 
-        cm.addDataSourceConnection(dataSource, "apples-key");
+        cm.addDataSourceConnection(dataSource, userKey);
         genericDAO = new GenericDAOImpl();
         genericDAO.setDataSource(dataSource);
 
     }
 
+    @AfterClass
+    public static void cleanUp() throws Exception {
+        genericDAO.runStatement("drop table pas_yyy", "N", "Y", userKey);
+    }
+
     @Test
-    public void test1 () throws Exception
+    public void t1TestCreateTable () throws Exception
     {
         CommandResult commandResult;
 
-        genericDAO.runStatement("drop table pas_yyy", "N", "Y", userKey);
-
         commandResult =
                 genericDAO.runStatement("create table pas_yyy (col1 int)", "N", "Y", userKey);
+        Assert.assertEquals(commandResult.getMessage(), "SUCCESS");
 
+        commandResult =
+                    genericDAO.runStatement("insert into pas_yyy values (1)", "N", "Y", userKey);
         Assert.assertEquals(commandResult.getMessage(), "SUCCESS");
     }
 
     @Test
-    public void test2 () throws Exception
+    public void t2TestQueryTable () throws Exception
     {
-        CommandResult commandResult =
-                genericDAO.runStatement("insert into pas_yyy values (1)", "N", "Y", userKey);
+        WebResult webResult =
+                genericDAO.runGenericQuery("select * from pas_yyy", null, userKey, -1);
 
-        Assert.assertEquals(commandResult.getMessage(), "SUCCESS");
+        Assert.assertEquals(webResult.getRows().size(), 1);
+        Assert.assertEquals(webResult.getColumnNames().length, 1);
     }
 
 }
