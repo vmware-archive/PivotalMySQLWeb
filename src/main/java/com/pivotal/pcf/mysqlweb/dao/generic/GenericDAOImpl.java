@@ -26,6 +26,7 @@ import com.pivotal.pcf.mysqlweb.utils.Utils;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
+import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@Service
 public class GenericDAOImpl implements GenericDAO
 {
     protected static Logger logger = Logger.getLogger(GenericDAOImpl.class);
