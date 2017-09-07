@@ -63,7 +63,6 @@ to the MySQL instance as shown in the sample manifest below. If you don't bind t
 to a MySQL instance itself.
 
 ```
----
 applications:
 - name: pivotal-mysqlweb
   memory: 1024M
@@ -92,6 +91,37 @@ $ cf push -f manifest.yml
 
 ![alt tag](https://image.ibb.co/bBCJ5a/piv_mysqlweb6.png)
 
+<h3>SQL Worksheet - Max Records to Display</h3>
+
+You can control the number of records to display in the "SQL Worksheet" using the "Preferences" page. To do that follow these steps:
+
+1. On the top menu bar select "Menu -> Preferences"
+2. Set the value for "Max Records in Worksheet" to the value you require it should be more then 30 by default unless it was changed prior to deployment
+3. Click "Update Preferences"
+
+Alternatively you can also set that at deployment to use a default value by editing "main/resources/preferences.properties" and setting the property below.
+
+```
+maxRecordsinSQLQueryWindow=500
+```
+
+<h3>Security - HTTP Basic Authentication</h3>
+
+By default this application is using HTTP Basic Authentication to protect every end point. The username/password is set in 
+"main/resources/application-cloud.yml" and "main/resources/application.yml" files and can be altered here prior to deploying
+once re-packaged
+
+Default username = admin
+Default password = cfmysqlweb
+
+```
+security:
+  user:
+    name: admin
+    password: cfmysqlweb
+  basic:
+    enabled: true
+```
 
 <hr />
 Pas Apicella [papicella at pivotal.io] is a Senior Platform Architect at Pivotal Australia 
