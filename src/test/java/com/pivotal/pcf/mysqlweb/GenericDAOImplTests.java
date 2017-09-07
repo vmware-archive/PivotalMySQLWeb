@@ -1,6 +1,5 @@
 package com.pivotal.pcf.mysqlweb;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.pivotal.pcf.mysqlweb.beans.CommandResult;
 import com.pivotal.pcf.mysqlweb.beans.WebResult;
 import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAOImpl;

@@ -154,14 +154,15 @@ public class Utils
 
         Map<String, Object> jsonMap = parser.parseMap(jsonString);
 
+        // Check for clearDB first
         List mysqlService = (List) jsonMap.get("cleardb");
 
         if (mysqlService == null)
         {
-            // just check if it's "p-mysql"
+            // just check if it's "p-mysql" v1 instance
             mysqlService = (List) jsonMap.get("p-mysql");
 
-            // for dedicated v2 mysql we looking for this name
+            // just check if it's "p.mysql" v2 instance
             if (mysqlService == null)
             {
                 mysqlService = (List) jsonMap.get("p.mysql");
@@ -176,7 +177,6 @@ public class Utils
             Map credentailsMap = (Map) clearDBMap.get("credentials");
 
             login.setUrl((String) credentailsMap.get("jdbcUrl") + "&connectTimeout=1800000&socketTimeout=1800000&autoReconnect=true&reconnect=true");
-            //login.setUrl((String) credentailsMap.get("jdbcUrl") + "&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
 
             login.setUsername((String) credentailsMap.get("username"));
             login.setPassword((String) credentailsMap.get("password"));
