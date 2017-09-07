@@ -50,6 +50,9 @@ papicella@papicella:~/pivotal/DemoProjects/spring-starter/pivotal/PivotalMySQLWe
 
 - Access as follows and connect to your MySQL instance
 
+Default username = admin <br />
+Default password = cfmysqlweb
+
 ```
 http://localhost:8080/
 ```
@@ -111,7 +114,7 @@ By default this application is using HTTP Basic Authentication to protect every 
 "main/resources/application-cloud.yml" and "main/resources/application.yml" files and can be altered here prior to deploying
 once re-packaged
 
-Default username = admin
+Default username = admin <br />
 Default password = cfmysqlweb
 
 ```
