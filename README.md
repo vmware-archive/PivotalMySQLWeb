@@ -27,7 +27,7 @@ It includes the following capabilities:
 - $ git clone https://github.com/pivotal-cf/PivotalMySQLWeb.git
 - $ cd PivotalMySQLWeb
 - $ mvn -DskipTests=true package
-- Run as follows
+- Run as follows "java -jar ./target/PivotalMySQLWeb-0.0.1-SNAPSHOT.jar"
 
 ```
 papicella@papicella:~/pivotal/DemoProjects/spring-starter/pivotal/PivotalMySQLWeb$ java -jar ./target/PivotalMySQLWeb-0.0.1-SNAPSHOT.jar
@@ -48,13 +48,20 @@ papicella@papicella:~/pivotal/DemoProjects/spring-starter/pivotal/PivotalMySQLWe
 2016-07-03 17:13:44.294  INFO 19664 --- [           main] c.p.p.m.PivotalMySqlWebApplication       : Started PivotalMySqlWebApplication in 3.4 seconds (JVM running for 3.761)
 ```
 
-- Access as follows and connect to your MySQL instance
+- Access as follows and connect to your MySQL instance using the default username/password as follows:
 
 Default username = admin <br />
 Default password = cfmysqlweb
 
 ```
 http://localhost:8080/
+```
+
+Note: When connecting to a MySQL database instance ensure you JDBC URL includes a database name as shown below which
+targets the "employees" database 
+
+```
+jdbc:mysql://localhost:3306/employees
 ```
 
 ![alt tag](https://image.ibb.co/f3SzLk/piv_mysqlweb2.png)
