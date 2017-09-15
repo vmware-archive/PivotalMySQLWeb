@@ -7,10 +7,10 @@ server:
 management:
   security:
     enabled: false
-#security:
-#  user:
-#    name: admin
-#    password: cfmysqlweb
-#  basic:
-#    enabled: true
-#server.session.timeout= # Session timeout in seconds.
+security:
+  user:
+    name: admin
+    password: cfmysqlweb
+  basic:
+    enabled: true
+  sessions: never

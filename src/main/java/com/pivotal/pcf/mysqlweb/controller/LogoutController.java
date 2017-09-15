@@ -46,7 +46,6 @@ public class LogoutController
         model.addAttribute("loginObj", new Login("", "", "", ""));
 
         return "login";
-
     }
 
 }
