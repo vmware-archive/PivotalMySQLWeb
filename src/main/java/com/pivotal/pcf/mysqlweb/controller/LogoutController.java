@@ -35,7 +35,7 @@ public class LogoutController
 {
     protected static Logger logger = Logger.getLogger(LogoutController.class);
 
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @RequestMapping(value = "/exit", method = RequestMethod.GET)
     public String logout
             (Model model, HttpSession session, HttpServletResponse response, HttpServletRequest request) throws Exception
     {
