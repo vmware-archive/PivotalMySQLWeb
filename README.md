@@ -48,10 +48,7 @@ papicella@papicella:~/pivotal/DemoProjects/spring-starter/pivotal/PivotalMySQLWe
 2016-07-03 17:13:44.294  INFO 19664 --- [           main] c.p.p.m.PivotalMySqlWebApplication       : Started PivotalMySqlWebApplication in 3.4 seconds (JVM running for 3.761)
 ```
 
-- Access as follows and connect to your MySQL instance using the default username/password as follows:
-
-Default username = admin <br />
-Default password = cfmysqlweb
+- Access as follows and connect to your MySQL instance
 
 ```
 http://localhost:8080/
@@ -113,24 +110,6 @@ Alternatively you can also set that at deployment to use a default value by edit
 
 ```
 maxRecordsinSQLQueryWindow=500
-```
-
-<h3>Security - HTTP Basic Authentication</h3>
-
-By default this application is using HTTP Basic Authentication to protect every end point. The username/password is set in 
-"main/resources/application-cloud.yml" and "main/resources/application.yml" files and can be altered here prior to deploying.
-Be sure to repackage to pick up your new username/password you wish to use for HTTP Basic Authentication
-
-Default username = admin <br />
-Default password = cfmysqlweb
-
-```
-security:
-  user:
-    name: admin
-    password: cfmysqlweb
-  basic:
-    enabled: true
 ```
 
 <hr />

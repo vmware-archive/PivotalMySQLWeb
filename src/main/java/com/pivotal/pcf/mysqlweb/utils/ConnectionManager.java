@@ -87,7 +87,7 @@ public class ConnectionManager
         }
         catch (Exception ex)
         {
-            logger.info("Unable to retrive DataSource : " + ex.getMessage());
+            logger.info("Unable to retrieve DataSource : " + ex.getMessage());
             return null;
         }
 
