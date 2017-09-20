@@ -343,14 +343,16 @@ limitations under the License.
             </td>
             <td style="text-align:center">
                 <div th:if="${item.key != session.user_key}">
-                    <a th:href="@{/viewconmap(conMapAction='DELETE',key=${item.key})}">
-                        <img src="images/b_drop.png"
-                             th:src="@{images/b_drop.png}"
-                             alt="Delete JDBC Connection"
-                             width="16" height="16"
-                             data-toggle="tooltip" title="Delete JDBC Connection"
-                             border="0"/>
-                    </a>
+                    <div th:if="${session.autobound == null}">
+                        <a th:href="@{/viewconmap(conMapAction='DELETE',key=${item.key})}">
+                            <img src="images/b_drop.png"
+                                 th:src="@{images/b_drop.png}"
+                                 alt="Delete JDBC Connection"
+                                 width="16" height="16"
+                                 data-toggle="tooltip" title="Delete JDBC Connection"
+                                 border="0"/>
+                        </a>
+                    </div>
                 </div>
             </td>
         </tr>
