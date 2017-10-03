@@ -26,9 +26,9 @@ public class GenericDAOImplTests extends PivotalMySqlWebApplicationTests
 
         dataSource = new SingleConnectionDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/apples");
-        dataSource.setUsername("pas");
-        dataSource.setPassword("pas");
+        dataSource.setUrl(url);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
 
         cm.addDataSourceConnection(dataSource, userKey);
         genericDAO = new GenericDAOImpl();
