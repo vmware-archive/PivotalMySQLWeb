@@ -1,8 +1,8 @@
 package com.pivotal.pcf.mysqlweb;
 
-import com.pivotal.pcf.mysqlweb.beans.Result;
+import com.pivotal.pcf.mysqlweb.dao.constraints.Constraint;
+import com.pivotal.pcf.mysqlweb.dao.constraints.ConstraintDAOImpl;
 import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAOImpl;
-import com.pivotal.pcf.mysqlweb.dao.tables.Table;
 import com.pivotal.pcf.mysqlweb.dao.views.View;
 import com.pivotal.pcf.mysqlweb.dao.views.ViewDAOImpl;
 import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
@@ -14,8 +14,7 @@ import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import java.util.List;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ViewDAOImplTests extends PivotalMySqlWebApplicationTests {
-
+public class ConstraintDAOImplTests extends PivotalMySqlWebApplicationTests {
     private static SingleConnectionDataSource dataSource;
     private static ConnectionManager cm;
 
@@ -23,7 +22,7 @@ public class ViewDAOImplTests extends PivotalMySqlWebApplicationTests {
     private static GenericDAOImpl genericDAO;
 
     @Autowired
-    private static ViewDAOImpl viewDAO;
+    private static ConstraintDAOImpl constraintDAO;
 
     @BeforeClass
     public static void setUp() throws Exception
@@ -38,12 +37,10 @@ public class ViewDAOImplTests extends PivotalMySqlWebApplicationTests {
 
         cm.addDataSourceConnection(dataSource, userKey);
         genericDAO = new GenericDAOImpl();
-        viewDAO = new ViewDAOImpl();
+        constraintDAO = new ConstraintDAOImpl();
         genericDAO.setDataSource(dataSource);
 
-        genericDAO.runStatement("create table pas_yyy (col1 int)", "N", "Y", userKey);
-        genericDAO.runStatement("insert into pas_yyy (1)", "N", "N", userKey);
-        genericDAO.runStatement("create view pas_yyy_view as select * from pas_yyy", "N", "Y", userKey);
+        genericDAO.runStatement("create table pas_yyy (col1 int NOT NULL PRIMARY KEY)", "N", "Y", userKey);
 
     }
 
@@ -53,28 +50,10 @@ public class ViewDAOImplTests extends PivotalMySqlWebApplicationTests {
     }
 
     @Test
-    public void t1retrieveViewList () throws Exception
+    public void t1retrieveConstraintList () throws Exception
     {
-        List<View> views = viewDAO.retrieveViewList(database, null, userKey);
+        List<Constraint> constraints = constraintDAO.retrieveConstraintList(database, null, userKey);
 
-        Assert.assertTrue(views.size() >= 1);
-    }
-
-    @Test
-    public void t2getViewDefinition () throws Exception
-    {
-        String result = null;
-
-        result = viewDAO.getViewDefinition(database, "PAS_YYY_VIEW", userKey);
-
-        Assert.assertNotNull(result);
-    }
-
-    @Test
-    public void t3simpleviewCommand () throws Exception
-    {
-        Result result = viewDAO.simpleviewCommand(database, "PAS_YYY_VIEW", "DROP", userKey);
-
-        Assert.assertEquals(result.getMessage(), "SUCCESS");
+        Assert.assertTrue(constraints.size() >= 1);
     }
 }
