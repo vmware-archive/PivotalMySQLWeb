@@ -5,7 +5,6 @@ import com.pivotal.pcf.mysqlweb.beans.WebResult;
 import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAOImpl;
 import com.pivotal.pcf.mysqlweb.dao.indexes.Index;
 import com.pivotal.pcf.mysqlweb.dao.indexes.IndexDAOImpl;
-import com.pivotal.pcf.mysqlweb.dao.tables.Table;
 import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
 import org.junit.*;
 import org.junit.runners.MethodSorters;
