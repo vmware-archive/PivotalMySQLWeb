@@ -1,8 +1,11 @@
 package com.pivotal.pcf.mysqlweb;
 
-import com.pivotal.pcf.mysqlweb.dao.constraints.Constraint;
-import com.pivotal.pcf.mysqlweb.dao.constraints.ConstraintDAOImpl;
+import com.pivotal.pcf.mysqlweb.beans.Result;
+import com.pivotal.pcf.mysqlweb.beans.WebResult;
 import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAOImpl;
+import com.pivotal.pcf.mysqlweb.dao.indexes.Index;
+import com.pivotal.pcf.mysqlweb.dao.indexes.IndexDAOImpl;
+import com.pivotal.pcf.mysqlweb.dao.tables.Table;
 import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
 import org.junit.*;
 import org.junit.runners.MethodSorters;
@@ -12,7 +15,7 @@ import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import java.util.List;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ConstraintDAOImplTests extends PivotalMySqlWebApplicationTests {
+public class IndexDAOImplTests extends PivotalMySqlWebApplicationTests {
     private static SingleConnectionDataSource dataSource;
     private static ConnectionManager cm;
 
@@ -20,7 +23,7 @@ public class ConstraintDAOImplTests extends PivotalMySqlWebApplicationTests {
     private static GenericDAOImpl genericDAO;
 
     @Autowired
-    private static ConstraintDAOImpl constraintDAO;
+    private static IndexDAOImpl indexDAO;
 
     @BeforeClass
     public static void setUp() throws Exception
@@ -35,10 +38,10 @@ public class ConstraintDAOImplTests extends PivotalMySqlWebApplicationTests {
 
         cm.addDataSourceConnection(dataSource, userKey);
         genericDAO = new GenericDAOImpl();
-        constraintDAO = new ConstraintDAOImpl();
+        indexDAO = new IndexDAOImpl();
         genericDAO.setDataSource(dataSource);
 
-        genericDAO.runStatement("create table pas_yyy (col1 int NOT NULL PRIMARY KEY)", "N", "Y", userKey);
+        genericDAO.runStatement("create table pas_yyy (col1 int NOT NULL, CONSTRAINT PK_pas_yyy PRIMARY KEY (COL1))", "N", "Y", userKey);
 
     }
 
@@ -48,10 +51,26 @@ public class ConstraintDAOImplTests extends PivotalMySqlWebApplicationTests {
     }
 
     @Test
-    public void t1retrieveConstraintList () throws Exception
+    public void t1retrieveIndexList () throws Exception
     {
-        List<Constraint> constraints = constraintDAO.retrieveConstraintList(database, null, userKey);
+        List<Index> indexes = indexDAO.retrieveIndexList(database, null, userKey);
 
-        Assert.assertTrue(constraints.size() >= 1);
+        Assert.assertTrue(indexes.size() >= 1);
+    }
+
+    @Test
+    public void t2getIndexDetails () throws Exception
+    {
+        WebResult webResult = indexDAO.getIndexDetails(database, "PAS_YYY", "PRIMARY", userKey);
+
+        Assert.assertEquals(webResult.getRows().size(), 1);
+    }
+
+    @Test
+    public void t3simpleindexCommand () throws Exception
+    {
+        Result result = indexDAO.simpleindexCommand(database, "PRIMARY", "DROP", "PAS_YYY", userKey);
+
+        Assert.assertEquals(result.getMessage(), "SUCCESS");
     }
 }
