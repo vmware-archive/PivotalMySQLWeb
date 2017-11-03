@@ -8,5 +8,5 @@ applications:
   services:
     - pas-mysql
   env:
-    JAVA_OPTS: -Djava.security.egd=file:///dev/urando
+    JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
     SPRING_PROFILES_ACTIVE: cloud
