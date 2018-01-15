@@ -82,7 +82,7 @@ applications:
   services:
     - pas-mysql-dedicated-v2
   env:
-    JAVA_OPTS: -Djava.security.egd=file:///dev/urando
+    JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
 ```
 
 Push to PCF using
