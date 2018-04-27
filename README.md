@@ -1,8 +1,8 @@
 <img src="https://image.ibb.co/iCvjc5/Pivotal_My_SQLWeb_BLOG.png" height="120" width="350"/>
 
-PivotalMySQLWeb is a free Pivotal open source project, intended to handle the administration of a Pivotal MySQL Service 
-Instance over the Web. PivotalMySQLWeb supports a wide range of operations on a Pivotal MySQL Service Instance such as 
-managing tables, views, indexes which can all be performed via the user interface, while you still have the ability to 
+PivotalMySQLWeb is a free Pivotal open source project, intended to handle the administration of a Pivotal MySQL Service
+Instance over the Web. PivotalMySQLWeb supports a wide range of operations on a Pivotal MySQL Service Instance such as
+managing tables, views, indexes which can all be performed via the user interface, while you still have the ability to
 directly execute any number of SQL statements
 
 It includes the following capabilities:
@@ -26,7 +26,7 @@ It includes the following capabilities:
 
 - $ git clone https://github.com/pivotal-cf/PivotalMySQLWeb.git
 - $ cd PivotalMySQLWeb
-- $ mvn -DskipTests=true package
+- $ ./mvnw -DskipTests=true package
 - Run as follows "java -jar ./target/PivotalMySQLWeb-0.0.1-SNAPSHOT.jar"
 
 ```
@@ -58,7 +58,7 @@ http://localhost:8080/
 ```
 
 Note: When connecting to a MySQL database instance ensure you JDBC URL includes a database name as shown below which
-targets the "employees" database 
+targets the "employees" database
 
 ```
 jdbc:mysql://localhost:3306/employees
@@ -69,7 +69,7 @@ jdbc:mysql://localhost:3306/employees
 <h3>Deploy to Pivotal Cloud Foundry</h3>
 
 To deploy to Pivotal Cloud Foundry it's best to bind the application to a Pivotal MySQL service instance so it automatically connects
-to the MySQL instance as shown in the sample manifest below. If you don't bind to a MySQL instance it will simply ask you to login 
+to the MySQL instance as shown in the sample manifest below. If you don't bind to a MySQL instance it will simply ask you to login
 to a MySQL instance itself.
 
 ```
@@ -117,7 +117,7 @@ maxRecordsinSQLQueryWindow=500
 
 <h3>Security - HTTP Basic Authentication</h3>
 
-By default this application is using HTTP Basic Authentication to protect every end point. The username/password is set in 
+By default this application is using HTTP Basic Authentication to protect every end point. The username/password is set in
 "main/resources/application-cloud.yml" and "main/resources/application.yml" files and can be altered here prior to deploying.
 Be sure to repackage to pick up your new username/password you wish to use for HTTP Basic Authentication
 
@@ -135,4 +135,4 @@ security:
 ```
 
 <hr />
-Pas Apicella [papicella at pivotal.io] is a Senior Platform Architect at Pivotal Australia 
+Pas Apicella [papicella at pivotal.io] is a Senior Platform Architect at Pivotal Australia
