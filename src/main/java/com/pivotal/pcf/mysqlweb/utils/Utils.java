@@ -161,30 +161,47 @@ public class Utils
         {
             // just check if it's "p-mysql" v1 instance
             mysqlService = (List) jsonMap.get("p-mysql");
-
-            // just check if it's "p.mysql" v2 instance
-            if (mysqlService == null)
+            if (mysqlService != null)
             {
+                logger.info("Obtaining VCAP_SERVICES credentials - p-mysql");
+                Map clearDBMap = (Map) mysqlService.get(0);
+                Map credentailsMap = (Map) clearDBMap.get("credentials");
+
+                login.setUrl((String) credentailsMap.get("jdbcUrl") + "&connectTimeout=1800000&socketTimeout=1800000&autoReconnect=true&reconnect=true");
+                login.setUsername((String) credentailsMap.get("username"));
+                login.setPassword((String) credentailsMap.get("password"));
+                login.setSchema((String) credentailsMap.get("name"));
+
+            } else {
+                // just check if it's "p.mysql" v2 instance
                 mysqlService = (List) jsonMap.get("p.mysql");
+                if (mysqlService != null) {
+                    logger.info("Obtaining VCAP_SERVICES credentials - p.mysql");
+                    Map clearDBMap = (Map) mysqlService.get(0);
+                    Map credentailsMap = (Map) clearDBMap.get("credentials");
+
+                    login.setUrl((String) credentailsMap.get("jdbcUrl") + "&connectTimeout=1800000&socketTimeout=1800000&autoReconnect=true&reconnect=true");
+                    login.setUsername((String) credentailsMap.get("username"));
+                    login.setPassword((String) credentailsMap.get("password"));
+                    login.setSchema((String) credentailsMap.get("name"));
+                } else {
+                    // just check if it's "google-cloudsql-mysql" GCP instance
+                    mysqlService = (List) jsonMap.get("google-cloudsql-mysql");
+                    if (mysqlService != null) {
+                        logger.info("Obtaining VCAP_SERVICES credentials - google-cloudsql-mysql ******");
+                        Map clearDBMap = (Map) mysqlService.get(0);
+                        Map credentailsMap = (Map) clearDBMap.get("credentials");
+
+                        login.setUrl("jdbc:mysql://" + (String) credentailsMap.get("host") + ":3306/" + (String) credentailsMap.get("database_name"));
+                        login.setUsername((String) credentailsMap.get("Username"));
+                        login.setPassword((String) credentailsMap.get("Password"));
+                        login.setSchema((String) credentailsMap.get("database_name"));
+                    }
+                }
             }
         }
 
-
-        if (mysqlService != null)
-        {
-            logger.info("Obtaining VCAP_SERVICES credentials");
-            Map clearDBMap = (Map) mysqlService.get(0);
-            Map credentailsMap = (Map) clearDBMap.get("credentials");
-
-            login.setUrl((String) credentailsMap.get("jdbcUrl") + "&connectTimeout=1800000&socketTimeout=1800000&autoReconnect=true&reconnect=true");
-
-            login.setUsername((String) credentailsMap.get("username"));
-            login.setPassword((String) credentailsMap.get("password"));
-            login.setSchema((String) credentailsMap.get("name"));
-        }
-
         return login;
-
     }
 
     static public Map<String, Long> getSchemaMap ()
