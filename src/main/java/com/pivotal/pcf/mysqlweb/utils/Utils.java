@@ -25,7 +25,8 @@ import java.util.Properties;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pivotal.pcf.mysqlweb.beans.Login;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
 
@@ -34,7 +35,7 @@ import javax.servlet.http.HttpSession;
 
 public class Utils
 {
-    protected static Logger logger = Logger.getLogger(Utils.class);
+    protected static Logger logger = LoggerFactory.getLogger(Utils.class);
 
     public static String getVcapServices ()
     {

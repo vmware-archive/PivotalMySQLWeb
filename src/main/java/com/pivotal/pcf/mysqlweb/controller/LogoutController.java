@@ -18,13 +18,12 @@ limitations under the License.
 package com.pivotal.pcf.mysqlweb.controller;
 
 import com.pivotal.pcf.mysqlweb.beans.Login;
-import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
-import com.pivotal.pcf.mysqlweb.utils.Themes;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,9 +32,9 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class LogoutController
 {
-    protected static Logger logger = Logger.getLogger(LogoutController.class);
+    protected static Logger logger = LoggerFactory.getLogger(LogoutController.class);
 
-    @RequestMapping(value = "/exit", method = RequestMethod.GET)
+    @GetMapping(value = "/exit")
     public String logout
             (Model model, HttpSession session, HttpServletResponse response, HttpServletRequest request) throws Exception
     {

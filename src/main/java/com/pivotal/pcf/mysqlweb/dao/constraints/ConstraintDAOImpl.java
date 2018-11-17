@@ -22,15 +22,16 @@ import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
 import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.main.PivotalMySQLWebException;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
-import org.apache.log4j.Logger;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.slf4j.Logger;
+
+import org.slf4j.LoggerFactory;import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
 import java.util.List;
 
 public class ConstraintDAOImpl implements ConstraintDAO
 {
-    protected static Logger logger = Logger.getLogger(ConstraintDAOImpl.class);
+    protected static Logger logger = LoggerFactory.getLogger(ConstraintDAOImpl.class);
 
     private JdbcTemplate jdbcTemplate;
 

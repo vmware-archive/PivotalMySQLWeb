@@ -461,7 +461,8 @@ limitations under the License.
                     <td th:text="${constraint.constraintType}" style="text-align:center"></td>
                     <td style="text-align:center ">
                         <a th:href="@{/constraints(constraintName=${constraint.constraintName},constraintAction='DROP',constraintType=${constraint.constraintType},tableName=${constraint.tableName},selectedSchema=${chosenSchema})}"
-                           th:onclick="'return confirmLink(this, \'Drop CONSTRAINT ' + ${constraint.constraintName} + '?\')'">
+                        th:data1="${constraint.constraintName}"
+                        th:onclick="'return confirmLink(this, \'Drop CONSTRAINT ' + this.getAttribute('data1') + '?\')'">
                             <img src="images/b_drop.png"
                                  th:src="@{images/b_drop.png}"
                                  alt="Drop Constraint"

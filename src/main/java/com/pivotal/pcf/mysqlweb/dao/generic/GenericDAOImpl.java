@@ -23,7 +23,8 @@ import com.pivotal.pcf.mysqlweb.beans.WebResult;
 import com.pivotal.pcf.mysqlweb.main.PivotalMySQLWebException;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ import java.util.Set;
 @Service
 public class GenericDAOImpl implements GenericDAO
 {
-    protected static Logger logger = Logger.getLogger(GenericDAOImpl.class);
+    protected static Logger logger = LoggerFactory.getLogger(GenericDAOImpl.class);
 
     private JdbcTemplate jdbcTemplate;
 

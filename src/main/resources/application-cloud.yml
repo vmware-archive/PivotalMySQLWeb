@@ -2,15 +2,12 @@ server:
   error:
     whitelabel:
       enabled: false
-  session:
-    timeout: 1800
-management:
+  servlet:
+    session:
+      timeout: 1800
+
+spring:
   security:
-    enabled: false
-security:
-  user:
-    name: admin
-    password: cfmysqlweb
-  basic:
-    enabled: true
-  sessions: never
+    user:
+      name: admin
+      password: cfmysqlweb

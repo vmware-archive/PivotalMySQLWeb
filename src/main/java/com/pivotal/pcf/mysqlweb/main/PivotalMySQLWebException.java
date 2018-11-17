@@ -19,6 +19,8 @@ package com.pivotal.pcf.mysqlweb.main;
 
 public class PivotalMySQLWebException extends Exception
 {
+    private static final long serialVersionUID = 1L;
+
     public PivotalMySQLWebException()
     {
     }

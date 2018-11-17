@@ -26,12 +26,13 @@ import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
 import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
 import com.pivotal.pcf.mysqlweb.utils.MysqlConnection;
 import com.pivotal.pcf.mysqlweb.utils.Themes;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -42,12 +43,12 @@ import java.util.Map;
 @Controller
 public class AutoLoginController
 {
-    protected static Logger logger = Logger.getLogger(AutoLoginController.class);
+    protected static Logger logger = LoggerFactory.getLogger(AutoLoginController.class);
 
     @Autowired
     UserPref userPref;
 
-    @RequestMapping(value = "/autologin", method = RequestMethod.GET)
+    @GetMapping(value = "/autologin")
     public String autoLogin
             (Model model,
              HttpSession session,
@@ -56,11 +57,10 @@ public class AutoLoginController
         logger.info("Received request to auto login");
 
         ConnectionManager cm = ConnectionManager.getInstance();
-        Connection conn;
         String username = null;
         String passwd = null;
         String url = null;
-        WebResult databaseList, schemaMapResult;
+        WebResult databaseList;
         try
         {
             username = fixRequestParam(request.getParameter("username"));

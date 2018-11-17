@@ -21,11 +21,12 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SessionListener implements HttpSessionListener
 {
-    protected static Logger logger = Logger.getLogger(SessionListener.class);
+    protected static Logger logger = LoggerFactory.getLogger(SessionListener.class);
     private HttpSession session = null;
 
     public void sessionCreated(HttpSessionEvent event)

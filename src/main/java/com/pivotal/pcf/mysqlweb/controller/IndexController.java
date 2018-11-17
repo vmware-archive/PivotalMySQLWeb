@@ -24,11 +24,13 @@ import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.dao.indexes.Index;
 import com.pivotal.pcf.mysqlweb.dao.indexes.IndexDAO;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,9 +42,9 @@ import java.util.List;
 @Controller
 public class IndexController
 {
-    protected static Logger logger = Logger.getLogger(IndexController.class);
+    protected static Logger logger = LoggerFactory.getLogger(IndexController.class);
 
-    @RequestMapping(value = "/indexes", method = RequestMethod.GET)
+    @GetMapping(value = "/indexes")
     public String showIndexes
             (Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception {
 
@@ -133,7 +135,7 @@ public class IndexController
         return "indexes";
     }
 
-    @RequestMapping(value = "/indexes", method = RequestMethod.POST)
+    @PostMapping(value = "/indexes")
     public String performIndexAction
             (Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
     {

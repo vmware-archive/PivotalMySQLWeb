@@ -22,7 +22,8 @@ import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
 import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.main.PivotalMySQLWebException;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
@@ -30,7 +31,7 @@ import java.util.List;
 
 public class ViewDAOImpl implements ViewDAO
 {
-    protected static Logger logger = Logger.getLogger(ViewDAOImpl.class);
+    protected static Logger logger = LoggerFactory.getLogger(ViewDAOImpl.class);
 
     private JdbcTemplate jdbcTemplate;
 
