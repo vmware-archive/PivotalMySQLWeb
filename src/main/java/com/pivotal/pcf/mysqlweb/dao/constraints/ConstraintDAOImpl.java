@@ -17,18 +17,20 @@ limitations under the License.
  */
 package com.pivotal.pcf.mysqlweb.dao.constraints;
 
+import java.util.List;
+
 import com.pivotal.pcf.mysqlweb.beans.Result;
 import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
 import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.main.PivotalMySQLWebException;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
+
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
-import org.slf4j.LoggerFactory;import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.SingleConnectionDataSource;
-
-import java.util.List;
-
+@Repository
 public class ConstraintDAOImpl implements ConstraintDAO
 {
     protected static Logger logger = LoggerFactory.getLogger(ConstraintDAOImpl.class);
@@ -74,8 +76,6 @@ public class ConstraintDAOImpl implements ConstraintDAO
     {
         String            command = null;
         Result            res     = new Result();
-
-        SingleConnectionDataSource dataSource = null;
 
         if (type != null)
         {

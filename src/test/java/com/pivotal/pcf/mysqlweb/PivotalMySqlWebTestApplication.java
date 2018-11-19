@@ -15,17 +15,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
  */
-package com.pivotal.pcf.mysqlweb.dao.constraints;
+package com.pivotal.pcf.mysqlweb;
 
-import com.pivotal.pcf.mysqlweb.beans.Result;
-import com.pivotal.pcf.mysqlweb.main.PivotalMySQLWebException;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.List;
+@SpringBootApplication
+public class PivotalMySqlWebTestApplication {
 
-public interface ConstraintDAO
-{
-    void setDataSource(javax.sql.DataSource ds);
-    public List<Constraint> retrieveConstraintList(String schema, String search, String userKey) throws PivotalMySQLWebException;
-    public Result simpleconstraintCommand (String schemaName, String constraintName, String tableName, String contraintType, String type, String userKey) throws PivotalMySQLWebException;
+	public static void main(String[] args) {
+		SpringApplication.run(PivotalMySqlWebTestApplication.class, args);
+	}
 
 }

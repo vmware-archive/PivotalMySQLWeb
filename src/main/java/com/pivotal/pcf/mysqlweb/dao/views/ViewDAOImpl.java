@@ -26,9 +26,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class ViewDAOImpl implements ViewDAO
 {
     protected static Logger logger = LoggerFactory.getLogger(ViewDAOImpl.class);

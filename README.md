@@ -27,10 +27,12 @@ It includes the following capabilities :
 - $ git clone https://github.com/pivotal-cf/PivotalMySQLWeb.git
 - $ cd PivotalMySQLWeb
 - $ ./mvnw -DskipTests=true package
-- Run as follows "java -jar ./target/PivotalMySQLWeb-0.0.1-SNAPSHOT.jar"
+- Run as follows "java -jar ./target/PivotalMySQLWeb-1.0.0-SNAPSHOT.jar"
+
+Note: If you opt-in to running tests, you must have Docker installed.  We employ the [MySQL container](https://mvnrepository.com/artifact/org.testcontainers/mysql) from [testcontainers.org](https://www.testcontainers.org) library.
 
 ```
-papicella@papicella:~/pivotal/DemoProjects/spring-starter/pivotal/PivotalMySQLWeb$ java -jar ./target/PivotalMySQLWeb-0.0.1-SNAPSHOT.jar
+papicella@papicella:~/pivotal/DemoProjects/spring-starter/pivotal/PivotalMySQLWeb$ java -jar ./target/PivotalMySQLWeb-1.0.0-SNAPSHOT.jar
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -38,7 +40,7 @@ papicella@papicella:~/pivotal/DemoProjects/spring-starter/pivotal/PivotalMySQLWe
  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
   '  |____| .__|_| |_|_| |_\__, | / / / /
  =========|_|==============|___/=/_/_/_/
- :: Spring Boot ::        (v1.3.5.RELEASE)
+ :: Spring Boot ::        (v2.1.0.RELEASE)
 
 ...
 
@@ -57,8 +59,7 @@ Default password = cfmysqlweb
 http://localhost:8080/
 ```
 
-Note: When connecting to a MySQL database instance ensure you JDBC URL includes a database name as shown below which
-targets the "employees" database
+Note: When connecting to a MySQL database instance ensure you JDBC URL includes a database name as shown below which e.g., targets the "employees" database
 
 ```
 jdbc:mysql://localhost:3306/employees
@@ -78,9 +79,9 @@ applications:
   memory: 1024M
   instances: 1
   random-route: true
-  path: ./target/PivotalMySQLWeb-0.0.1-SNAPSHOT.jar
+  path: ./target/PivotalMySQLWeb-1.0.0-SNAPSHOT.jar
   services:
-    - pas-mysql-dedicated-v2
+    - some-mysql-database-instance
   env:
     JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
 ```
@@ -125,14 +126,12 @@ Default username = admin <br />
 Default password = cfmysqlweb
 
 ```
-security:
-  user:
-    name: admin
-    password: cfmysqlweb
-  basic:
-    enabled: true
-  sessions: never
+spring:
+  security:
+    user:
+      name: admin
+      password: cfmysqlweb
 ```
 
 <hr />
-Pas Apicella [papicella at pivotal.io] is a Senior Platform Architect at Pivotal Australia
+Pas Apicella [papicella at pivotal.io] is an Advisory Platform Architect at Pivotal Australia

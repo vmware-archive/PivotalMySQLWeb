@@ -189,7 +189,7 @@ public class IndexController
 
             if (tableList != null)
             {
-                List al = new ArrayList<Result>();
+                List<Result> al = new ArrayList<>();
                 for (String index: tableList)
                 {
                     result = null;
