@@ -23,11 +23,12 @@ import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.dao.tables.Constants;
 import com.pivotal.pcf.mysqlweb.dao.tables.TableDAO;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,11 +37,11 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class TableViewerController
 {
-    protected static Logger logger = Logger.getLogger(TableViewerController.class);
+    protected static Logger logger = LoggerFactory.getLogger(TableViewerController.class);
 
     private String tableRows = "select * from %s.%s limit 30";
 
-    @RequestMapping(value = "/tableviewer", method = RequestMethod.GET)
+    @GetMapping(value = "/tableviewer")
     public String showTables
             (Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
     {

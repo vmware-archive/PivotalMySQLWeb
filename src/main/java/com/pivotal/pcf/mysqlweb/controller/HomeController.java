@@ -17,31 +17,28 @@ limitations under the License.
  */
 package com.pivotal.pcf.mysqlweb.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import com.pivotal.pcf.mysqlweb.beans.WebResult;
 import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
 import com.pivotal.pcf.mysqlweb.dao.generic.Constants;
 import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
-import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
-import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
-import com.pivotal.pcf.mysqlweb.utils.QueryUtil;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.sql.Connection;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HomeController
 {
-    protected static Logger logger = Logger.getLogger(HomeController.class);
+    protected static Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    @GetMapping(value = "/home")
     public String login(Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
     {
 

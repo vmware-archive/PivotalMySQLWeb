@@ -24,11 +24,13 @@ import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.dao.tables.Table;
 import com.pivotal.pcf.mysqlweb.dao.tables.TableDAO;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,14 +38,13 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class TableController
 {
-    protected static Logger logger = Logger.getLogger(TableController.class);
+    protected static Logger logger = LoggerFactory.getLogger(TableController.class);
 
-    @RequestMapping(value = "/tables", method = RequestMethod.GET)
+    @GetMapping(value = "/tables")
     public String showTables
             (Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
     {
@@ -166,7 +167,7 @@ public class TableController
         return "tables";
     }
 
-    @RequestMapping(value = "/tables", method = RequestMethod.POST)
+    @PostMapping(value = "/tables")
     public String performTableAction
             (Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
     {

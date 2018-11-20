@@ -23,11 +23,13 @@ import com.pivotal.pcf.mysqlweb.dao.constraints.Constraint;
 import com.pivotal.pcf.mysqlweb.dao.constraints.ConstraintDAO;
 import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,9 +41,9 @@ import java.util.List;
 @Controller
 public class ConstraintController
 {
-    protected static Logger logger = Logger.getLogger(ConstraintController.class);
+    protected static Logger logger = LoggerFactory.getLogger(ConstraintController.class);
 
-    @RequestMapping(value = "/constraints", method = RequestMethod.GET)
+    @GetMapping(value = "/constraints")
     public String showConstraints
             (Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
     {
@@ -110,7 +112,7 @@ public class ConstraintController
 
     }
 
-    @RequestMapping(value = "/constraints", method = RequestMethod.POST)
+    @PostMapping(value = "/constraints")
     public String performConstraintAction
             (Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
     {

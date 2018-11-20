@@ -25,6 +25,8 @@ import java.util.List;
 
 public interface TableDAO
 {
+    public void setDataSource(javax.sql.DataSource ds);
+
     public List<Table> retrieveTableList(String schema, String search, String userKey) throws PivotalMySQLWebException;
 
     public Result simpletableCommand (String schemaName, String tableName, String type, String userKey) throws PivotalMySQLWebException;

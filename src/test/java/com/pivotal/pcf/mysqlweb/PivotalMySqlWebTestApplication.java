@@ -15,30 +15,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
  */
-package com.pivotal.pcf.mysqlweb.main;
+package com.pivotal.pcf.mysqlweb;
 
-public class PivotalMySQLWebException extends Exception
-{
-    private static final long serialVersionUID = 1L;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-    public PivotalMySQLWebException()
-    {
-    }
+@SpringBootApplication
+public class PivotalMySqlWebTestApplication {
 
-    public PivotalMySQLWebException(final Throwable cause)
-    {
-        super(cause);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(PivotalMySqlWebTestApplication.class, args);
+	}
 
-    public PivotalMySQLWebException
-            (final String msg,
-             final Throwable cause)
-    {
-        super(msg, cause);
-    }
-
-    public PivotalMySQLWebException(final String msg)
-    {
-        super(msg);
-    }
 }

@@ -22,14 +22,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.pivotal.pcf.mysqlweb.beans.Login;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
 public class ConnectionManager
 {
 
-    protected static Logger logger = Logger.getLogger(ConnectionManager.class);
+    protected static Logger logger = LoggerFactory.getLogger(ConnectionManager.class);
     private Map<String,MysqlConnection> conList = new HashMap<String,MysqlConnection>();
     private Map<String,SingleConnectionDataSource> dsList = new HashMap<String,SingleConnectionDataSource>();
     private static ConnectionManager instance = null;

@@ -27,8 +27,8 @@ import java.util.Map;
 
 public interface GenericDAO
 {
+    void setDataSource(javax.sql.DataSource ds);
     WebResult runGenericQuery (String sql, Object[] args, String userKey, int maxRows) throws PivotalMySQLWebException;
-
     CommandResult runStatement(String sql, String elapsedTime, String ddl, String userKey) throws PivotalMySQLWebException;
 
     Map<String, Long> populateSchemaMap(String schema, String userKey) throws PivotalMySQLWebException;

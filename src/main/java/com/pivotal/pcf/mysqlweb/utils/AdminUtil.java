@@ -65,9 +65,7 @@ public class AdminUtil
     static public javax.sql.DataSource getDataSource(String userKey) throws Exception
     {
         javax.sql.DataSource dataSource = null;
-        ConnectionManager cm = null;
-
-        cm = ConnectionManager.getInstance();
+        ConnectionManager cm = ConnectionManager.getInstance();
         dataSource = cm.getDataSource(userKey);
 
         return dataSource;

@@ -22,17 +22,17 @@ import com.pivotal.pcf.mysqlweb.beans.UserPref;
 import com.pivotal.pcf.mysqlweb.beans.WebResult;
 import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
 import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
-import com.pivotal.pcf.mysqlweb.dao.tables.Constants;
 import com.pivotal.pcf.mysqlweb.main.PivotalMySQLWebException;
-import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
 import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
 import com.pivotal.pcf.mysqlweb.utils.QueryUtil;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,7 +40,6 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.jstl.sql.Result;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -50,8 +49,7 @@ import java.util.regex.Pattern;
 @Controller
 public class QueryController
 {
-    protected static Logger logger = Logger.getLogger(QueryController.class);
-    private static final String FILENAME = "worksheet.sql";
+    protected static Logger logger = LoggerFactory.getLogger(QueryController.class);
     private static final String FILENAME_EXPORT = "query-output.csv";
     private static final String FILENAME_EXPORT_JSON = "query-output.json";
     private static final String SAVE_CONTENT_TYPE = "application/x-download";
@@ -59,7 +57,7 @@ public class QueryController
             "SELECT", "INSERT", "DELETE", "DDL", "UPDATE", "CALL", "COMMIT", "ROLLBACK", "DESCRIBE"
     };
 
-    @RequestMapping(value = "/query", method = RequestMethod.GET)
+    @GetMapping(value = "/query")
     public String worksheet
             (Model model, HttpServletResponse response,
              HttpServletRequest request,
@@ -135,7 +133,7 @@ public class QueryController
         return "query";
     }
 
-    @RequestMapping(value = "/query", method = RequestMethod.POST)
+    @PostMapping(value = "/query")
     public String worksheetAction
             (Model model,
              @RequestParam(value="query", required=true) String query,
@@ -309,7 +307,7 @@ public class QueryController
         return "query";
     }
 
-    @RequestMapping(value = "/uploadsql", method = RequestMethod.POST)
+    @PostMapping(value = "/uploadsql")
     public String fileuploadRequest
             (Model model,
              @RequestParam("file") MultipartFile file,
@@ -333,7 +331,7 @@ public class QueryController
         return "query";
     }
 
-    @RequestMapping(value = "/executequery", method = RequestMethod.GET)
+    @GetMapping(value = "/executequery")
     public String executeQuery
             (Model model,
              HttpServletResponse response,
