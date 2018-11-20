@@ -1,13 +1,26 @@
+logging:
+  level:
+    org.springframework: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: autoconfig,beans,env,info,health,httptrace,loggers,mappings,metrics,sessions,threaddump
+  endpoint:
+    health:
+      show-details: always
+
 server:
-  session:
-    timeout: 1800
+  servlet:
+    session:
+      timeout: 1800
   error:
     whitelabel:
       enabled: false
-security:
-  user:
-    name: admin
-    password: cfmysqlweb
-  basic:
-    enabled: true
-  sessions: never
+
+spring:
+  security:
+    user:
+      name: admin
+      password: cfmysqlweb

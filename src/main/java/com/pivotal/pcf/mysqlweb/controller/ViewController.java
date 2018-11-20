@@ -23,11 +23,13 @@ import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.dao.views.View;
 import com.pivotal.pcf.mysqlweb.dao.views.ViewDAO;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,9 +41,9 @@ import java.util.List;
 @Controller
 public class ViewController
 {
-    protected static Logger logger = Logger.getLogger(ViewController.class);
+    protected static Logger logger = LoggerFactory.getLogger(ViewController.class);
 
-    @RequestMapping(value = "/views", method = RequestMethod.GET)
+    @GetMapping(value = "/views")
     public String showViews
             (Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
     {
@@ -51,7 +53,6 @@ public class ViewController
             return null;
         }
 
-        int startAtIndex = 0, endAtIndex = 0;
         String schema = null;
 
         logger.info("Received request to show views");
@@ -133,12 +134,11 @@ public class ViewController
         return "views";
     }
 
-    @RequestMapping(value = "/views", method = RequestMethod.POST)
+    @PostMapping(value = "/views")
     public String performViewAction
             (Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
     {
         String schema = null;
-        int startAtIndex = 0, endAtIndex = 0;
 
         if (Utils.verifyConnection(response, session))
         {

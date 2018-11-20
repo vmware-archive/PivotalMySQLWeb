@@ -23,15 +23,18 @@ import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
 import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.main.PivotalMySQLWebException;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class IndexDAOImpl implements IndexDAO
 {
-    protected static Logger logger = Logger.getLogger(IndexDAOImpl.class);
+    protected static Logger logger = LoggerFactory.getLogger(IndexDAOImpl.class);
 
     private JdbcTemplate jdbcTemplate;
 

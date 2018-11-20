@@ -19,11 +19,12 @@ package com.pivotal.pcf.mysqlweb.controller;
 
 import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,9 +33,9 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class ConmapController
 {
-    protected static Logger logger = Logger.getLogger(ConmapController.class);
+    protected static Logger logger = LoggerFactory.getLogger(ConmapController.class);
 
-    @RequestMapping(value = "/viewconmap", method = RequestMethod.GET)
+    @GetMapping(value = "/viewconmap")
     public String viewConnections
             (Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
     {

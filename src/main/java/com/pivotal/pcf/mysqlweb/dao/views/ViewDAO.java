@@ -24,6 +24,8 @@ import java.util.List;
 
 public interface ViewDAO
 {
+    public void setDataSource(javax.sql.DataSource ds);
+
     public List<View> retrieveViewList(String schema, String search, String userKey) throws PivotalMySQLWebException;
 
     public Result simpleviewCommand (String schemaName, String viewName, String type, String userKey) throws PivotalMySQLWebException;

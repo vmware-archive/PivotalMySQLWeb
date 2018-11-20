@@ -4,9 +4,6 @@ applications:
   memory: 1024M
   instances: 1
   random-route: true
-  path: ./target/PivotalMySQLWeb-0.0.1-SNAPSHOT.jar
-  services:
-    - pas-mysql
+  path: ./target/PivotalMySQLWeb-1.0.0-SNAPSHOT.jar
   env:
     JAVA_OPTS: -Djava.security.egd=file:///dev/urandom
-    SPRING_PROFILES_ACTIVE: cloud
