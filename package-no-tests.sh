@@ -1,1 +1,3 @@
-mvn -Dmaven.test.skip=true package
+#!/usr/bin/env sh
+
+./mvnw -Dmaven.test.skip=true package
