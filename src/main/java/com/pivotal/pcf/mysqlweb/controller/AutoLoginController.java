@@ -26,8 +26,7 @@ import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
 import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
 import com.pivotal.pcf.mysqlweb.utils.MysqlConnection;
 import com.pivotal.pcf.mysqlweb.utils.Themes;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,14 +35,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.sql.Connection;
 import java.util.LinkedList;
 import java.util.Map;
 
+@Slf4j
 @Controller
 public class AutoLoginController
 {
-    protected static Logger logger = LoggerFactory.getLogger(AutoLoginController.class);
 
     @Autowired
     UserPref userPref;
@@ -54,7 +52,7 @@ public class AutoLoginController
              HttpSession session,
              HttpServletRequest request) throws Exception
     {
-        logger.info("Received request to auto login");
+        log.info("Received request to auto login");
 
         ConnectionManager cm = ConnectionManager.getInstance();
         String username = null;
@@ -67,8 +65,8 @@ public class AutoLoginController
             passwd = fixRequestParam(request.getParameter("passwd"));
             url = fixRequestParam(request.getParameter("url"));
 
-            logger.info("username = " + username);
-            logger.info("url = " + url);
+            log.info("username = " + username);
+            log.info("url = " + url);
 
             if (username.trim().equals(""))
             {
@@ -81,7 +79,7 @@ public class AutoLoginController
 
             MysqlConnection newConn =
                     new MysqlConnection
-                            (url,
+                            (url, 
                              new java.util.Date().toString(),
                              username.toUpperCase());
 
@@ -108,12 +106,12 @@ public class AutoLoginController
             Map<String, Long> schemaMap;
             schemaMap = genericDAO.populateSchemaMap(schema, session.getId());
 
-            logger.info("schemaMap=" + schemaMap);
+            log.info("schemaMap=" + schemaMap);
             session.setAttribute("schemaMap", schemaMap);
 
             model.addAttribute("databaseList", databaseList);
 
-            logger.info(userPref.toString());
+            log.info(userPref.toString());
 
         }
         catch (Exception ex)

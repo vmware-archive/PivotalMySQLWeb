@@ -23,6 +23,7 @@ import com.pivotal.pcf.mysqlweb.dao.constraints.Constraint;
 import com.pivotal.pcf.mysqlweb.dao.constraints.ConstraintDAO;
 import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -38,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 @Controller
 public class ConstraintController
 {
@@ -49,19 +51,19 @@ public class ConstraintController
     {
         if (Utils.verifyConnection(response, session))
         {
-            logger.info("user_key is null OR Connection stale so new Login required");
+            log.info("user_key is null OR Connection stale so new Login required");
             return null;
         }
 
         String schema = null;
 
-        logger.info("Received request to show constraints");
+        log.info("Received request to show constraints");
 
         ConstraintDAO constraintDAO = PivotalMySQLWebDAOFactory.getConstraintDAO();
         GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
 
         String selectedSchema = request.getParameter("selectedSchema");
-        logger.info("selectedSchema = " + selectedSchema);
+        log.info("selectedSchema = " + selectedSchema);
 
         if (selectedSchema != null)
         {
@@ -72,14 +74,14 @@ public class ConstraintController
             schema = (String) session.getAttribute("schema");
         }
 
-        logger.info("schema = " + schema);
+        log.info("schema = " + schema);
 
         String constraintAction = request.getParameter("constraintAction");
         Result result = new Result();
 
         if (constraintAction != null)
         {
-            logger.info("constraintAction = " + constraintAction);
+            log.info("constraintAction = " + constraintAction);
             result = null;
 
             if (constraintAction.equals("DROP"))
@@ -119,7 +121,7 @@ public class ConstraintController
 
         if (Utils.verifyConnection(response, session))
         {
-            logger.info("user_key is null OR Connection stale so new Login required");
+            log.info("user_key is null OR Connection stale so new Login required");
             return null;
         }
 
@@ -127,13 +129,13 @@ public class ConstraintController
         Result result = new Result();
         List<Constraint> constraints = null;
 
-        logger.info("Received request to perform an action on the constraints");
+        log.info("Received request to perform an action on the constraints");
 
         ConstraintDAO constraintDAO = PivotalMySQLWebDAOFactory.getConstraintDAO();
         GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
 
         String selectedSchema = request.getParameter("selectedSchema");
-        logger.info("selectedSchema = " + selectedSchema);
+        log.info("selectedSchema = " + selectedSchema);
 
         if (selectedSchema != null)
         {
@@ -144,7 +146,7 @@ public class ConstraintController
             schema = (String) session.getAttribute("schema");
         }
 
-        logger.info("schema = " + schema);
+        log.info("schema = " + schema);
 
         if (request.getParameter("searchpressed") != null)
         {
@@ -160,8 +162,8 @@ public class ConstraintController
             String[] tableList  = request.getParameterValues("selected_constraint[]");
             String   commandStr = request.getParameter("submit_mult");
 
-            logger.info("tableList = " + Arrays.toString(tableList));
-            logger.info("command = " + commandStr);
+            log.info("tableList = " + Arrays.toString(tableList));
+            log.info("command = " + commandStr);
 
             // start actions now if tableList is not null
 

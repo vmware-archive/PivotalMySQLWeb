@@ -25,6 +25,7 @@ import java.util.Properties;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pivotal.pcf.mysqlweb.beans.Login;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.json.JsonParser;
@@ -33,10 +34,10 @@ import org.springframework.boot.json.JsonParserFactory;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+@Slf4j
 public class Utils
 {
-    protected static Logger logger = LoggerFactory.getLogger(Utils.class);
-
+    
     public static String getVcapServices ()
     {
         String jsonString = null;
@@ -111,14 +112,14 @@ public class Utils
             {
                 if (conn.isClosed() || ! conn.isValid(5))
                 {
-                    logger.info("Connection = null OR Connection no longer valid");
+                    log.info("Connection = null OR Connection no longer valid");
                     // Need logic to reconnect here if VCAP_SERVICES is populated and running in CF
                     ConnectionManager cm = ConnectionManager.getInstance();
 
                     String jsonString = System.getenv().get("VCAP_SERVICES");
                     if (jsonString != null) {
                         if (jsonString.length() > 0) {
-                            logger.info("** Attempting login using VCAP_SERVICES **");
+                            log.info("** Attempting login using VCAP_SERVICES **");
 
                             Login login = Utils.parseLoginCredentials(jsonString);
                             cm.removeDataSource((String) session.getAttribute("user_key"));
@@ -166,7 +167,7 @@ public class Utils
             mysqlService = (List) jsonMap.get("p-mysql");
             if (mysqlService != null)
             {
-                logger.info("Obtaining VCAP_SERVICES credentials - p-mysql");
+                log.info("Obtaining VCAP_SERVICES credentials - p-mysql");
                 cfMySQLMap = (Map) mysqlService.get(0);
                 credentailsMap = (Map) cfMySQLMap.get("credentials");
                 login.setUrl((String) credentailsMap.get("jdbcUrl") + "&connectTimeout=1800000&socketTimeout=1800000&autoReconnect=true&reconnect=true");
@@ -177,7 +178,7 @@ public class Utils
                 mysqlService = (List) jsonMap.get("p.mysql");
                 if (mysqlService != null)
                 {
-                    logger.info("Obtaining VCAP_SERVICES credentials - p.mysql");
+                    log.info("Obtaining VCAP_SERVICES credentials - p.mysql");
                     cfMySQLMap = (Map) mysqlService.get(0);
                     credentailsMap = (Map) cfMySQLMap.get("credentials");
                     login.setUrl((String) credentailsMap.get("jdbcUrl"));
@@ -188,7 +189,7 @@ public class Utils
                     mysqlService = (List) jsonMap.get("google-cloudsql-mysql");
                     if (mysqlService != null)
                     {
-                        logger.info("Obtaining VCAP_SERVICES credentials - google-cloudsql-mysql");
+                        log.info("Obtaining VCAP_SERVICES credentials - google-cloudsql-mysql");
                         cfMySQLMap = (Map) mysqlService.get(0);
                         credentailsMap = (Map) cfMySQLMap.get("credentials");
 
@@ -202,7 +203,7 @@ public class Utils
         }
         else
         {
-            logger.info("Obtaining VCAP_SERVICES credentials - cleardb");
+            log.info("Obtaining VCAP_SERVICES credentials - cleardb");
             cfMySQLMap = (Map) mysqlService.get(0);
             credentailsMap = (Map) cfMySQLMap.get("credentials");
             login.setUrl((String) credentailsMap.get("jdbcUrl") + "&connectTimeout=1800000&socketTimeout=1800000&autoReconnect=true&reconnect=true");

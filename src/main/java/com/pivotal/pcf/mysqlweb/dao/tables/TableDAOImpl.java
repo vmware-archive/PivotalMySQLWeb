@@ -23,8 +23,7 @@ import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
 import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.main.PivotalMySQLWebException;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.stereotype.Repository;
@@ -32,9 +31,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Repository
 public class TableDAOImpl implements TableDAO {
-    protected static Logger logger = LoggerFactory.getLogger(TableDAOImpl.class);
 
     private JdbcTemplate jdbcTemplate;
 
@@ -64,7 +63,7 @@ public class TableDAOImpl implements TableDAO {
         }
         catch (Exception ex)
         {
-            logger.info("Error retrieving all tables with search string = " + search);
+            log.info("Error retrieving all tables with search string = " + search);
             throw new PivotalMySQLWebException(ex);
         }
 
@@ -129,7 +128,7 @@ public class TableDAOImpl implements TableDAO {
         }
         catch (Exception ex)
         {
-            logger.info("Error retrieving table structure for table  " + tableName);
+            log.info("Error retrieving table structure for table  " + tableName);
             throw new PivotalMySQLWebException(ex);
         }
 
@@ -154,7 +153,7 @@ public class TableDAOImpl implements TableDAO {
         }
         catch (Exception ex)
         {
-            logger.info("Error retrieving table details for table  " + tableName);
+            log.info("Error retrieving table details for table  " + tableName);
             throw new PivotalMySQLWebException(ex);
         }
 
@@ -185,7 +184,7 @@ public class TableDAOImpl implements TableDAO {
         }
         catch (Exception ex)
         {
-            logger.info("Error running runShowQuery table details for table  " + tableName);
+            log.info("Error running runShowQuery table details for table  " + tableName);
             throw new PivotalMySQLWebException(ex);
         }
 
@@ -209,7 +208,7 @@ public class TableDAOImpl implements TableDAO {
         }
         catch (Exception ex)
         {
-            logger.info("Error running index query for table  " + tableName);
+            log.info("Error running index query for table  " + tableName);
             throw new PivotalMySQLWebException(ex);
         }
 

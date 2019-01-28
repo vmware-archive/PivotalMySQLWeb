@@ -25,17 +25,15 @@ import javax.servlet.http.HttpSession;
 
 import com.pivotal.pcf.mysqlweb.beans.UserPref;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-
+@Slf4j
 @Controller
 public class HistoryController
 {
-    protected static Logger logger = LoggerFactory.getLogger(HistoryController.class);
 
     @GetMapping(value = "/history")
     public String showHistory
@@ -43,18 +41,18 @@ public class HistoryController
     {
         if (Utils.verifyConnection(response, session))
         {
-            logger.info("user_key is null OR Connection stale so new Login required");
+            log.info("user_key is null OR Connection stale so new Login required");
             return null;
         }
 
-        logger.info("Received request to show command history");
+        log.info("Received request to show command history");
         UserPref userPref = (UserPref) session.getAttribute("prefs");
 
         String histAction = request.getParameter("histAction");
 
         if (histAction != null)
         {
-            logger.info("histAction = " + histAction);
+            log.info("histAction = " + histAction);
             // clear history
             session.setAttribute("history", new LinkedList());
 

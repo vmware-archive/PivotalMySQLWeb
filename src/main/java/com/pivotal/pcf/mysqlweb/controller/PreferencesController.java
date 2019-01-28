@@ -19,8 +19,7 @@ package com.pivotal.pcf.mysqlweb.controller;
 
 import com.pivotal.pcf.mysqlweb.beans.UserPref;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,10 +31,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+@Slf4j
 @Controller
 public class PreferencesController
 {
-    protected static Logger logger = LoggerFactory.getLogger(PreferencesController.class);
 
     @GetMapping(value = "/prefs")
     public String showPrefs
@@ -44,11 +43,11 @@ public class PreferencesController
 
         if (Utils.verifyConnection(response, session))
         {
-            logger.info("user_key is null OR Connection stale so new Login required");
+            log.info("user_key is null OR Connection stale so new Login required");
             return null;
         }
 
-        logger.info("Received request to view preferences");
+        log.info("Received request to view preferences");
 
         UserPref userPref = (UserPref) session.getAttribute("prefs");
 
@@ -68,11 +67,11 @@ public class PreferencesController
 
         if (Utils.verifyConnection(response, session))
         {
-            logger.info("user_key is null OR Connection stale so new Login required");
+            log.info("user_key is null OR Connection stale so new Login required");
             return null;
         }
 
-        logger.info("Received request to Update Prefernces");
+        log.info("Received request to Update Prefernces");
 
         UserPref userPref = (UserPref) session.getAttribute("prefs");
         userPref.setHistorySize(Integer.parseInt(historysize));

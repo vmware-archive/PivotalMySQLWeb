@@ -27,6 +27,6 @@ public class VersionRest
     @GetMapping(value = "/version")
     public String sampleOuput()
     {
-        return "Pivotal MySQLWeb version 1.0";
+        return "Pivotal MySQLWeb version 1.2";
     }
 }

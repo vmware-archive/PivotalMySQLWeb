@@ -27,26 +27,24 @@ import com.pivotal.pcf.mysqlweb.dao.generic.Constants;
 import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+@Slf4j
 @Controller
 public class HomeController
 {
-    protected static Logger logger = LoggerFactory.getLogger(HomeController.class);
-
     @GetMapping(value = "/home")
     public String login(Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
     {
 
-        logger.info("Received request to show home page");
+        log.info("Received request to show home page");
 
         if (Utils.verifyConnection(response, session))
         {
-            logger.info("user_key is null OR Connection stale so new Login required");
+            log.info("user_key is null OR Connection stale so new Login required");
             return null;
         }
 

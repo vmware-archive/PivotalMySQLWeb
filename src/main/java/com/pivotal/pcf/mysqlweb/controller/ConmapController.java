@@ -19,8 +19,7 @@ package com.pivotal.pcf.mysqlweb.controller;
 
 import com.pivotal.pcf.mysqlweb.utils.ConnectionManager;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,10 +29,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+@Slf4j
 @Controller
 public class ConmapController
 {
-    protected static Logger logger = LoggerFactory.getLogger(ConmapController.class);
 
     @GetMapping(value = "/viewconmap")
     public String viewConnections
@@ -41,11 +40,11 @@ public class ConmapController
     {
         if (Utils.verifyConnection(response, session))
         {
-            logger.info("user_key is null OR Connection stale so new Login required");
+            log.info("user_key is null OR Connection stale so new Login required");
             return null;
         }
 
-        logger.info("Received request to show connection map");
+        log.info("Received request to show connection map");
 
         ConnectionManager cm = ConnectionManager.getInstance();
 
@@ -54,14 +53,14 @@ public class ConmapController
 
         if (conMapAction != null)
         {
-            logger.info("conMapAction = " + conMapAction);
-            logger.info("key = " + key);
+            log.info("conMapAction = " + conMapAction);
+            log.info("key = " + key);
 
             if (conMapAction.equalsIgnoreCase("DELETE"))
             {
                 // remove this connection from Map and close it.
                 cm.removeDataSource(key);
-                logger.info("Connection closed for key " + key);
+                log.info("Connection closed for key " + key);
                 model.addAttribute("saved", "Successfully closed connection with key " + key);
             }
         }

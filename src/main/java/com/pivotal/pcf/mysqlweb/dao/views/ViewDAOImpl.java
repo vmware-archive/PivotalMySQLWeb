@@ -22,19 +22,17 @@ import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
 import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.main.PivotalMySQLWebException;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Slf4j
 @Repository
 public class ViewDAOImpl implements ViewDAO
 {
-    protected static Logger logger = LoggerFactory.getLogger(ViewDAOImpl.class);
-
     private JdbcTemplate jdbcTemplate;
 
     public void setDataSource(javax.sql.DataSource ds) {
@@ -64,7 +62,7 @@ public class ViewDAOImpl implements ViewDAO
         }
         catch (Exception ex)
         {
-            logger.info("Error retrieving all views with search string = " + search);
+            log.info("Error retrieving all views with search string = " + search);
             throw new PivotalMySQLWebException(ex);
         }
 
@@ -116,7 +114,7 @@ public class ViewDAOImpl implements ViewDAO
         }
         catch (Exception ex)
         {
-            logger.info("Error retrieving view definition for view = " + viewName);
+            log.info("Error retrieving view definition for view = " + viewName);
             throw new PivotalMySQLWebException(ex);
         }
 

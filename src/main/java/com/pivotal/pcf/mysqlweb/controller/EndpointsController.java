@@ -18,8 +18,7 @@ limitations under the License.
 package com.pivotal.pcf.mysqlweb.controller;
 
 import com.pivotal.pcf.mysqlweb.utils.Utils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,10 +28,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+@Slf4j
 @Controller
 public class EndpointsController
 {
-    protected static Logger logger = LoggerFactory.getLogger(EndpointsController.class);
 
     @GetMapping(value = "/endpoints")
     public String endpointsPage
@@ -40,11 +39,11 @@ public class EndpointsController
     {
         if (Utils.verifyConnection(response, session))
         {
-            logger.info("user_key is null OR Connection stale so new Login required");
+            log.info("user_key is null OR Connection stale so new Login required");
             return null;
         }
 
-        logger.info("Invoking Endpoints Controller...");
+        log.info("Invoking Endpoints Controller...");
 
         model.addAttribute("propertyMap", Utils.jvmPropertyMap());
 

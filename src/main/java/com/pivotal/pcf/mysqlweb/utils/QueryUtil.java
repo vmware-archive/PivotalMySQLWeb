@@ -18,8 +18,6 @@ limitations under the License.
 package com.pivotal.pcf.mysqlweb.utils;
 
 import com.opencsv.CSVWriter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.jooq.impl.DSL;
 
 import java.io.IOException;
@@ -31,7 +29,6 @@ import java.sql.Statement;
 
 public class QueryUtil
 {
-    protected static Logger logger = LoggerFactory.getLogger(QueryUtil.class);
 
     static public String runQueryForCSV (Connection conn, String query) throws SQLException, IOException
     {

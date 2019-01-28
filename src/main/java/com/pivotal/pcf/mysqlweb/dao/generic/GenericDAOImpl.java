@@ -30,16 +30,14 @@ import com.pivotal.pcf.mysqlweb.main.PivotalMySQLWebException;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+@Slf4j
 @Repository
 public class GenericDAOImpl implements GenericDAO
 {
-    protected static Logger logger = LoggerFactory.getLogger(GenericDAOImpl.class);
-
     private JdbcTemplate jdbcTemplate;
 
     public void setDataSource(javax.sql.DataSource ds) {
@@ -82,7 +80,7 @@ public class GenericDAOImpl implements GenericDAO
         }
         catch (Exception ex)
         {
-            logger.info("Error running generic query");
+            log.info("Error running generic query");
             throw new PivotalMySQLWebException(ex);
         }
 
@@ -126,7 +124,7 @@ public class GenericDAOImpl implements GenericDAO
         }
         catch (Exception ex)
         {
-            logger.info("Error running generic DML");
+            log.info("Error running generic DML");
             res.setMessage("ERROR: " + ex.getMessage());
             res.setRows(-1);
         }
@@ -157,7 +155,7 @@ public class GenericDAOImpl implements GenericDAO
         }
         catch (Exception ex)
         {
-            logger.info("Error populating schema map");
+            log.info("Error populating schema map");
             throw new PivotalMySQLWebException(ex);
         }
 
@@ -180,7 +178,7 @@ public class GenericDAOImpl implements GenericDAO
         }
         catch (Exception ex)
         {
-            logger.info("Error retrieving all schemas");
+            log.info("Error retrieving all schemas");
             throw new PivotalMySQLWebException(ex);
         }
 

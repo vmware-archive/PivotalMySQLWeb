@@ -25,16 +25,15 @@ import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.main.PivotalMySQLWebException;
 import com.pivotal.pcf.mysqlweb.utils.AdminUtil;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+@Slf4j
 @Repository
 public class ConstraintDAOImpl implements ConstraintDAO
 {
-    protected static Logger logger = LoggerFactory.getLogger(ConstraintDAOImpl.class);
-
+    
     private JdbcTemplate jdbcTemplate;
 
     public void setDataSource(javax.sql.DataSource ds) {
@@ -63,7 +62,7 @@ public class ConstraintDAOImpl implements ConstraintDAO
         }
         catch (Exception ex)
         {
-            logger.info("Error retrieving all constraints with search string = " + search);
+            log.info("Error retrieving all constraints with search string = " + search);
             throw new PivotalMySQLWebException(ex);
         }
 

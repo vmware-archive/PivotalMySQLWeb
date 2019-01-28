@@ -23,8 +23,7 @@ import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
 import com.pivotal.pcf.mysqlweb.dao.views.View;
 import com.pivotal.pcf.mysqlweb.dao.views.ViewDAO;
 import com.pivotal.pcf.mysqlweb.utils.Utils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,24 +37,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 @Controller
 public class ViewController
 {
-    protected static Logger logger = LoggerFactory.getLogger(ViewController.class);
-
+    
     @GetMapping(value = "/views")
     public String showViews
             (Model model, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws Exception
     {
         if (Utils.verifyConnection(response, session))
         {
-            logger.info("user_key is null OR Connection stale so new Login required");
+            log.info("user_key is null OR Connection stale so new Login required");
             return null;
         }
 
         String schema = null;
 
-        logger.info("Received request to show views");
+        log.info("Received request to show views");
 
         ViewDAO viewDAO = PivotalMySQLWebDAOFactory.getViewDAO();
         GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
@@ -64,7 +63,7 @@ public class ViewController
 
         String viewAction = request.getParameter("viewAction");
         String selectedSchema = request.getParameter("selectedSchema");
-        logger.info("selectedSchema = " + selectedSchema);
+        log.info("selectedSchema = " + selectedSchema);
 
         if (selectedSchema != null)
         {
@@ -75,11 +74,11 @@ public class ViewController
             schema = (String)session.getAttribute("schema");
         }
 
-        logger.info("schema = " + schema);
+        log.info("schema = " + schema);
 
         if (viewAction != null)
         {
-            logger.info("viewAction = " + viewAction);
+            log.info("viewAction = " + viewAction);
 
             if (viewAction.equals("DEF"))
             {
@@ -142,17 +141,17 @@ public class ViewController
 
         if (Utils.verifyConnection(response, session))
         {
-            logger.info("user_key is null OR Connection stale so new Login required");
+            log.info("user_key is null OR Connection stale so new Login required");
             return null;
         }
 
         Result result = new Result();
         List<View> views = null;
 
-        logger.info("Received request to perform an action on the views");
+        log.info("Received request to perform an action on the views");
 
         String selectedSchema = request.getParameter("selectedSchema");
-        logger.info("selectedSchema = " + selectedSchema);
+        log.info("selectedSchema = " + selectedSchema);
 
         if (selectedSchema != null)
         {
@@ -163,7 +162,7 @@ public class ViewController
             schema = (String)session.getAttribute("schema");
         }
 
-        logger.info("schema = " + schema);
+        log.info("schema = " + schema);
 
         ViewDAO viewDAO = PivotalMySQLWebDAOFactory.getViewDAO();
         GenericDAO genericDAO = PivotalMySQLWebDAOFactory.getGenericDAO();
@@ -182,8 +181,8 @@ public class ViewController
             String[] tableList  = request.getParameterValues("selected_view[]");
             String   commandStr = request.getParameter("submit_mult");
 
-            logger.info("tableList = " + Arrays.toString(tableList));
-            logger.info("command = " + commandStr);
+            log.info("tableList = " + Arrays.toString(tableList));
+            log.info("command = " + commandStr);
 
             // start actions now if tableList is not null
 

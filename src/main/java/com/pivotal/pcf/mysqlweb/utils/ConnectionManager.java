@@ -22,15 +22,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.pivotal.pcf.mysqlweb.beans.Login;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
+@Slf4j
 public class ConnectionManager
 {
-
-    protected static Logger logger = LoggerFactory.getLogger(ConnectionManager.class);
+    
     private Map<String,MysqlConnection> conList = new HashMap<String,MysqlConnection>();
     private Map<String,SingleConnectionDataSource> dsList = new HashMap<String,SingleConnectionDataSource>();
     private static ConnectionManager instance = null;
@@ -56,7 +55,7 @@ public class ConnectionManager
         if (cfDataSource == null)
         {
             cfDataSource = AdminUtil.getDriverManagerDataSourceForCF(login);
-            logger.info(" CF DataSource created for all users");
+            log.info(" CF DataSource created for all users");
         }
 
     }
@@ -64,13 +63,13 @@ public class ConnectionManager
     public void addConnection (MysqlConnection conn, String key)
     {
         conList.put(key, conn);
-        logger.info("Connection added with key " + key);
+        log.info("Connection added with key " + key);
     }
 
     public void addDataSourceConnection (SingleConnectionDataSource dataSource, String key)
     {
         dsList.put(key, dataSource);
-        logger.info("SingleConnectionDataSource added with key " + key);
+        log.info("SingleConnectionDataSource added with key " + key);
     }
 
     public javax.sql.DataSource getDataSource (String key)
@@ -88,7 +87,7 @@ public class ConnectionManager
         }
         catch (Exception ex)
         {
-            logger.info("Unable to retrieve DataSource : " + ex.getMessage());
+            log.info("Unable to retrieve DataSource : " + ex.getMessage());
             return null;
         }
 
@@ -107,11 +106,11 @@ public class ConnectionManager
             ds.destroy();
             dsList.remove(key);
             conList.remove(key);
-            logger.info("SingleConnectionDataSource removed with key " + key);
+            log.info("SingleConnectionDataSource removed with key " + key);
         }
         else
         {
-            logger.info("No SingleConnectionDataSource with key " + key + " exists");
+            log.info("No SingleConnectionDataSource with key " + key + " exists");
         }
     }
 
