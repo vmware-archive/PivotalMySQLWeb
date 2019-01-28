@@ -5,8 +5,6 @@ Instance over the Web. PivotalMySQLWeb supports a wide range of operations on a 
 managing tables, views, indexes which can all be performed via the user interface, while you still have the ability to
 directly execute any number of SQL statements.
 
-![alt tag](https://image.ibb.co/iCvjc5/Pivotal-My-SQLWeb-BLOG.png)
-
 It includes the following capabilities:
 
 - Multiple Command SQL worksheet for DDL and DML
@@ -28,13 +26,15 @@ It includes the following capabilities:
 git clone https://github.com/pivotal-cf/PivotalMySQLWeb.git
 cd PivotalMySQLWeb
 ./mvnw -DskipTests=true package
-java -jar ./target/PivotalMySQLWeb-1.0.0-SNAPSHOT.jar
+./mvnw spring-boot:run
 ```
 
 Note: If you opt-in to running tests, you must have Docker installed. We employ the [MySQL container](https://mvnrepository.com/artifact/org.testcontainers/mysql) from [testcontainers.org](https://www.testcontainers.org) library.
 
 ```txt
-java -jar ./target/PivotalMySQLWeb-1.0.0-SNAPSHOT.jar
+./mvnw spring-boot:run
+
+...
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -135,4 +135,24 @@ spring:
       password: cfmysqlweb
 ```
 
+Note: When running outside of Cloud Foundry Security is disabled as per this code
+
+```java
+
+	@Profile("!cloud")
+	@Configuration
+	static class ApplicationSecurity extends WebSecurityConfigurerAdapter {
+
+		@Override
+		public void configure(WebSecurity web) throws Exception {
+			web
+					.ignoring()
+					.antMatchers("/**");
+		}
+	}
+	
+```
+![alt tag](https://image.ibb.co/iCvjc5/Pivotal-My-SQLWeb-BLOG.png)
+
 Pas Apicella [papicella at pivotal.io] is an Advisory Platform Architect at Pivotal Australia
+
