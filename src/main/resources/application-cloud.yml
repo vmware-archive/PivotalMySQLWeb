@@ -6,6 +6,15 @@ server:
     session:
       timeout: 1800
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: autoconfig,beans,env,info,health,httptrace,loggers,mappings,metrics,sessions,threaddump
+  endpoint:
+    health:
+      show-details: always
+
 spring:
   security:
     user:

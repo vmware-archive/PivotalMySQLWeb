@@ -140,10 +140,11 @@ public class LoginController
              Model model,
              HttpSession session) throws Exception
     {
+        logger.info("Received request to login");
+
         WebResult databaseList, schemaMapResult;
         SingleConnectionDataSource ds = new SingleConnectionDataSource();
 
-        logger.info("Received request to login");
         ConnectionManager cm = ConnectionManager.getInstance();
 
         Login loginObj = new Login(username, password, url, "");

@@ -49,7 +49,7 @@ public class SessionListener implements HttpSessionListener
         }
         catch (Exception e)
         {
-            logger.info("SesssionListener.sessionDestroyed Unable to obtain Connection", e);
+            logger.info("SesssionListener.sessionDestroyed was unable to obtain Connection", e);
         }
     }
 }

@@ -18,16 +18,29 @@ limitations under the License.
 package com.pivotal.pcf.mysqlweb;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-@SpringBootApplication
-@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
+@SpringBootApplication (exclude = {DataSourceAutoConfiguration.class})
 public class PivotalMySqlWebApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PivotalMySqlWebApplication.class, args);
 	}
 
+	@Profile("!cloud")
+	@Configuration
+	static class ApplicationSecurity extends WebSecurityConfigurerAdapter {
+
+		@Override
+		public void configure(WebSecurity web) throws Exception {
+			web
+					.ignoring()
+					.antMatchers("/**");
+		}
+	}
 }

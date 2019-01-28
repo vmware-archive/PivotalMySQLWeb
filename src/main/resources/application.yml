@@ -19,8 +19,3 @@ server:
     whitelabel:
       enabled: false
 
-spring:
-  security:
-    user:
-      name: admin
-      password: cfmysqlweb

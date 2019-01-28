@@ -17,32 +17,19 @@ limitations under the License.
  */
 package com.pivotal.pcf.mysqlweb.beans;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 import java.util.Map;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class WebResult
 {
     private String[] columnNames;
     private List<Map<String, Object>> rows;
 
-    public WebResult(String[] columnNames, List<Map<String, Object>> rows) {
-        this.columnNames = columnNames;
-        this.rows = rows;
-    }
-
-    public String[] getColumnNames() {
-        return columnNames;
-    }
-
-    public void setColumnNames(String[] columnNames) {
-        this.columnNames = columnNames;
-    }
-
-    public List<Map<String, Object>> getRows() {
-        return rows;
-    }
-
-    public void setRows(List<Map<String, Object>> rows) {
-        this.rows = rows;
-    }
 }

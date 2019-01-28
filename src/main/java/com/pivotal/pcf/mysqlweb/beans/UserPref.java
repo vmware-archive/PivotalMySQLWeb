@@ -17,10 +17,18 @@ limitations under the License.
  */
 package com.pivotal.pcf.mysqlweb.beans;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Configuration
 @PropertySource("classpath:preferences.properties")
 public class UserPref
@@ -36,52 +44,5 @@ public class UserPref
 
     @Value("${historySize}")
     private int historySize;
-
-    public UserPref()
-    {
-    }
-
-    public int getRecordsToDisplay() {
-        return recordsToDisplay;
-    }
-
-    public void setRecordsToDisplay(int recordsToDisplay) {
-        this.recordsToDisplay = recordsToDisplay;
-    }
-
-    public int getMaxRecordsinSQLQueryWindow() {
-        return maxRecordsinSQLQueryWindow;
-    }
-
-    public void setMaxRecordsinSQLQueryWindow(int maxRecordsinSQLQueryWindow) {
-        this.maxRecordsinSQLQueryWindow = maxRecordsinSQLQueryWindow;
-    }
-
-    public String getAutoCommit() {
-        return autoCommit;
-    }
-
-    public void setAutoCommit(String autoCommit) {
-        this.autoCommit = autoCommit;
-    }
-
-
-    public int getHistorySize() {
-        return historySize;
-    }
-
-    public void setHistorySize(int historySize) {
-        this.historySize = historySize;
-    }
-
-    @Override
-    public String toString() {
-        return "UserPref [recordsToDisplay=" + recordsToDisplay
-                + ", maxRecordsinSQLQueryWindow=" + maxRecordsinSQLQueryWindow
-                + ", autoCommit=" + autoCommit + ", historySize=" + historySize
-                + "]";
-    }
-
-
 
 }

@@ -33,7 +33,8 @@ public class AdminUtil
     {
         SingleConnectionDataSource ds = new SingleConnectionDataSource();
 
-        ds.setDriverClassName("com.mysql.jdbc.Driver");
+        //ds.setDriverClassName("com.mysql.jdbc.Driver");
+        ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
         ds.setUrl(url);
 
         if (username != null)
@@ -75,7 +76,8 @@ public class AdminUtil
     {
         DataSource dataSource = new DataSource();
 
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        //dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
 
         dataSource.setUrl(login.getUrl());
         dataSource.setUsername(login.getUsername());
