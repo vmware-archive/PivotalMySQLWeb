@@ -156,9 +156,9 @@ public class Utils
         Map<String, Object> jsonMap = parser.parseMap(jsonString);
 
         // Check for clearDB first
-        List mysqlService = (List) jsonMap.get("cleardb");
-        Map cfMySQLMap = new HashMap();
-        Map credentailsMap = new HashMap();
+        List mysqlService   = (List) jsonMap.get("cleardb");
+        Map cfMySQLMap      = null;
+        Map credentailsMap  = null;
 
         if (mysqlService == null)
         {
@@ -169,30 +169,25 @@ public class Utils
                 logger.info("Obtaining VCAP_SERVICES credentials - p-mysql");
                 cfMySQLMap = (Map) mysqlService.get(0);
                 credentailsMap = (Map) cfMySQLMap.get("credentials");
-
                 login.setUrl((String) credentailsMap.get("jdbcUrl") + "&connectTimeout=1800000&socketTimeout=1800000&autoReconnect=true&reconnect=true");
-                login.setUsername((String) credentailsMap.get("username"));
-                login.setPassword((String) credentailsMap.get("password"));
-                login.setSchema((String) credentailsMap.get("name"));
-
             }
-            else {
+            else
+            {
                 // just check if it's "p.mysql" v2 instance
                 mysqlService = (List) jsonMap.get("p.mysql");
-                if (mysqlService != null) {
+                if (mysqlService != null)
+                {
                     logger.info("Obtaining VCAP_SERVICES credentials - p.mysql");
                     cfMySQLMap = (Map) mysqlService.get(0);
-                    credentailsMap = (Map) cfMySQLMap.get("credentials" + "&verifyServerCerticate=false");
-
+                    credentailsMap = (Map) cfMySQLMap.get("credentials");
                     login.setUrl((String) credentailsMap.get("jdbcUrl"));
-                    login.setUsername((String) credentailsMap.get("username"));
-                    login.setPassword((String) credentailsMap.get("password"));
-                    login.setSchema((String) credentailsMap.get("name"));
                 }
-                else {
+                else
+                {
                     // just check if it's "google-cloudsql-mysql" GCP instance
                     mysqlService = (List) jsonMap.get("google-cloudsql-mysql");
-                    if (mysqlService != null) {
+                    if (mysqlService != null)
+                    {
                         logger.info("Obtaining VCAP_SERVICES credentials - google-cloudsql-mysql");
                         cfMySQLMap = (Map) mysqlService.get(0);
                         credentailsMap = (Map) cfMySQLMap.get("credentials");
@@ -205,15 +200,18 @@ public class Utils
                 }
             }
         }
-        else {
+        else
+        {
             logger.info("Obtaining VCAP_SERVICES credentials - cleardb");
             cfMySQLMap = (Map) mysqlService.get(0);
             credentailsMap = (Map) cfMySQLMap.get("credentials");
             login.setUrl((String) credentailsMap.get("jdbcUrl") + "&connectTimeout=1800000&socketTimeout=1800000&autoReconnect=true&reconnect=true");
-            login.setUsername((String) credentailsMap.get("username"));
-            login.setPassword((String) credentailsMap.get("password"));
-            login.setSchema((String) credentailsMap.get("name"));
         }
+
+        // for p.mysql, p-mysql and cleardb these properties are identical
+        login.setUsername((String) credentailsMap.get("username"));
+        login.setPassword((String) credentailsMap.get("password"));
+        login.setSchema((String) credentailsMap.get("name"));
 
         return login;
     }
