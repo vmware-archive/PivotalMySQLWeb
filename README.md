@@ -121,11 +121,10 @@ maxRecordsinSQLQueryWindow=500
 ## Security - HTTP Basic Authentication
 
 By default this application is using HTTP Basic Authentication to protect every end point. The username/password is set in
-`main/resources/application-cloud.yml` and `main/resources/application.yml` files and can be altered here prior to deploying.
-Be sure to repackage to pick up your new username/password you wish to use for HTTP Basic Authentication
+`main/resources/application-cloud.yml` file and can be altered here prior to repacking/deploying.
 
-Default username = admin
-Default password = cfmysqlweb
+Default username = **admin**
+Default password = **cfmysqlweb**
 
 ```yml
 spring:
