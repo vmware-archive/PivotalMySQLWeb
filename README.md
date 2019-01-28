@@ -5,6 +5,8 @@ Instance over the Web. PivotalMySQLWeb supports a wide range of operations on a 
 managing tables, views, indexes which can all be performed via the user interface, while you still have the ability to
 directly execute any number of SQL statements.
 
+![alt tag](https://image.ibb.co/iCvjc5/Pivotal-My-SQLWeb-BLOG.png)
+
 It includes the following capabilities:
 
 - Multiple Command SQL worksheet for DDL and DML
