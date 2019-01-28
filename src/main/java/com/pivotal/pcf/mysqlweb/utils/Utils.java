@@ -197,6 +197,8 @@ public class Utils
                         login.setUsername((String) credentailsMap.get("Username"));
                         login.setPassword((String) credentailsMap.get("Password"));
                         login.setSchema((String) credentailsMap.get("database_name"));
+
+                        return login;
                     }
                 }
             }
