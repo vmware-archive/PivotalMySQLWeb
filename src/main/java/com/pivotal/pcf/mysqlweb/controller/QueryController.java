@@ -158,6 +158,7 @@ public class QueryController
 
         log.info("Query = [" + query + "]");
         String [] splitQueryStr = spiltQuery(query);
+        log.info("Split Query Length = [" + splitQueryStr.length + "]");
 
         CommandResult result = new CommandResult();
         WebResult webResult;
@@ -259,17 +260,14 @@ public class QueryController
                                 result.setRows(-1);
                                 model.addAttribute("result", result);
                                 model.addAttribute("query", s);
-                                //log.info("Error Result = " + result);
                             }
 
                         }
                         else
                         {
-                            // TODO:// If we have a create procedure or create function then need to execute
-                            //  "delimeter $userPref.userPref.storedProcDelimiter" first
 
                             result = genericDAO.runStatement
-                                    (s, elapsedTime, "N", (String)session.getAttribute("user_key"));
+                                    (s, elapsedTime, "N", (String) session.getAttribute("user_key"));
 
                             model.addAttribute("result", result);
                             if (result.getMessage().startsWith("SUCCESS")) {
@@ -288,17 +286,35 @@ public class QueryController
             else
             {
                 model.addAttribute("query", query);
-                log.info("multiple SQL statements need to be executed");
-                SortedMap<String, Object> queryResults =
-                        handleMultipleStatements(splitQueryStr,
-                                userPrefs,
-                                queryCount,
-                                elapsedTime,
-                                explainPlan,
-                                session);
-                log.info("keys : " + queryResults.keySet());
-                model.addAttribute("sqlResultMap", queryResults);
-                model.addAttribute("statementsExecuted", queryResults.size());
+
+                if (query.toUpperCase().startsWith("CREATE PROCEDURE") || query.toUpperCase().startsWith("CREATE FUNCTION")) {
+                    log.info("Executing create procedure or function now as single query only");
+
+                    result = genericDAO.runStatement
+                            (query, elapsedTime, "N", (String) session.getAttribute("user_key"));
+
+                    model.addAttribute("result", result);
+                    if (result.getMessage().startsWith("SUCCESS")) {
+                        addCommandToHistory(session, userPrefs, query);
+                        session.setAttribute("schemaMap",
+                                genericDAO.populateSchemaMap
+                                        ((String)session.getAttribute("schema"),
+                                                (String)session.getAttribute("user_key")));
+                    }
+                }
+                else {
+                    log.info("Multiple SQL statements need to be executed");
+                    SortedMap<String, Object> queryResults =
+                            handleMultipleStatements(splitQueryStr,
+                                    userPrefs,
+                                    queryCount,
+                                    elapsedTime,
+                                    explainPlan,
+                                    session);
+                    log.info("keys : " + queryResults.keySet());
+                    model.addAttribute("sqlResultMap", queryResults);
+                    model.addAttribute("statementsExecuted", queryResults.size());
+                }
             }
         }
 

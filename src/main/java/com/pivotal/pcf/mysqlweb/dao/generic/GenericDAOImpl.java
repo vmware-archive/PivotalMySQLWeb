@@ -124,7 +124,7 @@ public class GenericDAOImpl implements GenericDAO
         }
         catch (Exception ex)
         {
-            log.info("Error running generic DML");
+            log.info("Error running generic DML: " + ex.getMessage());
             res.setMessage("ERROR: " + ex.getMessage());
             res.setRows(-1);
         }
