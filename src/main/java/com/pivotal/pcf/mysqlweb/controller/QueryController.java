@@ -265,6 +265,9 @@ public class QueryController
                         }
                         else
                         {
+                            // TODO:// If we have a create procedure or create function then need to execute
+                            //  "delimeter $userPref.userPref.storedProcDelimiter" first
+
                             result = genericDAO.runStatement
                                     (s, elapsedTime, "N", (String)session.getAttribute("user_key"));
 
