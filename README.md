@@ -157,8 +157,8 @@ Note: When running outside of Cloud Foundry Security is disabled as per this cod
 PivotalMySQL*Web does not support the use of the DELIMITER statement. DELIMITER statement is for clients which do not have a way to 
 have a terminated string, such as MySQL command line client. As a result the use of DELIMITER statement is not needed in JDBC and
 hence not supported in this tool. So to create a stored procedure or function you can do so using a single stored procedure or function.
-This tool does not support stored procedures or functions as multiple SQL statements so if you wish to create stored procedures yo would
-create one at a time in the SQLWorksheet and some excamples of what they look like are as follows
+This tool does not support stored procedures or functions as multiple SQL statements so if you wish to create stored procedures you would
+create one at a time in the SQLWorksheet and some examples of what they look like are as follows
 
 _Note: DELIMITER is not required and/or supported_
 
