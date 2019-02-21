@@ -165,30 +165,25 @@ public class Utils
         {
             // just check if it's "p-mysql" v1 instance
             mysqlService = (List) jsonMap.get("p-mysql");
-            if (mysqlService != null)
-            {
+            if (mysqlService != null) {
                 log.info("Obtaining VCAP_SERVICES credentials - p-mysql");
                 cfMySQLMap = (Map) mysqlService.get(0);
                 credentailsMap = (Map) cfMySQLMap.get("credentials");
                 login.setUrl((String) credentailsMap.get("jdbcUrl") + "&connectTimeout=1800000&socketTimeout=1800000&autoReconnect=true&reconnect=true");
             }
-            else
-            {
+            else {
                 // just check if it's "p.mysql" v2 instance
                 mysqlService = (List) jsonMap.get("p.mysql");
-                if (mysqlService != null)
-                {
+                if (mysqlService != null) {
                     log.info("Obtaining VCAP_SERVICES credentials - p.mysql");
                     cfMySQLMap = (Map) mysqlService.get(0);
                     credentailsMap = (Map) cfMySQLMap.get("credentials");
                     login.setUrl((String) credentailsMap.get("jdbcUrl"));
                 }
-                else
-                {
+                else {
                     // just check if it's "google-cloudsql-mysql" GCP instance
                     mysqlService = (List) jsonMap.get("google-cloudsql-mysql");
-                    if (mysqlService != null)
-                    {
+                    if (mysqlService != null) {
                         log.info("Obtaining VCAP_SERVICES credentials - google-cloudsql-mysql");
                         cfMySQLMap = (Map) mysqlService.get(0);
                         credentailsMap = (Map) cfMySQLMap.get("credentials");
@@ -199,6 +194,13 @@ public class Utils
                         login.setSchema((String) credentailsMap.get("database_name"));
 
                         return login;
+                    }
+
+                    mysqlService = (List) jsonMap.get("mariadbent");
+                    if (mysqlService != null) {
+                        cfMySQLMap = (Map) mysqlService.get(0);
+                        credentailsMap = (Map) cfMySQLMap.get("credentials");
+                        login.setUrl((String) credentailsMap.get("jdbcUrl") + "&connectTimeout=1800000&socketTimeout=1800000&autoReconnect=true&reconnect=true");
                     }
                 }
             }
@@ -211,7 +213,7 @@ public class Utils
             login.setUrl((String) credentailsMap.get("jdbcUrl") + "&connectTimeout=1800000&socketTimeout=1800000&autoReconnect=true&reconnect=true");
         }
 
-        // for p.mysql, p-mysql and cleardb these properties are identical
+        // for p.mysql, p-mysql, cleardb and mariadbent these properties are identical
         login.setUsername((String) credentailsMap.get("username"));
         login.setPassword((String) credentailsMap.get("password"));
         login.setSchema((String) credentailsMap.get("name"));
