@@ -154,7 +154,7 @@ Note: When running outside of Cloud Foundry Security is disabled as per this cod
 
 ## Stored Procedures/Functions
 
-PivotalMySQL*Web does not support the use of the DELIMITER statement. DELIMITER statement is for clients which do not have a way to 
+PivotalMySQLWeb does not support the use of the DELIMITER statement. DELIMITER statement is for clients which do not have a way to 
 have a terminated string, such as MySQL command line client. As a result the use of DELIMITER statement is not needed in JDBC and
 hence not supported in this tool. So to create a stored procedure or function you can do so using a single stored procedure or function.
 This tool does not support stored procedures or functions as multiple SQL statements so if you wish to create stored procedures you would
@@ -185,7 +185,20 @@ BEGIN
 END;
 ```
 
+## Automatic Connection to Bound MySQL instance
 
+PivotalMySQLWeb is only designed to connect to a single bound MySQL database instance and will search through all the VCAP_SERVICES and connect 
+to the first MySQL Database Service instanced it finds in this order
+
+```
+  clearDB
+  p-mysql (v1 instances)
+  p.mysql (v2 instances)
+  GCP Cloud SQL service broker instance
+  mariadbent
+```
+
+  
 ![alt tag](https://image.ibb.co/iCvjc5/Pivotal-My-SQLWeb-BLOG.png)
 
 Pas Apicella [papicella at pivotal.io] is an Advisory Platform Architect at Pivotal Australia

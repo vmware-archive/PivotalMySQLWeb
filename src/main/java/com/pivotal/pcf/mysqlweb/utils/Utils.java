@@ -196,6 +196,7 @@ public class Utils
                         return login;
                     }
 
+                    // just check if it's "mariadbent" instance
                     mysqlService = (List) jsonMap.get("mariadbent");
                     if (mysqlService != null) {
                         cfMySQLMap = (Map) mysqlService.get(0);
