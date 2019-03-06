@@ -190,6 +190,14 @@ limitations under the License.
                         <li><a th:href="@{/selecttheme(theme='spacelab')}">Spacelab</a></li>
                     </ul>
                 </li>
+                <li class="dropdown" th:if="${session.servicesListSize > 0}">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle">Instances <b class="caret"></b></a>
+                    <ul class="dropdown-menu" style="min-width: 300px;">
+                        <div th:each="service : ${session.servicesList}">
+                            <li><a th:href="@{/switchinstance(instanceType=${service.type},instanceName=${service.name})}">Switch to <span th:text="${service.name}" /></a></li>
+                        </div>
+                    </ul>
+                </li>
                 <li>
                     <a href="#">
                         <img src="images/b_usrlist.png"
@@ -222,7 +230,7 @@ limitations under the License.
 <div th:if="${session.autobound != null}">
     <div class="alert alert-success fade in">
         <a href="#" class="close" data-dismiss="alert">&times;</a>
-        <strong>Success!</strong> Connected to MySQL using <strong th:text="${session.autobound}"></strong> bound instance
+        <strong>Success!</strong> Connected to MySQL using <strong th:text="${session.autobound}"></strong> database
     </div>
 </div>
 
@@ -327,9 +335,10 @@ limitations under the License.
         <div class="col-xs-6">
             <blockquote>
                 <p>
-                    The p-mysql product delivers a fully managed, “Database as a Service” to Cloud Foundry users. When installed,
-                    the tile deploys and maintains a single or three-node cluster running a recent release of MariaDB, SQL Proxies
-                    for super-fast failover, and Service Brokers for Cloud Foundry integration
+                    The MySQL for PCF product delivers dedicated instances on demand — “Database as a Service” — to PCF users. When
+                    installed, the tile deploys and maintains a single Service Broker that is responsible for PCF integration. The
+                    service is configured with sane defaults, following the principle of least surprise for a general-use relational
+                    database service
                 </p>
                 <small>by <cite>Pivotal</cite></small>
                 <br />

@@ -18,13 +18,11 @@ limitations under the License.
 package com.pivotal.pcf.mysqlweb.utils;
 
 import java.sql.Connection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pivotal.pcf.mysqlweb.beans.Login;
+import com.pivotal.pcf.mysqlweb.beans.MySQLInstance;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -220,6 +218,75 @@ public class Utils
         login.setSchema((String) credentailsMap.get("name"));
 
         return login;
+    }
+
+    public static List<MySQLInstance> getAllServices (String jsonString) {
+        List<MySQLInstance> services = new ArrayList<MySQLInstance>();
+
+        JsonParser parser = JsonParserFactory.getJsonParser();
+
+        Map<String, Object> jsonMap = parser.parseMap(jsonString);
+        List mysqlServices = null;
+        Map cfMySQLMap     = null;
+
+        // cleardb first
+        mysqlServices = (List) jsonMap.get("cleardb");
+        if (mysqlServices != null) {
+            log.info("cleardb services size = " + mysqlServices.size());
+            for (Object entry : mysqlServices) {
+                cfMySQLMap = (Map) entry;
+                services.add(new MySQLInstance("cleardb", (String) cfMySQLMap.get("name")));
+            }
+        }
+
+        // p.mysql next
+        mysqlServices = null;
+        cfMySQLMap     = null;
+        mysqlServices = (List) jsonMap.get("p.mysql");
+        if (mysqlServices != null) {
+            log.info("p.mysql services size = " + mysqlServices.size());
+            for (Object entry : mysqlServices) {
+                cfMySQLMap = (Map) entry;
+                services.add(new MySQLInstance("p.mysql", (String) cfMySQLMap.get("name")));
+            }
+        }
+
+        // p-mysql next
+        mysqlServices = null;
+        cfMySQLMap     = null;
+        mysqlServices = (List) jsonMap.get("p-mysql");
+        if (mysqlServices != null) {
+            log.info("p-mysql services size = " + mysqlServices.size());
+            for (Object entry : mysqlServices) {
+                cfMySQLMap = (Map) entry;
+                services.add(new MySQLInstance("p-mysql", (String) cfMySQLMap.get("name")));
+            }
+        }
+
+        // google-cloudsql-mysql next
+        mysqlServices = (List) jsonMap.get("google-cloudsql-mysql");
+        if (mysqlServices != null) {
+            log.info("google-cloudsql-mysql services size = " + mysqlServices.size());
+            for (Object entry : mysqlServices) {
+                cfMySQLMap = (Map) entry;
+                services.add(new MySQLInstance("google-cloudsql-mysql", (String) cfMySQLMap.get("name")));
+            }
+        }
+
+        // mariadbent next
+        mysqlServices = (List) jsonMap.get("mariadbent");
+        if (mysqlServices != null) {
+            log.info("mariadbent size = " + mysqlServices.size());
+            for (Object entry : mysqlServices) {
+                cfMySQLMap = (Map) entry;
+                services.add(new MySQLInstance("mariadbent", (String) cfMySQLMap.get("name")));
+            }
+        }
+
+        log.info("Found " + services.size() + " service(s) in vcap_services");
+        log.info("Services: " + Arrays.toString(services.toArray()));
+
+        return services;
     }
 
     static public Map<String, Long> getSchemaMap ()

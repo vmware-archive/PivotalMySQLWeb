@@ -18,6 +18,7 @@ limitations under the License.
 package com.pivotal.pcf.mysqlweb.controller;
 
 import com.pivotal.pcf.mysqlweb.beans.Login;
+import com.pivotal.pcf.mysqlweb.beans.MySQLInstance;
 import com.pivotal.pcf.mysqlweb.beans.UserPref;
 import com.pivotal.pcf.mysqlweb.beans.WebResult;
 import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
@@ -37,6 +38,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -106,7 +108,10 @@ public class LoginController
 
                     String autobound = mysqlInstanceType(jsonString);
 
-                    session.setAttribute("autobound", autobound);
+                    List<MySQLInstance> services = Utils.getAllServices(jsonString);
+                    session.setAttribute("autobound", login.getSchema());
+                    session.setAttribute("servicesListSize", services.size());
+                    session.setAttribute("servicesList", services);
                     model.addAttribute("databaseList", databaseList);
 
                     return "main";
@@ -186,6 +191,10 @@ public class LoginController
 
             log.info("schemaMap=" + schemaMap);
             session.setAttribute("schemaMap", schemaMap);
+            List<MySQLInstance> services = new ArrayList<MySQLInstance>();
+
+            session.setAttribute("servicesListSize", services.size());
+            session.setAttribute("servicesList", services);
 
             model.addAttribute("databaseList", databaseList);
 
@@ -210,11 +219,18 @@ public class LoginController
 
         Map<String, Object> jsonMap = parser.parseMap(jsonString);
 
-        List mysqlService = (List) jsonMap.get("cleardb");
+        List mysqlService = null;
+        mysqlService = (List) jsonMap.get("cleardb");
 
         if (mysqlService == null)
         {
-            mysqlType = "P-MYSQL";
+            mysqlService = (List) jsonMap.get("p.mysql");
+            if (mysqlService != null) {
+                mysqlType = "P.MYSQL";
+            }
+
+
+
         }
         else
         {

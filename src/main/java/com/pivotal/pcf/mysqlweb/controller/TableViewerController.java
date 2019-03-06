@@ -85,6 +85,7 @@ public class TableViewerController
                 (String.format(tableRows, schema, tabName), null, (String)session.getAttribute("user_key"), -1);
 
         model.addAttribute("queryResults", tableData);
+        model.addAttribute("queryResultsSize", tableData.getRows().size());
 
         // describe table
         queryResultsDescribe = genericDAO.runGenericQuery

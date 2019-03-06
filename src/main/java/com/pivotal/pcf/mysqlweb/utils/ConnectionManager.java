@@ -98,6 +98,16 @@ public class ConnectionManager
         return cfDataSource;
     }
 
+    public void removeCfDataSource() {
+        DataSource ds = getCfDataSource();
+
+        if (ds != null) {
+            ds.close();
+        }
+
+        cfDataSource = null;
+    }
+
     public void removeDataSource(String key) throws SQLException
     {
         if (dsList.containsKey(key))

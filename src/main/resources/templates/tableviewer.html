@@ -208,6 +208,14 @@ limitations under the License.
                         <li><a th:href="@{/selecttheme(theme='spacelab')}">Spacelab</a></li>
                     </ul>
                 </li>
+                <li class="dropdown" th:if="${session.servicesListSize > 0}">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle">Instances <b class="caret"></b></a>
+                    <ul class="dropdown-menu" style="min-width: 300px;">
+                        <div th:each="service : ${session.servicesList}">
+                            <li><a th:href="@{/switchinstance(instanceType=${service.type},instanceName=${service.name})}">Switch to <span th:text="${service.name}" /></a></li>
+                        </div>
+                    </ul>
+                </li>
                 <li>
                     <a href="#">
                         <img src="images/b_usrlist.png"
@@ -325,6 +333,10 @@ limitations under the License.
 
 <div class="col-xs-12" th:if="${queryResults != null}">
     <h2>Sample Data</h2>
+    <div class="alert alert-info fade in" th:if="${queryResultsSize == 0}">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Info!</strong> No Data Found
+    </div>
     <table id="datatable-mysql" class="table table-hover table-bordered table-striped table-condensed">
         <thead>
         <div th:each="columnName : ${queryResults.columnNames}">

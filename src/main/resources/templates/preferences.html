@@ -187,6 +187,14 @@ limitations under the License.
                         <li><a th:href="@{/selecttheme(theme='spacelab')}">Spacelab</a></li>
                     </ul>
                 </li>
+                <li class="dropdown" th:if="${session.servicesListSize > 0}">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle">Instances <b class="caret"></b></a>
+                    <ul class="dropdown-menu" style="min-width: 300px;">
+                        <div th:each="service : ${session.servicesList}">
+                            <li><a th:href="@{/switchinstance(instanceType=${service.type},instanceName=${service.name})}">Switch to <span th:text="${service.name}" /></a></li>
+                        </div>
+                    </ul>
+                </li>
                 <li>
                     <a href="#">
                         <img src="images/b_usrlist.png"
