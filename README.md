@@ -187,8 +187,9 @@ END;
 
 ## Automatic Connection to Bound MySQL instance
 
-PivotalMySQLWeb is only designed to connect to a single bound MySQL database instance and will search through all the VCAP_SERVICES and connect 
-to the first MySQL Database Service instanced it finds in this order
+Note: If you haver multiple bound MySQL service instances then....
+
+PivotalMySQLWeb will search through all the VCAP_SERVICES and connect to the first MySQL Database Service instance it finds in this order
 
 ```
   clearDB
@@ -198,7 +199,11 @@ to the first MySQL Database Service instanced it finds in this order
   mariadbent
 ```
 
-## TODO://
+If you have bound your application to multiple MySQL service instances then you can switch to the other Instances using the menu option 
+"Instances" on the navigation bar as shown below
+
+![alt tag](https://i.ibb.co/j6gTRM3/piv-mysqlweb7.png)
+
   
 ![alt tag](https://image.ibb.co/iCvjc5/Pivotal-My-SQLWeb-BLOG.png)
 
