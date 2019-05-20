@@ -197,6 +197,7 @@ PivotalMySQLWeb will search through all the VCAP_SERVICES and connect to the fir
   p.mysql (v2 instances)
   GCP Cloud SQL service broker instance
   mariadbent
+  aws_aurora
 ```
 
 If you have bound your application to multiple MySQL service instances then you can switch to the other Instances using the menu option 

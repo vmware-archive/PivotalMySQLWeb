@@ -201,6 +201,14 @@ public class Utils
                         credentailsMap = (Map) cfMySQLMap.get("credentials");
                         login.setUrl((String) credentailsMap.get("jdbcUrl") + "&connectTimeout=1800000&socketTimeout=1800000&autoReconnect=true&reconnect=true");
                     }
+
+                    // just check if it's "aws_aurora" instance
+                    mysqlService = (List) jsonMap.get("aws_aurora");
+                    if (mysqlService != null) {
+                        cfMySQLMap = (Map) mysqlService.get(0);
+                        credentailsMap = (Map) cfMySQLMap.get("credentials");
+                        login.setUrl((String) credentailsMap.get("jdbcUrl") + "&connectTimeout=1800000&socketTimeout=1800000&autoReconnect=true&reconnect=true");
+                    }
                 }
             }
         }
@@ -212,7 +220,7 @@ public class Utils
             login.setUrl((String) credentailsMap.get("jdbcUrl") + "&connectTimeout=1800000&socketTimeout=1800000&autoReconnect=true&reconnect=true");
         }
 
-        // for p.mysql, p-mysql, cleardb and mariadbent these properties are identical
+        // for p.mysql, p-mysql, cleardb, mariadbent and aws_aurora these properties are identical
         login.setUsername((String) credentailsMap.get("username"));
         login.setPassword((String) credentailsMap.get("password"));
         login.setSchema((String) credentailsMap.get("name"));
@@ -280,6 +288,16 @@ public class Utils
             for (Object entry : mysqlServices) {
                 cfMySQLMap = (Map) entry;
                 services.add(new MySQLInstance("mariadbent", (String) cfMySQLMap.get("name")));
+            }
+        }
+
+        // aws_aurora next
+        mysqlServices = (List) jsonMap.get("aws_aurora");
+        if (mysqlServices != null) {
+            log.info("aws_aurora size = " + mysqlServices.size());
+            for (Object entry : mysqlServices) {
+                cfMySQLMap = (Map) entry;
+                services.add(new MySQLInstance("aws_aurora", (String) cfMySQLMap.get("name")));
             }
         }
 
