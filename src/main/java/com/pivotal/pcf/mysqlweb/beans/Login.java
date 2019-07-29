@@ -25,7 +25,7 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString (exclude = "password")
 public class Login
 {
     private String username;
