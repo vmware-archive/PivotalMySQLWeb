@@ -45,6 +45,6 @@ public class UserPref
     @Value("${historySize}")
     private int historySize;
 
-    @Value("${storedProcDelimiter}")
-    private String storedProcDelimiter;
+    @Value("${sampleDataSize}")
+    private int sampleDataSize;
 }

@@ -60,7 +60,7 @@ public class PreferencesController
     public String handlePreferencesUpdates
             (@RequestParam(value="maxrecordsinsqlworksheet", required=true) String maxrecordsinsqlworksheet,
              @RequestParam(value="historysize", required=true) String historysize,
-             @RequestParam(value="storedProcDelimiter", required=true) String storedProcDelimiter,
+             @RequestParam(value="sampleDataSize", required=true) String sampleDataSize,
              Model model,
              HttpServletResponse response,
              HttpSession session) throws Exception
@@ -77,7 +77,7 @@ public class PreferencesController
         UserPref userPref = (UserPref) session.getAttribute("prefs");
         userPref.setHistorySize(Integer.parseInt(historysize));
         userPref.setMaxRecordsinSQLQueryWindow(Integer.parseInt(maxrecordsinsqlworksheet));
-        userPref.setStoredProcDelimiter(storedProcDelimiter);
+        userPref.setSampleDataSize(Integer.parseInt(sampleDataSize));
 
         session.setAttribute("userPref", userPref);
 

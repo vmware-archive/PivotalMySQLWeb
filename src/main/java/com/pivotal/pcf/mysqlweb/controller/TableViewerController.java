@@ -17,6 +17,7 @@ limitations under the License.
  */
 package com.pivotal.pcf.mysqlweb.controller;
 
+import com.pivotal.pcf.mysqlweb.beans.UserPref;
 import com.pivotal.pcf.mysqlweb.beans.WebResult;
 import com.pivotal.pcf.mysqlweb.dao.PivotalMySQLWebDAOFactory;
 import com.pivotal.pcf.mysqlweb.dao.generic.GenericDAO;
@@ -37,7 +38,7 @@ import javax.servlet.http.HttpSession;
 public class TableViewerController
 {
 
-    private String tableRows = "select * from %s.%s limit 30";
+    private String tableRows = "select * from %s.%s limit %s";
 
     @GetMapping(value = "/tableviewer")
     public String showTables
@@ -50,6 +51,8 @@ public class TableViewerController
         }
 
         log.info("Received request to show table viewer page");
+
+        UserPref userPrefs = (UserPref) session.getAttribute("prefs");
 
         String schema = null;
         WebResult describeStructure, tableData, queryResultsDescribe, tableDetails, tableIndexes;
@@ -82,7 +85,7 @@ public class TableViewerController
 
         // get table rows
         tableData = genericDAO.runGenericQuery
-                (String.format(tableRows, schema, tabName), null, (String)session.getAttribute("user_key"), -1);
+                (String.format(tableRows, schema, tabName, userPrefs.getSampleDataSize()), null, (String)session.getAttribute("user_key"), -1);
 
         model.addAttribute("queryResults", tableData);
         model.addAttribute("queryResultsSize", tableData.getRows().size());
