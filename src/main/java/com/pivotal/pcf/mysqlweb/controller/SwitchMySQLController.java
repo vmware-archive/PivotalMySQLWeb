@@ -97,6 +97,12 @@ public class SwitchMySQLController {
                             login.setUsername((String) credentailsMap.get("username"));
                             login.setPassword((String) credentailsMap.get("password"));
                             login.setSchema((String) credentailsMap.get("name"));
+                        }  else if (instanceType.equals("aws_aurora")) {
+                            log.info("Obtaining VCAP_SERVICES credentials - aws_aurora");
+                            login.setUrl((String) credentailsMap.get("jdbcUrl") + "&connectTimeout=1800000&socketTimeout=1800000&autoReconnect=true&reconnect=true");
+                            login.setUsername((String) credentailsMap.get("username"));
+                            login.setPassword((String) credentailsMap.get("password"));
+                            login.setSchema((String) credentailsMap.get("name"));
                         } else {
                             // should never come here
                             log.info("Unknown MySQL instance type : " + instanceType);
