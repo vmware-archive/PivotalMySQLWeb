@@ -198,6 +198,7 @@ PivotalMySQLWeb will search through all the VCAP_SERVICES and connect to the fir
   GCP Cloud SQL service broker instance
   mariadbent
   aws_aurora
+  mariadb - if using minibroker here https://github.com/kubernetes-sigs/minibroker
 ```
 
 If you have bound your application to multiple MySQL service instances then you can switch to the other Instances using the menu option 
