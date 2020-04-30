@@ -25,8 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class VersionRest
 {
     @GetMapping(value = "/version")
-    public String sampleOuput()
-    {
+    public String sampleOutput() {
         return "Pivotal MySQLWeb version 1.2";
     }
 }

@@ -228,9 +228,6 @@ public class LoginController
             if (mysqlService != null) {
                 mysqlType = "P.MYSQL";
             }
-
-
-
         }
         else
         {

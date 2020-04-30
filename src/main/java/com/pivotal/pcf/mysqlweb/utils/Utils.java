@@ -209,6 +209,17 @@ public class Utils
                         credentailsMap = (Map) cfMySQLMap.get("credentials");
                         login.setUrl((String) credentailsMap.get("jdbcUrl") + "&connectTimeout=1800000&socketTimeout=1800000&autoReconnect=true&reconnect=true");
                     }
+
+                    // just check if it's "mariadb" instance using minibroker
+                    mysqlService = (List) jsonMap.get("mariadb");
+                    if (mysqlService != null) {
+                        cfMySQLMap = (Map) mysqlService.get(0);
+                        credentailsMap = (Map) cfMySQLMap.get("credentials");
+                        login.setUrl("jdbc:mysql://" + (String) credentailsMap.get("host") + ":3306/" + (String) credentailsMap.get("database"));
+                        login.setUsername((String) credentailsMap.get("username"));
+                        login.setPassword((String) credentailsMap.get("password"));
+                        login.setSchema((String) credentailsMap.get("database"));
+                    }
                 }
             }
         }
